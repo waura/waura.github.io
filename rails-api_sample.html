@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="Rails, Ruby">
+
+  <title>
+    waura's blog
+&ndash; Rails5で取り込まれる予定のrails-apiを使ってWeb APIをつくる  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/rails-api_sample.html">Rails5で取り込まれる予定のrails-apiを使ってWeb APIをつくる</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 31 10月 2015</p>
+ Tags:
+      <a href="/tag/rails.html">#Rails</a>,      <a href="/tag/ruby.html">#Ruby</a>    </p>
+  </div>
+  <div class="article__text">
+    <h2>はじめに</h2>
+<p>web apiを作るのに特化したrails-apiを使ってweb apiを作ってみます。<br>
+<a href="https://github.com/rails-api/rails-api">rails-api</a>は、Rails5で取り込まれる予定みたいです。<br>
+rails-apiは、web
+apiを作るだけなら不要なrails要素を省いてアプリを作成することができます。<br>
+Web
+APIオンリーでフロントエンドは、別のフレームワーク等を使って開発する場合などに使用すると良いのではないでしょうか。<br>
+今回は、問い合わせるとjsonを返すだけの単純なGETメソッドのAPIを作成してみます。</p>
+<h2>rails-apiのインストール</h2>
+<div class="highlight"><pre><span></span>$ gem install rails-api  
+</pre></div>
+
+
+<h2>rails-apiのディレクトリを作成</h2>
+<p>今回は、sample_apiという名前で作成してみました。</p>
+<div class="highlight"><pre><span></span>$ rails-api new sample_api  
+</pre></div>
+
+
+<h2>ModelとControllerの作成</h2>
+<p>rails-apiでは、Viewを使わないのでModelとControllerだけ作成します。<br>
+ここでは、Model名とController名はそれぞれBookとbooksとしておきます。<br>
+自分で作成する場合は、好きな名前にしてください。</p>
+<h3>Modelの作成</h3>
+<div class="highlight"><pre><span></span>$ ./bin/rails g model Book name:string  
+$ ./bin/rake db:migrate  
+</pre></div>
+
+
+<h3>Controllerの作成</h3>
+<p>Controllerは、バージョニングできるようにバージョン名でディレクトリを振り分けて配置しています。</p>
+<div class="highlight"><pre><span></span>$ ./bin/rails g controller api/v1/books  
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># app/controllers/api/v1/books_controller.rb  </span>
+<span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">V1</span><span class="o">::</span><span class="no">BooksController</span> <span class="p">\</span><span class="o">&lt;</span> <span class="no">ApplicationController</span>  
+  <span class="k">def</span> <span class="nf">index</span>  
+    <span class="vi">@indicators</span> <span class="o">=</span> <span class="no">Indicator</span><span class="o">.</span><span class="n">all</span>  
+    <span class="n">render</span> <span class="ss">json</span><span class="p">:</span> <span class="vi">@indicators</span>  
+  <span class="k">end</span>  
+<span class="k">end</span>  
+</pre></div>
+
+
+<h2>ルーティングの設定</h2>
+<div class="highlight"><pre><span></span><span class="c1"># config/routes.rb  </span>
+<span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>  
+  <span class="n">namespace</span> <span class="ss">:api</span><span class="p">,</span> <span class="p">{</span><span class="nb">format</span><span class="p">:</span> <span class="p">\</span><span class="s1">&#39;json\&#39;</span><span class="p">}</span> <span class="k">do</span>  
+    <span class="n">namespace</span> <span class="ss">:v1</span> <span class="k">do</span>  
+      <span class="n">resources</span> <span class="ss">:books</span>  
+    <span class="k">end</span>  
+  <span class="k">end</span>  
+<span class="k">end</span>  
+</pre></div>
+
+
+<h2>テスト用データの登録</h2>
+<p>rake db:seedを使ってテスト用のデータを登録します。</p>
+<div class="highlight"><pre><span></span><span class="c1"># db/seed.rb  </span>
+<span class="no">Book</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="p">\</span><span class="s2">&quot;test name</span><span class="se">\&quot;</span><span class="s2">)  </span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>$ ./bin/rake db:seed  
+</pre></div>
+
+
+<h2>テストサーバーの起動</h2>
+<div class="highlight"><pre><span></span>$ ./bin/rails server  
+</pre></div>
+
+
+<p>サーバーを起動した後、<br>
+<a href="http://localhost:3000/api/v1/books">http://localhost:3000/api/v1/books</a><br>
+にアクセスすればテスト用のデータとして登録していた内容がjsonとして返されます。</p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

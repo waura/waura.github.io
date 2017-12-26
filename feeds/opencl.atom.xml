@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - OpenCL</title><link href="/" rel="alternate"></link><link href="/feeds/opencl.atom.xml" rel="self"></link><id>/</id><updated>2010-02-23T01:13:00+09:00</updated><entry><title>OpenCL開発環境のインストール</title><link href="/201002231266941596.html" rel="alternate"></link><published>2010-02-23T01:13:00+09:00</published><updated>2010-02-23T01:13:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-02-23:/201002231266941596.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;
+64bit、&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;
+2008環境下に&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;の開発環境をインストールする手順を記します。&lt;br&gt;
+自分は&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/GPU"&gt;GPU&lt;/a&gt;を使っているので&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;環境をインストールします。&lt;/p&gt;
+&lt;h4&gt;ドライバ、&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;のインストール&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://developer.nvidia.com/object/opencl.html"&gt;http://developer.nvidia.com/object/opencl.html&lt;/a&gt;&lt;br&gt;
+上のNVIDIのサイトから&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt; Driver for
+    WinVista and &lt;a href="http://d.hatena.ne.jp/keyword/Win7"&gt;Win7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/GPU%20Computing"&gt;GPU
+    Computing&lt;/a&gt;
+    &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt; code samples and
+    more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;をダウンロードしてインストールします。&lt;br&gt;
+再起動が求められた場合は、再起動を行います。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;の場合では、インクルードファイルとライブラリファイルはそれぞれ次の箇所にインストールされてました。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Users\(ユーザ)\AppData …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;
+64bit、&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;
+2008環境下に&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;の開発環境をインストールする手順を記します。&lt;br&gt;
+自分は&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/GPU"&gt;GPU&lt;/a&gt;を使っているので&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;環境をインストールします。&lt;/p&gt;
+&lt;h4&gt;ドライバ、&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;のインストール&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://developer.nvidia.com/object/opencl.html"&gt;http://developer.nvidia.com/object/opencl.html&lt;/a&gt;&lt;br&gt;
+上のNVIDIのサイトから&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt; Driver for
+    WinVista and &lt;a href="http://d.hatena.ne.jp/keyword/Win7"&gt;Win7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/GPU%20Computing"&gt;GPU
+    Computing&lt;/a&gt;
+    &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt; code samples and
+    more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;をダウンロードしてインストールします。&lt;br&gt;
+再起動が求められた場合は、再起動を行います。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;の場合では、インクルードファイルとライブラリファイルはそれぞれ次の箇所にインストールされてました。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Users\(ユーザ)\AppData\Local\NVIDIA Corporation\NVIDIA GPU Computing SDK\OpenCL\common\inc
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Users\(ユーザ)\AppData\Local\NVIDIA Corporation\NVIDIA GPU Computing SDK\OpenCL\common\lib
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;プロジェクトのオプションまたは、&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;のオプションからインクルードパスとライブラリパスを追加して、リンクするライブラリに&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;.libを指定します。&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;との連携&lt;/h4&gt;
+&lt;p&gt;次に、&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;のソースに色付けを行うために&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Users\(ユーザ)\AppData\Local\NVIDIA Corporation\NVIDIA GPU Computing SDK\OpenCL\doc\usertype.dat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;を&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Program Files (x86)\Microsoft Visual Studio9\Common7\IDE
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;にコピーします。&lt;/p&gt;
+&lt;p&gt;次に、&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;を起動して、「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB"&gt;ツール&lt;/a&gt;」メニューから&lt;br&gt;
+「オプション」を開きます。&lt;br&gt;
+左のダイアログを「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%AD%A5%B9%A5%C8%A5%A8%A5%C7%A5%A3%A5%BF"&gt;テキストエディタ&lt;/a&gt;」→「ファイル&lt;a href="http://d.hatena.ne.jp/keyword/%B3%C8%C4%A5%BB%D2"&gt;拡張子&lt;/a&gt;」の順に選択します。&lt;br&gt;
+そして、右の「&lt;a href="http://d.hatena.ne.jp/keyword/%B3%C8%C4%A5%BB%D2"&gt;拡張子&lt;/a&gt;」に「.cl」と入力しエディタに「&lt;a href="http://d.hatena.ne.jp/keyword/Microsoft"&gt;Microsoft&lt;/a&gt;
+Visual
+&lt;a href="http://d.hatena.ne.jp/keyword/C%2B%2B"&gt;C++&lt;/a&gt;」を選択して「追加」ボタンを押します。&lt;/p&gt;
+&lt;p&gt;以上で&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;開発環境のインストールが終了しました。&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt; サンプル&lt;/h4&gt;
+&lt;p&gt;デスクトップに「&lt;a href="http://d.hatena.ne.jp/keyword/NVIDIA"&gt;NVIDIA&lt;/a&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/GPU%20Computing"&gt;GPU Computing&lt;/a&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;
+Browser」ってショートカットが出来てているので、これを開くことで&lt;a href="http://d.hatena.ne.jp/keyword/OpenCL"&gt;OpenCL&lt;/a&gt;のサンプルコードを見ることや、サンプルプログラムの実行ができます。&lt;/p&gt;</content></entry></feed>

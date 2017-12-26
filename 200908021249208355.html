@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; PSDデータのフォーマット  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200908021249208355.html">PSDデータのフォーマット</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 02 8月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h3>PSDファイルの構成</h3>
+<p>PSDファイルは、先頭から以下の順で構成されている。<br>
+値はビッグエンディアンで格納されているのでリトルエンディアンへの変換が必要</p>
+<div class="highlight"><pre><span></span><span class="k">[Header]</span>
+<span class="k">[Color Mode Data Block]</span>
+<span class="k">[Image Resources Block]</span>
+<span class="k">[Layer and Mask Information Block]</span>
+<span class="k">[Image Data]</span>
+</pre></div>
+
+
+<h3>Header</h3>
+<p>[4byte] Signature  "8BPS"が入ってるらしい
+[2byte] Version バージョン
+[6byte] Reserved 0で無いといけない
+[2byte] channels カラーチャンネル数 (例えば、RGBAだと4)
+[4byte] rows 画像の高さ
+[4byte] columns 画像の幅
+[2byte] Depth 1pixelのデータ深度
+[2byte] color_mode カラーモード</p>
+<ul>
+<li>カラーモード<ul>
+<li>0 Bitmap(monochrome)</li>
+<li>1 Gray-scale</li>
+<li>2 Indexed color(palette color)</li>
+<li>3 <a href="http://d.hatena.ne.jp/keyword/RGB">RGB</a> color</li>
+<li>4 <a href="http://d.hatena.ne.jp/keyword/CMYK">CMYK</a> color</li>
+<li>7 Multichannel color</li>
+<li>8
+    <a href="http://d.hatena.ne.jp/keyword/Duotone">Duotone</a>(halftone)</li>
+<li>9 Lab color</li>
+</ul>
+</li>
+</ul>
+<h3>Color Mode Data Block</h3>
+<div class="highlight"><pre><span></span>[4byte] color_mode_data
+</pre></div>
+
+
+<ul>
+<li>カラーモードがIndexed colorのときは、768じゃないといけない。</li>
+<li>カラーモードが<a href="http://d.hatena.ne.jp/keyword/Duotone">Duotone</a>のときは、おそらくスクリーンパラメータやその他の情報に関連するらしい。</li>
+</ul>
+<h3>Image Resource Block</h3>
+<div class="highlight"><pre><span></span>[4byte] block_length Image Resource Blockのサイズ
+･･･
+</pre></div>
+
+
+<p>古い<a href="http://d.hatena.ne.jp/keyword/Photoshop">Photoshop</a>で<a href="http://d.hatena.ne.jp/keyword/Mac">Mac</a>向けの環境で使用してるところで、あまり意味の無いところらしい。</p>
+<h3>Layer and Mask Information Block, Image Data</h3>
+<div class="highlight"><pre><span></span>[4byte] block_length Layer and Mask Information Blockのサイズ
+[4byte] nSize ここからレイヤー情報の終わりまでのサイズ
+[2byte] layer_num レイヤー数
+負の数で入ってることもあるので絶対値をとる。
+
+レイヤー数分繰り返し
+
+[4byte] Top レイヤー上端位置
+[4byte] Left レイヤー左端位置
+[4byte] Bottom レイヤー下端位置
+[4byte] Right レイヤー右端位置
+[2byte] Channels レイヤーのチャンネル数
+
+チャンネル数分繰り返し
+
+[2byte] ChannelID チャンネルID
+[4byte] LengthOfChannelData チャンネルデータ
+
+･･･
+
+[4byte] Blend Mode Signature \&quot;8BIM\&quot;
+[4byte] Blend Mode Key [char]x4 \*後述
+[1byte] Opacity 0-255
+[1byte] Clipping 0のときbase 1のときnon-base
+[1byte] LayerFlags レイヤー情報フラグ
+[1byte] Padding 0が入ってる
+[4byte] ExtraDataSize ここからレイヤー情報の最後までのサイズ
+
+以下レイヤーマスクのデータ
+
+[4byte] Size レイヤーマスクデータのサイズ
+[4byte] Top
+[4byte] Left
+[4byte] Bottom
+[4byte] Right
+[1byte] DefaultColor
+[1byte] Flags
+
+if(Size == 20)
+
+[2byte] Padding
+
+if(Size == 36)
+
+[1byte] Flags2
+[1byte] maskBg
+[4byte] OtherTop
+[4byte] OtherLeft
+[4byte] OtherBottom
+[4byte] OtherRight
+
+･･･
+
+以下Blending Ranges
+
+[4byte] Size Blending Rangesのデータサイズ
+
+･･･
+
+以下Name
+
+[1byte] name_length
+
+･･･
+
+[時々ここに2byteのpaddingが入る。]
+
+以下Layer Resources
+
+[4byte] Signature \&quot;8BIM\&quot;
+[4byte] tag
+
+･･･
+
+レイヤー数分繰り返し
+
+------------------------ ------------------------ ----------------------
+チャンネル数分繰り返し                            
+                        [2byte] compression    
+                        if(compression == 1)     
+                        レイヤー高さ分繰り返し   
+                                                    [l2byte] RLE幅長さ
+                        ･･･                      
+                                                    [画素データ]
+                        ･･･                      
+以下マスクデータ                                  
+                        [2byte] compression    
+                        if(compression == 1)     
+                                                    [2byte] header
+                        ･･･                      
+                                                    [RLE画素データ]
+･･･                                               
+------------------------ ------------------------ ----------------------
+
+マージ画像
+
+------------------------ ------------------------ ---------------------
+[2byte] compression                             
+if(compression == 1)                              
+チャンネル数分繰り返し                            
+                        レイヤー高さ分繰り返し   
+                                                    [2byte] RLE幅長さ
+                        ･･･                      
+                                                    [RLE画素データ]
+･･･
+
+------------------------ ------------------------ ---------------------
+</pre></div>
+
+
+<ul>
+<li>Blend Mode Key<ul>
+<li>norm Normal</li>
+<li>dark Darken</li>
+<li>lite Lighten</li>
+<li>hue Hue</li>
+<li>sat Saturation</li>
+<li>colr Color</li>
+<li>lum Luminosity</li>
+<li>mul Multiply</li>
+<li>scrn Screen</li>
+<li>diss Dissolve</li>
+<li>over Overlay</li>
+<li>hLit Hard light</li>
+<li>sLit Soft light</li>
+<li>diff Difference</li>
+</ul>
+</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>LayerFlags<ul>
+<li>1bit目</li>
+<li>2bit目 レイヤーが不可視なら1、そうでないなら0</li>
+<li>3bit目</li>
+<li>4bit目</li>
+<li>5bit目 レイヤーセットなら1、そうでないなら0</li>
+<li>6bit目</li>
+<li>7bit目</li>
+<li>8bit目</li>
+</ul>
+</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>compression<ul>
+<li>0 None</li>
+<li>1 Rle</li>
+<li>2 ZipNoPrediction</li>
+<li>3 ZipPrediction</li>
+<li>4 <a href="http://d.hatena.ne.jp/keyword/Jpeg">Jpeg</a></li>
+</ul>
+</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>ChannnelID<ul>
+<li>-2 Mask</li>
+<li>-1 Alpha</li>
+<li>0 Red</li>
+<li>1 Green</li>
+<li>2 Blue</li>
+</ul>
+</li>
+</ul>
+<h3>参考URL</h3>
+<p><a href="http://www.fileformat.info/format/psd/egff.htm">http://www.fileformat.info/format/psd/egff.htm</a>
+<a href="http://tmp.junkbox.info/e40.html">http://tmp.junkbox.info/e40.html</a></p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

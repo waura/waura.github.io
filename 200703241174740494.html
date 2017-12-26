@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; Xファイルのフォーマット(1)  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200703241174740494.html">Xファイルのフォーマット(1)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 24 3月 2007</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>の一番上には、
+xof 0302txt 0064 というような可変長ヘッダーがある。<br>
+\"xof\"は、マジック番号と呼ばれる。<br>
+\"03\"は、メジャーバージョン3をあらわす。<br>
+\"02\"は、マイナーバージョン2をあらわす。<br>
+\"txt\"は、その<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>が、テキスト形式であることをあらわす。<br>
+\"txt\"の代わりに、バイナリファイルの\"bin\"、MSZip圧縮テキストの\"tzip\"、MSZip圧縮バイナリの\"bzip\"、が選べる。<br>
+\"0064\"は64ビット<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点をあらわす。<br>
+代わりに、\"0032\"を選ぶとができる。</p>
+<p><a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>はテンプレート形式で書かれている。  </p>
+<div class="highlight"><pre><span></span>template {  
+
+メンバー1;  
+メンバー2;  
+.  
+.  
+.  
+}
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>template Vector {  
+&lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
+FLOAT x;  
+FLOAT y;  
+FLOAT z;  
+}
+</pre></div>
+
+
+<p><a href="http://d.hatena.ne.jp/keyword/Vector">Vector</a>は、ベクトルを定義する。</p>
+<div class="highlight"><pre><span></span>template MeshFace {  
+&lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&gt;  
+DWORD nFaceVertexIndices;  
+array DWORD faceVertexIndices[nFaceVertexIndices\];  
+} 
+</pre></div>
+
+
+<p>Mesh テンプレートで、メッシュの面を定義するために使われる。<br>
+nFaceVertexIndicesは、インデックスの数。<br>
+array faceVertexIndicesは。インデックスの配列。<br>
+インデックスは、頂点を設定する順番を決める。</p>
+<p>Meshは、単純なメッシュの情報を記述する。  </p>
+<div class="highlight"><pre><span></span>template Mesh {  
+&lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&gt;  
+DWORD nVertices;  
+array Vector
+vertices[nVertices];  
+DWORD nFaces;  
+array MeshFace faces[nFaces];  
+[...]  
+}
+</pre></div>
+
+
+<p>nVerticesは、頂点の数。<br>
+array
+verticesは、<a href="http://d.hatena.ne.jp/keyword/Vector">Vector</a>の要素数nVerticesの配列。<br>
+nFacesは、面の数。<br>
+array
+facesは、MeshFaceの要素数nFacesの配列。<br>
+[...]があるので、他にマテリアル情報などを記述できる。</p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

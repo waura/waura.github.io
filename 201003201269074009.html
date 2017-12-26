@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; SSE用いたアルファブレンドの高速化2  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 20 3月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2>ロード・ストアに使用するSSE命令</h2>
+<h3>ロード</h3>
+<p>イントリンシック命令   対応するSSE命令   </p>
+<hr>
+<p>_mm_loadu_ps        MOVUPS            アライメントを合わせる必要がない
+  _mm_load_ps         MOVAPS            アライメントを合わせなければならない</p>
+<h3>ストア</h3>
+<p>イントリンシック命令   対応するSSE命令   </p>
+<hr>
+<p>_mm_storeu_ps       MOVUPS            アライメントを合わせる必要がない
+  _mm_store_ps        MOVAPS            アライメントを合わせなければならない
+  _mm_stream_si128    MOVNTPD           アライメントを合わせなければならない、キャッシュを介さずにストアする</p>
+<h2>計測するアルファブレンド処理</h2>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ul>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_psでメモリ読み込み、_mm_storeu_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_store_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ul>
+<p>の4通りでテストする。</p>
+<p>64bit向けの設定だと__asmのとこでエラーがでるので<a href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%E9%A5%A4%A5%F3%A5%A2%A5%BB%A5%F3%A5%D6%A5%E9">インラインアセンブラ</a>ではなく組み込み関数を使って書きました。<br>
+アライメントをあわせて処理するために、128bit(4pixel)ずつ読み込んで処理を行っています。</p>
+<h2>計測方法</h2>
+<ul>
+<li>5760x3600BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
+    2.3を用いた。</li>
+<li>アルファブレンド部分の処理のみ処理時間を計測した。</li>
+</ul>
+<h2>計測に使用した環境</h2>
+<ul>
+<li>CPU: <a href="http://d.hatena.ne.jp/keyword/Core%20i7">Core i7</a>
+    2600 3.40GHz</li>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/windows%207">windows 7</a>
+    64bit</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio</a>
+    2010</li>
+<li>最適化オプション: 実行速度 (/O2)</li>
+</ul>
+<h2>コード</h2>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/cv.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/highgui.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;QPCTimer.h&quot;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="kt">uint8_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="kt">int8_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">short</span> <span class="kt">uint16_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">short</span> <span class="kt">int16_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">uint32_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="kt">long</span> <span class="kt">int32_t</span><span class="p">;</span>
+
+<span class="k">union</span> <span class="n">UCvPixel32</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span>
+    <span class="p">{</span>
+        <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">a</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+<span class="k">typedef</span> <span class="n">UCvPixel32</span> <span class="n">UCvPixel</span><span class="p">;</span>
+
+<span class="c1">/////////////////////////////////////////////</span>
+<span class="cm">/*!</span>
+<span class="cm">   指定位置のRGB値を取得する</span>
+<span class="cm">   @param[in] image 画像</span>
+<span class="cm">   @param[in] x X座標</span>
+<span class="cm">   @param[in] y Y座標</span>
+<span class="cm">   @param[out] dst 取得した値</span>
+<span class="cm">*/</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">GetPixelFromBGR</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span> <span class="o">==</span> <span class="mi">3</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">dst</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">),</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">);</span>
+    <span class="c1">// *r = (uint8_t) image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels + 2];</span>
+    <span class="c1">// *g = (uint8_t) image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels + 1];</span>
+    <span class="c1">// *b = (uint8_t) image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels];</span>
+<span class="p">}</span>
+<span class="c1">//////////////////////////////////////////////</span>
+<span class="cm">/*!</span>
+<span class="cm">   指定位置にRGB値をセットする</span>
+<span class="cm">   @param[in] image 画像</span>
+<span class="cm">   @param[in] x X座標</span>
+<span class="cm">   @param[in] y Y座標</span>
+<span class="cm">   @param[in] src セットする値</span>
+<span class="cm">*/</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">SetPixelToBGR</span><span class="p">(</span>
+    <span class="n">IplImage</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">src</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span> <span class="o">==</span> <span class="mi">3</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">),</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="p">);</span>
+    <span class="c1">//image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels + 2] = r;</span>
+    <span class="c1">//image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels + 1] = g;</span>
+    <span class="c1">//image-&gt;imageData[y *image-&gt;widthStep+ x * image-&gt;nChannels] = b;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span> <span class="c1">//アルファ値150でアルファブレンドを行う</span>
+    <span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r1</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">b1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r2</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">b2</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ra</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">buf1</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">buf2</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">buf3</span><span class="p">;</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test1</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test1.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test2</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test2.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">b_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">g_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">r_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">a_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img1</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img2</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img3</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img4</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img5</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img6</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">cvSet</span><span class="p">(</span><span class="n">a_ch</span><span class="p">,</span> <span class="n">cvScalar</span><span class="p">(</span><span class="mi">255</span><span class="p">));</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test1</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch</span><span class="p">,</span> <span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test2</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch</span><span class="p">,</span> <span class="n">img2</span><span class="p">);</span>
+    <span class="c1">//非SSE</span>
+    <span class="n">IETimer</span> <span class="n">timer</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">buf1</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf2</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf3</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf3</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf1</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">ra</span> <span class="o">+</span> <span class="n">buf2</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="n">buf3</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf1</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">ra</span> <span class="o">+</span> <span class="n">buf2</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="n">buf3</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf1</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">ra</span> <span class="o">+</span> <span class="n">buf2</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test3.bmp&quot;</span><span class="p">,</span> <span class="n">img3</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_loadu_ps + _mm_storeu_ps</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+            <span class="n">buf1</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf2</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf3</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img4</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_loadu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf1</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_loadu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf2</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmra</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mi">255</span><span class="o">-</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+            <span class="c1">//calc lo quad word</span>
+            <span class="kr">__m128i</span> <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//calc hi quad word</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//store to memory</span>
+            <span class="n">_mm_storeu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf3</span><span class="p">,</span>
+            <span class="n">_mm_castsi128_ps</span><span class="p">(</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">)</span> <span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test4.bmp&quot;</span><span class="p">,</span> <span class="n">img4</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_store_ps</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+            <span class="n">buf1</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf2</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf3</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img5</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf1</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf2</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmra</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mi">255</span><span class="o">-</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+            <span class="c1">//calc lo quad word</span>
+            <span class="kr">__m128i</span> <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//calc hi quad word</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//store to memory</span>
+            <span class="n">_mm_store_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf3</span><span class="p">,</span>
+            <span class="n">_mm_castsi128_ps</span><span class="p">(</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">)</span> <span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test5.bmp&quot;</span><span class="p">,</span> <span class="n">img5</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_stream_si128</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+            <span class="n">buf1</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf2</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">buf3</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img6</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf1</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">buf2</span><span class="p">)</span> <span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmra</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mi">255</span><span class="o">-</span><span class="n">alpha</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+            <span class="c1">//calc lo quad word</span>
+            <span class="kr">__m128i</span> <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="kr">__m128i</span> <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//calc hi quad word</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">);</span> <span class="c1">//(over*(255-alpha)</span>
+            <span class="n">xmu</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu</span><span class="p">,</span> <span class="n">xmra</span><span class="p">);</span> <span class="c1">//under * alpha</span>
+            <span class="n">xmo</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="n">xmu</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha)</span>
+            <span class="kr">__m128i</span> <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//(over*(255 - alpha) + under*alpha) &gt;&gt; 8</span>
+            <span class="c1">//store to memory</span>
+            <span class="n">_mm_stream_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">buf3</span><span class="p">,</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test6.bmp&quot;</span><span class="p">,</span> <span class="n">img6</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img2</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img3</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img4</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img5</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img6</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>計測結果</h2>
+<h3>32bit</h3>
+<div class="highlight"><pre><span></span>      非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   158.012 msec   58.2207 msec                         55.8665 msec                       57.3539 msec
+  2回目   148.493 msec   616072 msec                          48.3639 msec                       43.3478 msec
+  3回目   213.018 msec   48.5864 msec                         51.4393 msec                       45.2582 msec</p>
+<h3>64bit</h3>
+<div class="highlight"><pre><span></span>      非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   155.736 msec   55.2899 msec                         65.1353 msec                       58.0954 msec
+  2回目   153.897 msec   52.7778 msec                         57.7893 msec                       60.9943 msec
+  3回目   165.184 msec   54.6214 msec                         51.4324 msec                       47.8053 msec</p>
+<h2>まとめ</h2>
+<p>32bit、64bitともにSSEにより3倍程度高速化できた。<br>
+[_mm_loadu_ps + _mm_storeu_ps], [_mm_load_ps +
+_mm_store_ps], [_mm_load_ps +
+_mm_stream_si128]の3通りでSSE命令によるロード・ストアを実装したが、今回の実行環境ではバラツキがあり、特に優れている命令はわからなかった。<br>
+アライメントがずれている場合などでは、違いが出てくるかもしれない。</p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

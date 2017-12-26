@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; photoshopのブラシデータのフォーマット  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200807101215708667.html">photoshopのブラシデータのフォーマット</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 木 10 7月 2008</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/photoshop">photoshop</a>のブラシデータのフォーマットを調べてみることにした。<br>
+なかなか説明がのっているサイトが無いので拾った<a href="http://d.hatena.ne.jp/keyword/C%B8%C0%B8%EC">C言語</a>ソースから、調べることにした。<br>
+値の格納法はビッグエンディアンなのでリトルエンディアンへ変換しないといけない。</p>
+<div class="highlight"><pre><span></span>ファイル先頭から次のようになっている。
+[2byte] abrファイルのバージョン(1,2,6があるようだ)
+/* ver6の場合 */
+[2byte] subversion(6.xのxの部分、6.1と6.2があるようだ)
+[1byte][1byte][1byte][1byte] &quot;8BIM&quot; になっていなければならない
+[1byte][1byte][1byte][1byte] 8BIMtagの名前 ヌル文字は入ってないので注意
+[4byte] セクションサイズ この後からファイルの末尾までのファイルサイズ
+以下最後までブラシデータの繰り返し
+｜ [4byte] ブラシサイズ ブラシデータのサイズ
+｜ [37byte] 不要なデータ
+｜ [10 or 264 byte] 不要なデータ 6.1の場合は10byte 6.2の場合は267byte
+｜ [4byte] ブラシの領域の上辺の値
+｜ [4byte] ブラシの領域の左辺の値
+｜ [4byte] ブラシの領域の下辺の値
+｜ [4byte] ブラシの領域の右辺の値
+｜ [2byte] ブラシのデータ深度
+｜ [1byte] 圧縮有りか無しか
+/* 圧縮無しの場合 */
+｜ [] ブラシデータ ((depth&gt;&gt;3) * width * height )byte 続く
+｜   ・
+/* 圧縮有りの場合 */
+｜ [2byte] ブラシの高さの値分だけ繰り返し i行目のデータをcscanline_len[i]とする
+｜   ・
+｜   ・
+以下もブラシの高さの値分だけ繰り返し。
+｜ [1byte] 値n cscanline_len[0]の値分だけ繰り返し。
+｜ [1byte] 値n
+｜   ・
+｜ [1byte] 値n cscanline_len[1]の値分だけ繰り返し。
+｜   ・
+｜   ・
+｜   ・
+｜ [1byte] 値n cscanline_len[height-1]の値分だけ繰り返し。
+｜   ・
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="cm">/*デコードのソース部分*/</span>
+<span class="cm">/* read compressed size foreach scanline */</span>
+<span class="n">cscanline_len</span> <span class="o">=</span> <span class="n">g_new0</span><span class="p">(</span><span class="n">gshort</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="n">cscanline_len</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">abr_read_short</span><span class="p">(</span><span class="n">abr</span><span class="p">);</span>
+<span class="cm">/* unpack each scanline data */</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">cscanline_len</span><span class="p">[</span><span class="n">i</span><span class="p">];)</span> <span class="p">{</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">abr_read_char</span><span class="p">(</span><span class="n">abr</span><span class="p">);</span>
+    <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">)</span>     <span class="cm">/* force sign */</span>
+    <span class="n">n</span> <span class="o">-=</span> <span class="mi">256</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>      <span class="cm">/* copy the following char -n + 1 times */</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">128</span><span class="p">)</span>  <span class="cm">/* it&#39;s a nop */</span>
+      <span class="k">continue</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="n">ch</span> <span class="o">=</span> <span class="n">abr_read_char</span><span class="p">(</span><span class="n">abr</span><span class="p">);</span>
+      <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">,</span> <span class="n">data</span><span class="o">++</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">ch</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>          <span class="cm">/* read the following n + 1 chars (no compr) */</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">,</span> <span class="n">j</span><span class="o">++</span><span class="p">,</span> <span class="n">data</span><span class="o">++</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">abr_read_char</span><span class="p">(</span><span class="n">abr</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>ver1と２は明日やろう･･</p>
+<p>ここにあるソースを参考にしました。<br>
+<a href="http://registry.gimp.org/node/126">http://registry.gimp.org/node/126</a></p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

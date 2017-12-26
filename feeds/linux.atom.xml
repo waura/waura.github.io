@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - Linux</title><link href="/" rel="alternate"></link><link href="/feeds/linux.atom.xml" rel="self"></link><id>/</id><updated>2010-06-06T23:23:00+09:00</updated><entry><title>UbuntuにMozcのインストール</title><link href="/201006061275834228.html" rel="alternate"></link><published>2010-06-06T23:23:00+09:00</published><updated>2010-06-06T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-06-06:/201006061275834228.html</id><summary type="html">&lt;p&gt;Google日本語入力のオープンソース版であるMozcが公開されています。&lt;br&gt;
+Webデータから抽出された語嚢データは含まれていないようです。&lt;br&gt;
+&lt;a href="http://code.google.com/p/mozc/"&gt;http://code.google.com/p/mozc/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;このMozcのUbuntu用の野良パッケージを作成してくれている方がいたのでインストールしてみました。&lt;br&gt;
+&lt;a href="http://linux.ikoinoba.net/index.php?UID=1273605455"&gt;Mozc - Google日本語入力のオープンソース版 -
+憩いの場【Linux/ソフト紹介】&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;インストール方法は、すべて↑の通り。&lt;br&gt;
+Anthyは使いにくいなぁ、と思っていたので助かりました。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Google日本語入力のオープンソース版であるMozcが公開されています。&lt;br&gt;
+Webデータから抽出された語嚢データは含まれていないようです。&lt;br&gt;
+&lt;a href="http://code.google.com/p/mozc/"&gt;http://code.google.com/p/mozc/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;このMozcのUbuntu用の野良パッケージを作成してくれている方がいたのでインストールしてみました。&lt;br&gt;
+&lt;a href="http://linux.ikoinoba.net/index.php?UID=1273605455"&gt;Mozc - Google日本語入力のオープンソース版 -
+憩いの場【Linux/ソフト紹介】&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;インストール方法は、すべて↑の通り。&lt;br&gt;
+Anthyは使いにくいなぁ、と思っていたので助かりました。&lt;/p&gt;</content></entry></feed>

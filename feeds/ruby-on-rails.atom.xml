@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - Ruby on Rails</title><link href="/" rel="alternate"></link><link href="/feeds/ruby-on-rails.atom.xml" rel="self"></link><id>/</id><updated>2015-10-31T19:54:00+09:00</updated><entry><title>Rails5で取り込まれる予定のrails-apiを使ってWeb APIをつくる</title><link href="/rails-api_sample.html" rel="alternate"></link><published>2015-10-31T19:54:00+09:00</published><updated>2015-10-31T19:54:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-10-31:/rails-api_sample.html</id><summary type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;web apiを作るのに特化したrails-apiを使ってweb apiを作ってみます。&lt;br&gt;
+&lt;a href="https://github.com/rails-api/rails-api"&gt;rails-api&lt;/a&gt;は、Rails5で取り込まれる予定みたいです。&lt;br&gt;
+rails-apiは、web
+apiを作るだけなら不要なrails要素を省いてアプリを作成することができます。&lt;br&gt;
+Web
+APIオンリーでフロントエンドは、別のフレームワーク等を使って開発する場合などに使用すると良いのではないでしょうか。&lt;br&gt;
+今回は、問い合わせるとjsonを返すだけの単純なGETメソッドのAPIを作成してみます。&lt;/p&gt;
+&lt;h2&gt;rails-apiのインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install rails-api  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;rails-apiのディレクトリを作成&lt;/h2&gt;
+&lt;p&gt;今回は、sample_apiという名前で作成してみました。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ rails-api new sample_api  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;ModelとControllerの作成&lt;/h2&gt;
+&lt;p&gt;rails-apiでは、Viewを使わないのでModelとControllerだけ作成します。&lt;br&gt;
+ここでは、Model名とController名はそれぞれBookとbooksとしておきます。&lt;br&gt;
+自分で作成する場合は、好きな名前にしてください。&lt;/p&gt;
+&lt;h3&gt;Modelの作成&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rails g model Book name:string  
+$ ./bin/rake db:migrate  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Controllerの作成&lt;/h3&gt;
+&lt;p&gt;Controllerは、バージョニングできるようにバージョン名でディレクトリを振り分けて配置しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rails g …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;web apiを作るのに特化したrails-apiを使ってweb apiを作ってみます。&lt;br&gt;
+&lt;a href="https://github.com/rails-api/rails-api"&gt;rails-api&lt;/a&gt;は、Rails5で取り込まれる予定みたいです。&lt;br&gt;
+rails-apiは、web
+apiを作るだけなら不要なrails要素を省いてアプリを作成することができます。&lt;br&gt;
+Web
+APIオンリーでフロントエンドは、別のフレームワーク等を使って開発する場合などに使用すると良いのではないでしょうか。&lt;br&gt;
+今回は、問い合わせるとjsonを返すだけの単純なGETメソッドのAPIを作成してみます。&lt;/p&gt;
+&lt;h2&gt;rails-apiのインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install rails-api  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;rails-apiのディレクトリを作成&lt;/h2&gt;
+&lt;p&gt;今回は、sample_apiという名前で作成してみました。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ rails-api new sample_api  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;ModelとControllerの作成&lt;/h2&gt;
+&lt;p&gt;rails-apiでは、Viewを使わないのでModelとControllerだけ作成します。&lt;br&gt;
+ここでは、Model名とController名はそれぞれBookとbooksとしておきます。&lt;br&gt;
+自分で作成する場合は、好きな名前にしてください。&lt;/p&gt;
+&lt;h3&gt;Modelの作成&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rails g model Book name:string  
+$ ./bin/rake db:migrate  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Controllerの作成&lt;/h3&gt;
+&lt;p&gt;Controllerは、バージョニングできるようにバージョン名でディレクトリを振り分けて配置しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rails g controller api/v1/books  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/books_controller.rb  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Api&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;V1&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;BooksController&lt;/span&gt; &lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;  
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;  
+    &lt;span class="vi"&gt;@indicators&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Indicator&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;  
+    &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vi"&gt;@indicators&lt;/span&gt;  
+  &lt;span class="k"&gt;end&lt;/span&gt;  
+&lt;span class="k"&gt;end&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;ルーティングの設定&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# config/routes.rb  &lt;/span&gt;
+&lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;application&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;routes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;draw&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;  
+  &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:api&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nb"&gt;format&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;json\&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;  
+    &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:v1&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;  
+      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="ss"&gt;:books&lt;/span&gt;  
+    &lt;span class="k"&gt;end&lt;/span&gt;  
+  &lt;span class="k"&gt;end&lt;/span&gt;  
+&lt;span class="k"&gt;end&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;テスト用データの登録&lt;/h2&gt;
+&lt;p&gt;rake db:seedを使ってテスト用のデータを登録します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# db/seed.rb  &lt;/span&gt;
+&lt;span class="no"&gt;Book&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;test name&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="s2"&gt;)  &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rake db:seed  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;テストサーバーの起動&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./bin/rails server  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;サーバーを起動した後、&lt;br&gt;
+&lt;a href="http://localhost:3000/api/v1/books"&gt;http://localhost:3000/api/v1/books&lt;/a&gt;&lt;br&gt;
+にアクセスすればテスト用のデータとして登録していた内容がjsonとして返されます。&lt;/p&gt;</content><category term="Rails"></category><category term="Ruby"></category></entry></feed>

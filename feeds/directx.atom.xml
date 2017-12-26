@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - DirectX</title><link href="/" rel="alternate"></link><link href="/feeds/directx.atom.xml" rel="self"></link><id>/</id><updated>2009-02-11T15:31:00+09:00</updated><entry><title>LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</title><link href="/200902111234333888.html" rel="alternate"></link><published>2009-02-11T15:31:00+09:00</published><updated>2009-02-11T15:31:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-11:/200902111234333888.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の公式&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3"&gt;プラグイン&lt;/a&gt;で、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;形式でモデルを出力してくれる&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
+Exporterというのがあるのだが、、、&lt;br&gt;
+ダメダメすぎて、ストレスがたまる。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;出力したファイルにメッシュ情報がのってない。空のフレームだけ&lt;/li&gt;
+&lt;li&gt;(おそらくだけど)IKをつかってないモーションモデルをBake
+    IKで出力させると&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;まで巻き込んで落ちる&lt;/li&gt;
+&lt;li&gt;ようやく、メッシュ情報がのったファイルが出力されたと思ったらファイルが壊れててViewerで再生できない････&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;直に&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;のファイルをさわったほうがはやい、というかさわらざるをえない&lt;br&gt;
+・&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1"&gt;デベロッパ&lt;/a&gt;ー情報&lt;br&gt;
+&lt;a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm"&gt;http://www.dstorm.co.jp/products/lw8/developer/game/index.htm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;DirectX10で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;にこだわることも無いのかもしれない。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の公式&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3"&gt;プラグイン&lt;/a&gt;で、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;形式でモデルを出力してくれる&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
+Exporterというのがあるのだが、、、&lt;br&gt;
+ダメダメすぎて、ストレスがたまる。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;出力したファイルにメッシュ情報がのってない。空のフレームだけ&lt;/li&gt;
+&lt;li&gt;(おそらくだけど)IKをつかってないモーションモデルをBake
+    IKで出力させると&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;まで巻き込んで落ちる&lt;/li&gt;
+&lt;li&gt;ようやく、メッシュ情報がのったファイルが出力されたと思ったらファイルが壊れててViewerで再生できない････&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;直に&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;のファイルをさわったほうがはやい、というかさわらざるをえない&lt;br&gt;
+・&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1"&gt;デベロッパ&lt;/a&gt;ー情報&lt;br&gt;
+&lt;a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm"&gt;http://www.dstorm.co.jp/products/lw8/developer/game/index.htm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;DirectX10で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;にこだわることも無いのかもしれない。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(5)</title><link href="/200902071233968785.html" rel="alternate"></link><published>2009-02-07T10:06:00+09:00</published><updated>2009-02-07T10:06:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-07:/200902071233968785.html</id><summary type="html">&lt;p&gt;今回はスキンメッシュに使うテンプレートの説明。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;SkinMeshHeader&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="err"&gt;一つの頂点に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;一つの面に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;ボーンの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;SkinWeight&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="err"&gt;ボーン&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;フレーム&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;の名前&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
+        &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。&lt;br&gt;
+AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって&lt;br&gt;
+スキンメッシュを実装します。&lt;/p&gt;</summary><content type="html">&lt;p&gt;今回はスキンメッシュに使うテンプレートの説明。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;SkinMeshHeader&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="err"&gt;一つの頂点に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;一つの面に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;ボーンの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;SkinWeight&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="err"&gt;ボーン&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;フレーム&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;の名前&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
+        &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。&lt;br&gt;
+AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって&lt;br&gt;
+スキンメッシュを実装します。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(4)</title><link href="/200902051233792037.html" rel="alternate"></link><published>2009-02-05T09:00:00+09:00</published><updated>2009-02-05T09:00:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-05:/200902051233792037.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20090204"&gt;http://d.hatena.ne.jp/hiroki0/20090204&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
+アニメーションは以下のように表されます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;AnimationSet AnimationSet_name {
+Animation Animation0 {
+{ frame1 } //フレーム名frame1のアニメーション
+AnimationKey {
+キータイプ;
+キー数;
+キー値;データ個数;データ;, //繰り返し
+}
+}
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;AnimationSetは、一つのアニメーションを表し、1\~N個のAnimationを持ちます。&lt;br&gt;
+Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。&lt;br&gt;
+AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;回転の場合は、w …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20090204"&gt;http://d.hatena.ne.jp/hiroki0/20090204&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
+アニメーションは以下のように表されます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;AnimationSet AnimationSet_name {
+Animation Animation0 {
+{ frame1 } //フレーム名frame1のアニメーション
+AnimationKey {
+キータイプ;
+キー数;
+キー値;データ個数;データ;, //繰り返し
+}
+}
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;AnimationSetは、一つのアニメーションを表し、1\~N個のAnimationを持ちます。&lt;br&gt;
+Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。&lt;br&gt;
+AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;回転の場合は、w,x,y,zの順で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3"&gt;クォータニオン&lt;/a&gt;データが格納されています&lt;/li&gt;
+&lt;li&gt;スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています&lt;/li&gt;
+&lt;li&gt;平行移動の場合は、x,y,zの順で平行移動値データが格納されています&lt;/li&gt;
+&lt;li&gt;変換行列の場合は、4x4の回転、スケーリング、平行移動行列が掛け合わされた状態の行列が格納されています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- --&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame  frame1{
+FrameTransformMatrix { //単位行列なので変換は行わない
+1.0, 0.0, 0.0, 0.0,
+0.0, 1.0, 0.0, 0.0,
+0.0, 0.0, 1.0, 0.0,
+0.0, 0.0, 0.0, 1.0,
+}
+Mesh {
+頂点の数;
+頂点の座標達;
+面の数;
+面のを表す頂点のインデックス;
+MeshMaterialList {
+使用するマテリアルの数;
+面の数;
+それぞれの面の使用する引数;//繰り返し
+使用するマテリアルへの参照;//繰り返し
+TextureFilename{
+&amp;quot;ファイルへのパス&amp;quot;;
+}
+}
+MeshNormals {
+法線の数;
+法線の座標達;
+面法線インデックスの数;
+インデックス達;
+}
+MeshTextureCoords {
+頂点の数;
+テクスチャ座標u;テクスチャ座標v;//繰り返し
+}
+}
+}
+AnimationSet AnimationSet_name {
+Animation Animation0 {
+{ frame1 } //フレーム名frame1のアニメーション
+AnimationKey {
+キータイプ;
+キー数;
+キー値;データ個数;データ;, //繰り返し
+}
+}
+}
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(3)</title><link href="/200902041233704553.html" rel="alternate"></link><published>2009-02-04T08:42:00+09:00</published><updated>2009-02-04T08:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-04:/200902041233704553.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
+&lt;p&gt;今回はフレームについて、&lt;br&gt;
+フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。&lt;br&gt;
+フレームの形式はは、このようになっている。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
+    &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。&lt;br&gt;
+行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。&lt;/p&gt;
+&lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
+&lt;p&gt;今回はフレームについて、&lt;br&gt;
+フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。&lt;br&gt;
+フレームの形式はは、このようになっている。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
+    &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。&lt;br&gt;
+行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。&lt;/p&gt;
+&lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame {
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        0.0, 0.0, 0.0, 1.0,
+    }
+    Mesh {
+        頂点の数;
+        頂点の座標達;
+        面の数;
+        面のを表す頂点のインデックス;
+        MeshMaterialList {
+            使用するマテリアルの数;
+            面の数;
+            それぞれの面の使用する引数;//繰り返し
+            使用するマテリアルへの参照;//繰り返し
+            TextureFilename{
+                &amp;quot;ファイルへのパス&amp;quot;;
+            }
+        }
+        MeshNormals {
+            法線の数;
+            法線の座標達;
+            面法線インデックスの数;
+            インデックス達;
+        }
+        MeshTextureCoords {
+            頂点の数;
+            テクスチャ座標u;テクスチャ座標v;//繰り返し
+        }
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>DirectShowムービー表示</title><link href="/200711091194621506.html" rel="alternate"></link><published>2007-11-09T00:18:00+09:00</published><updated>2007-11-09T00:18:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-09:/200711091194621506.html</id><summary type="html">&lt;p&gt;ただムービを再生するだけだと別ウィンドウで表示されてしまうのでこれをIvideoWindowで操作して子ウィンドウとすれば任意のウィンドウ内でムービーを再生させることができる。&lt;/p&gt;
+&lt;p&gt;IGraphBuilder::QueryInterface()でIVideoWindowを作れるのだが上手くいかない。。。&lt;/p&gt;
+&lt;p&gt;IGraphBuilder::RenderFile()の後に&lt;br&gt;
+IGraphBuilder::QueryInterface()でIVideoWindowを作らないとダメなようだ。&lt;/p&gt;
+&lt;p&gt;次に&lt;br&gt;
+音は出るが画像は出ない状態に。。。&lt;br&gt;
+しかし、タイトルバーをクリックし続けると、表示される。&lt;/p&gt;
+&lt;p&gt;ムービーは子ウィンドウとして表示されるので、&lt;br&gt;
+親ウィンドウとなるウィンドウスタイルに&lt;br&gt;
+WS_CLIPCHILDREN&lt;br&gt;
+を指定しなければならなかった。
+考えてみたら当然だったが･･･&lt;/p&gt;
+&lt;p&gt;参考リンク&lt;br&gt;
+&lt;a href="http://www.geekpage.jp/programming/directshow/renderfile.php"&gt;http://www.geekpage.jp/programming/directshow/renderfile.php&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;ただムービを再生するだけだと別ウィンドウで表示されてしまうのでこれをIvideoWindowで操作して子ウィンドウとすれば任意のウィンドウ内でムービーを再生させることができる。&lt;/p&gt;
+&lt;p&gt;IGraphBuilder::QueryInterface()でIVideoWindowを作れるのだが上手くいかない。。。&lt;/p&gt;
+&lt;p&gt;IGraphBuilder::RenderFile()の後に&lt;br&gt;
+IGraphBuilder::QueryInterface()でIVideoWindowを作らないとダメなようだ。&lt;/p&gt;
+&lt;p&gt;次に&lt;br&gt;
+音は出るが画像は出ない状態に。。。&lt;br&gt;
+しかし、タイトルバーをクリックし続けると、表示される。&lt;/p&gt;
+&lt;p&gt;ムービーは子ウィンドウとして表示されるので、&lt;br&gt;
+親ウィンドウとなるウィンドウスタイルに&lt;br&gt;
+WS_CLIPCHILDREN&lt;br&gt;
+を指定しなければならなかった。
+考えてみたら当然だったが･･･&lt;/p&gt;
+&lt;p&gt;参考リンク&lt;br&gt;
+&lt;a href="http://www.geekpage.jp/programming/directshow/renderfile.php"&gt;http://www.geekpage.jp/programming/directshow/renderfile.php&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(2)</title><link href="/200703251174775823.html" rel="alternate"></link><published>2007-03-25T07:37:00+09:00</published><updated>2007-03-25T07:37:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-03-25:/200703251174775823.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//これはコメントです。  
+#これもコメントです。  
+//この例は、正しいポリゴンでない可能性があります。  
+Mesh (ここにメッシュの名前をつけることもできる。){  
+    3; //頂点の数  
+    0.00000;271.38129;0.00000;,　//頂点1の座標  
+    0.00000;240.92551;-153.11031;, //頂点2の座標  
+    0.00000;-128.71561;-400.09680;; //頂点3の座標
+
+    1; //面の数  
+    3;0,1,2;; //インデックスの数;インデックスの配列
+
+    //ここまでが必須要素です。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;これに付随してオプションのデータをつけることができます。&lt;br&gt;
+使用できるオプションのデータは、&lt;br&gt;
+･MeshFaceWraps (今では使われてないらしい)&lt;br&gt;
+･MeshTextureCoords&lt;br&gt;
+･MeshNormals&lt;br&gt;
+･MeshVertexColors&lt;br&gt;
+･MeshMaterialList&lt;br&gt;
+である。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/////////////////////////////////////////////////////////////  
+//MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
+template MeshTextureCoords …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//これはコメントです。  
+#これもコメントです。  
+//この例は、正しいポリゴンでない可能性があります。  
+Mesh (ここにメッシュの名前をつけることもできる。){  
+    3; //頂点の数  
+    0.00000;271.38129;0.00000;,　//頂点1の座標  
+    0.00000;240.92551;-153.11031;, //頂点2の座標  
+    0.00000;-128.71561;-400.09680;; //頂点3の座標
+
+    1; //面の数  
+    3;0,1,2;; //インデックスの数;インデックスの配列
+
+    //ここまでが必須要素です。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;これに付随してオプションのデータをつけることができます。&lt;br&gt;
+使用できるオプションのデータは、&lt;br&gt;
+･MeshFaceWraps (今では使われてないらしい)&lt;br&gt;
+･MeshTextureCoords&lt;br&gt;
+･MeshNormals&lt;br&gt;
+･MeshVertexColors&lt;br&gt;
+･MeshMaterialList&lt;br&gt;
+である。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/////////////////////////////////////////////////////////////  
+//MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
+template MeshTextureCoords  
+{&amp;lt; F6F23F40-7686-11cf-8F52-0040333594A3 &amp;gt;  
+    DWORD nTextureCoords;  
+    array coords2d textureCoords[nTextureCoords];  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;nTextureCoords-テクスチャ座標の数。&lt;br&gt;
+array
+textureCoords-要&lt;a href="http://d.hatena.ne.jp/keyword/%C1%C7%BF%F4"&gt;素数&lt;/a&gt;nTextureCoordsのCoords2dの配列。&lt;br&gt;
+Coords2dは、テクスチャのUV座標を設定するためのテンプレート。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;////////////////////////////////////////////////////  
+//MeshNormalsは、メッシュの法線を定義する。  
+template MeshNormals  
+{&amp;lt; F6F23F43-7686-11cf-8F52-0040333594A3 &amp;gt;  
+    DWORD nNormals;  
+    array Vector;
+    normals[nNormals];  
+    DWORD nFaceNormals;  
+    array MeshFace meshFaces[nFaceNormals];  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;nNormals-法線の数。&lt;br&gt;
+array
+normals-要素数nNormalsの&lt;a href="http://d.hatena.ne.jp/keyword/Vector"&gt;Vector&lt;/a&gt;テンプレートの配列、法線のベクトル。&lt;br&gt;
+nFaceNormals-面法線の数。&lt;br&gt;
+array
+meshFaces-要素数nFaceNormalsのMeshFaceの配列、面法線をあらわす。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//////////////////////////////////////////////////////  
+//MeshVertexColorsは、面またはメッシュごとに頂点色を設定する。  
+template MeshVertexColors  
+{\&amp;lt;1630B821-7842-11cf-8F52-0040333594A3\&amp;gt;  
+    DWORD nVertexColors;  
+    array IndexColor vertexColors[nVertexColors\];  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;nVertexColors-色の数。&lt;br&gt;
+array
+vertexColors-要素数nVertexColorsのIndexColorの配列。&lt;br&gt;
+IndexColorは、インデックス引数とRGBA色で構成される。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/////////////////////////////////////////////////////////  
+//MeshMaterialListは、どのマテリアルをどの面に適用するのかを指定する。  
+template MeshMaterialList  
+{&amp;lt; F6F23F42-7686-11cf-8F52-0040333594A3 &amp;gt;  
+    DWORD nMaterials;  
+    DWORD nFaceIndexes;  
+    DWORD FaceIndexes;  
+    [Material]  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;nMaterials-存在するマテリアルの数をしてする。&lt;br&gt;
+nFaceIndexes-FaceIndexesの数。&lt;br&gt;
+FaceIndexe-インデックス番号。&lt;br&gt;
+Materialテンプレートをオプションとしてつけることができる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//////////////////////////////////////////////////////////  
+//Materialは、メッシュ全体またはそれぞれの面に適用できる。マテリアル色を定義す。template
+Material  
+{&amp;lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &amp;gt;  
+    ColorRGBA faceColor;  
+    float power;  
+    DWORD specularColor;  
+    DWORD emissiveColor;  
+    [TextureFilename]  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;faceColor-面の色&lt;br&gt;
+power-マテリアルのスペキュラ色指数&lt;br&gt;
+specularColor-スペキュラ色&lt;br&gt;
+emissiveColor-エミッション色&lt;br&gt;
+TextureFilenameをオプションとしてつけることもできる。&lt;br&gt;
+TextureFilenameは、テクスチャファイルのパスを指定する。&lt;/p&gt;
+&lt;p&gt;よって最小の構成の&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;は、一般的に以下のような形式になる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    Mesh {
+        頂点の数;
+        頂点の座標達;
+        面の数;
+        面のを表す頂点のインデックス;
+        MeshMaterialList {
+            使用するマテリアルの数;
+            面の数;
+            それぞれの面の使用する引数;//繰り返し
+            使用するマテリアルへの参照;//繰り返し
+            TextureFilename{
+                &amp;quot;ファイルへのパス&amp;quot;;
+            }
+        }
+        MeshNormals {
+            法線の数;
+            法線の座標達;
+            面法線インデックスの数;
+            インデックス達;
+        }
+        MeshTextureCoords {
+            頂点の数;
+            テクスチャ座標u;テクスチャ座標v;//繰り返し
+        }
+    }
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(1)</title><link href="/200703241174740494.html" rel="alternate"></link><published>2007-03-24T21:48:00+09:00</published><updated>2007-03-24T21:48:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-03-24:/200703241174740494.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
+xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
+\"xof\"は、マジック番号と呼ばれる。&lt;br&gt;
+\"03\"は、メジャーバージョン3をあらわす。&lt;br&gt;
+\"02\"は、マイナーバージョン2をあらわす。&lt;br&gt;
+\"txt\"は、その&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;が、テキスト形式であることをあらわす。&lt;br&gt;
+\"txt\"の代わりに、バイナリファイルの\"bin\"、MSZip圧縮テキストの\"tzip\"、MSZip圧縮バイナリの\"bzip\"、が選べる。&lt;br&gt;
+\"0064\"は64ビット&lt;a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4"&gt;浮動小数&lt;/a&gt;点をあらわす。&lt;br&gt;
+代わりに、\"0032\"を選ぶとができる。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;はテンプレート形式で書かれている。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {  
+
+メンバー1;  
+メンバー2;  
+.  
+.  
+.  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Vector {  
+&amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+FLOAT x;  
+FLOAT y;  
+FLOAT …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
+xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
+\"xof\"は、マジック番号と呼ばれる。&lt;br&gt;
+\"03\"は、メジャーバージョン3をあらわす。&lt;br&gt;
+\"02\"は、マイナーバージョン2をあらわす。&lt;br&gt;
+\"txt\"は、その&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;が、テキスト形式であることをあらわす。&lt;br&gt;
+\"txt\"の代わりに、バイナリファイルの\"bin\"、MSZip圧縮テキストの\"tzip\"、MSZip圧縮バイナリの\"bzip\"、が選べる。&lt;br&gt;
+\"0064\"は64ビット&lt;a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4"&gt;浮動小数&lt;/a&gt;点をあらわす。&lt;br&gt;
+代わりに、\"0032\"を選ぶとができる。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;はテンプレート形式で書かれている。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {  
+
+メンバー1;  
+メンバー2;  
+.  
+.  
+.  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Vector {  
+&amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+FLOAT x;  
+FLOAT y;  
+FLOAT z;  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vector"&gt;Vector&lt;/a&gt;は、ベクトルを定義する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template MeshFace {  
+&amp;lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+DWORD nFaceVertexIndices;  
+array DWORD faceVertexIndices[nFaceVertexIndices\];  
+} 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Mesh テンプレートで、メッシュの面を定義するために使われる。&lt;br&gt;
+nFaceVertexIndicesは、インデックスの数。&lt;br&gt;
+array faceVertexIndicesは。インデックスの配列。&lt;br&gt;
+インデックスは、頂点を設定する順番を決める。&lt;/p&gt;
+&lt;p&gt;Meshは、単純なメッシュの情報を記述する。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Mesh {  
+&amp;lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+DWORD nVertices;  
+array Vector
+vertices[nVertices];  
+DWORD nFaces;  
+array MeshFace faces[nFaces];  
+[...]  
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;nVerticesは、頂点の数。&lt;br&gt;
+array
+verticesは、&lt;a href="http://d.hatena.ne.jp/keyword/Vector"&gt;Vector&lt;/a&gt;の要素数nVerticesの配列。&lt;br&gt;
+nFacesは、面の数。&lt;br&gt;
+array
+facesは、MeshFaceの要素数nFacesの配列。&lt;br&gt;
+[...]があるので、他にマテリアル情報などを記述できる。&lt;/p&gt;</content></entry></feed>

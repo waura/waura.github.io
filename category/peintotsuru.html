@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<link href="/feeds/peintotsuru.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog ペイントツール Category Atom" />
+
+  <title>
+    waura's blog
+&ndash; Category: ペイントツール  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201112031322919731.html">SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 03 12月 2011</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>↓の続き  </p>
+<p><a href="../200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
+<a href="../http://localhost:8000/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
+<a href="../201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<p>今回はアライメントをずらした場合での計測をします。</p>
+<p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
+前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
+<p>しかし、アライメントを合わせる必要があるロード・ストア命令を使用する場合は、<br>
+処理方法をアライメントのズレによって変える必要があります。</p>
+<p>今回のアルファブレンド処理では、</p>
+<ol>
+<li>入出力メモリともアライメントが揃っている場合</li>
+<li>入出力メモリともアライメントから同じだけずれている場合</li>
+<li>入力、出力メモリのアライメントのずれ量が違う場合</li>
+</ol>
+<p>の3通りに分けてコードを実装しました。</p>
+<p>1の場合は、前回と同様のコードで処理します。<br>
+2の場合は、ずれてる分を処理して入出力ともアライメントを合わせた状態にして、1と同じように処理します。<br>
+3の場合は、ずれてる分をシフト演算を使用してずれを合わせる処理をいれて、<br>
+ロード・ストア命令がアライメントが合った状態で実行されるようにします。</p>
+<h4>計測方法</h4>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ol>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_si128でメモリ読み込み、_mm_storeu_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_store_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ol>
+<p>の4通りの処理の処理速度を計測する。<br>
+前回までは間違えて<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点用の_mm_loadu_ps等を使っていたので、今回は_mm_loadu_si128等を使います。</p>
+<ul>
+<li>チャンネルサイズ8bit
+    5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは …</li></ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 28 11月 2011</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>↓の続き<br>
+<a href="http://d.hatena.ne.jp/hiroki0/20090914/1252931917">http://d.hatena.ne.jp/hiroki0/20090914/1252931917</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20100320/1269074009">http://d.hatena.ne.jp/hiroki0/20100320/1269074009</a></p>
+<h2>使用するアルファブレンド計算式</h2>
+<p>チャンネルサイズ8bitとして<br>
+<img alt="a_{dst} = 255 - (255 - a_{over})(255 - a_{under}) /
+255" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=a_%7Bdst%7D%20%3D%20255%20-%20%28255%20-%20a_%7Bover%7D%29%28255%20-%20a_%7Bunder%7D%29%20%2F%20255"><br>
+<img alt="d_{dst} = (d_{over} a_{over} + (d_{under} a_{under} (255 -
+a_{over}) / 255) /
+a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3D%20%28d_%7Bover%7D%20a_%7Bover%7D%20%2B%20%28d_%7Bunder%7D%20a_%7Bunder%7D%20%28255%20-%20a_%7Bover%7D%29%20%2F%20255%29%20%2F%20a_%7Bdst%7D"></p>
+<p>ここで、aはアルファ値、dは画素値である。</p>
+<p>この計算式をコードにすると以下のようになる。<br>
+255による除算は、高速化のために256の除算に変更しシフト演算で処理している。<br>
+また、計算量を減らすためにアルファ値により分岐を行なっている。<br>
+今回は、この処理をSSEにより実装して計測を行う。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">((</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else …</span></pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201012241293217750.html">wintabから傾きを取得するコード</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 金 24 12月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>[<a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
+Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
+Altitudeがペンとタブレット平面がなす角です。<br>
+ペンが逆さまのときAltitudeは負の値になります。<br>
+矢印が向いてるほうがタブレットの上側を表しています。</p>
+<p>まず、取得するデータ型に傾きを定義するために、PK_ORIENTATIONをPACKETDATAに含めます。</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;wintab.h&gt;</span><span class="cp"></span>
+<span class="cp">#define PACKETDATA (PK_CURSOR | PK_X | PK_Y | PK_Z | PK_BUTTONS | PK_NORMAL_PRESSURE | PK_ORIENTATION)</span>
+<span class="cp">#define PACKETMODE PK_BUTTONS</span>
+<span class="cp">#include</span> <span class="cpf">&lt;pktdef.h&gt;</span><span class="cp"></span>
+</pre></div>
+
+
+<p>タブレットからのデータを正規化するために、<br>
+WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
+<span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
+<span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
+<span class="kt">double …</span></pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 20 3月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2>ロード・ストアに使用するSSE命令</h2>
+<h3>ロード</h3>
+<p>イントリンシック命令   対応するSSE命令   </p>
+<hr>
+<p>_mm_loadu_ps        MOVUPS            アライメントを合わせる必要がない
+  _mm_load_ps         MOVAPS            アライメントを合わせなければならない</p>
+<h3>ストア</h3>
+<p>イントリンシック命令   対応するSSE命令   </p>
+<hr>
+<p>_mm_storeu_ps       MOVUPS            アライメントを合わせる必要がない
+  _mm_store_ps        MOVAPS            アライメントを合わせなければならない
+  _mm_stream_si128    MOVNTPD           アライメントを合わせなければならない、キャッシュを介さずにストアする</p>
+<h2>計測するアルファブレンド処理</h2>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ul>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_psでメモリ読み込み、_mm_storeu_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_store_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ul>
+<p>の4通りでテストする。</p>
+<p>64bit向けの設定だと__asmのとこでエラーがでるので<a href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%E9%A5%A4%A5%F3%A5%A2%A5%BB%A5%F3%A5%D6%A5%E9">インラインアセンブラ</a>ではなく組み込み関数を使って書きました。<br>
+アライメントをあわせて処理するために、128bit(4pixel)ずつ読み込んで処理を行っています。</p>
+<h2>計測方法</h2>
+<ul>
+<li>5760x3600BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
+    2 …</li></ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201003141268524584.html">64bit版のWintab DLLのロード</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 14 3月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/%A5%BF%A5%D6%A5%EC%A5%C3%A5%C8">タブレット</a>の情報を取得するのに、以下のようにWintabのDLLを使用している。</p>
+<div class="highlight"><pre><span></span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>wintab32.dllという名前なのでこのDLLは32bit用で、64bitのexeから呼び出すには64bit用のDLLを読み込まないとダメだと思い、それらしいものを探してみるがどこにも見当たらない。</p>
+<p>この記事によると、OSが同じ名前のDLLを32bit用と64bit用で切り替えてくれるようだ。<br>
+[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;sa=838339906]{data-unlink=""}</p>
+<p>なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201003011267393466.html">開発版更新</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 01 3月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <ul>
+<li>ナビゲーターの画像が何もしてない時でもチカチカしてたのを修正</li>
+<li>半透明なピクセルに半透明なピクセルを書き込めないバグを修正</li>
+<li>ソフト円ブラシを追加</li>
+<li>レイヤー合成高速化</li>
+</ul>
+<p><a href="http://key0note.ath.cx/hp/frayer_wiki/">http://key0note.ath.cx/hp/frayer_wiki/</a></p>
+<p>[<a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
+ブラシのテスト。<br>
+黒い線がハード円ブラシ、赤い線がハードエアーブラシ、青い線がソフト円ブラシ、緑の線がソフトエアーブラシ。</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/201002141266161163.html">円描画のアンチエイリアス</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 14 2月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>円描画時の<a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%A8%A5%A4%A5%EA%A5%A2%A5%B9">アンチエイリアス</a>のかけ方のテスト<br>
+[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a>]{itemscope=""
+itemtype="http://schema.org/Photograph"}</p>
+<p>ついでにブラシ描画のテスト<br>
+[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a>]{itemscope=""
+itemtype="http://schema.org/Photograph"}</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200909271254003613.html">トーンカーブ</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 27 9月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>3次スプラインを利用して<a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6">トーンカーブ</a>を実装してみた。<br>
+[<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200908021249208355.html">PSDデータのフォーマット</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 02 8月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h3>PSDファイルの構成</h3>
+<p>PSDファイルは、先頭から以下の順で構成されている。<br>
+値はビッグエンディアンで格納されているのでリトルエンディアンへの変換が必要</p>
+<div class="highlight"><pre><span></span><span class="k">[Header]</span>
+<span class="k">[Color Mode Data Block]</span>
+<span class="k">[Image Resources Block]</span>
+<span class="k">[Layer and Mask Information Block]</span>
+<span class="k">[Image Data]</span>
+</pre></div>
+
+
+<h3>Header</h3>
+<p>[4byte] Signature  "8BPS"が入ってるらしい
+[2byte] Version バージョン
+[6byte] Reserved 0で無いといけない
+[2byte] channels カラーチャンネル数 (例えば、RGBAだと4)
+[4byte] rows 画像の高さ
+[4byte] columns 画像の幅
+[2byte] Depth 1pixelのデータ深度
+[2byte] color_mode カラーモード</p>
+<ul>
+<li>カラーモード<ul>
+<li>0 Bitmap …</li></ul></li></ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200811071226064350.html">ファイル読み込みモジュール作成</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 金 07 11月 2008</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のcvLoadImage()だとアルファ値を読んでくれないので、<br>
+libpngとzlibをつかって<a href="http://d.hatena.ne.jp/keyword/png">png</a>読み込みモジュールを作った</p>
+<p>[<a href="http://f.hatena.ne.jp/hiroki0/20081107221654"><img alt="f:id:hiroki0:20081107221654p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221654.png" title="f:id:hiroki0:20081107221654p:image"></a>
+↑cvLoadImage()で読み込み、わかりづらいが、アルファ値が読まれていない。<br>
+[<a href="http://f.hatena.ne.jp/hiroki0/20081107221655"><img alt="f:id:hiroki0:20081107221655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221655.png" title="f:id:hiroki0:20081107221655p:image"></a>
+↑libpngで読み込みアルファ値が読まれている。</p>
+<p>ついでにThe Independent
+<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a> Group\'s
+<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
+softwareの<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ライブラリを使って、<br>
+ファイル読み込みモジュールを作成。</p>
+<p>cvLoadImage()だと読めない、<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ファイルがあるのだが、このモジュールを使えば読み込めるようになった。</p>
+<p>[The Independent <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
+Group\'s <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
+software]{style="font-weight:bold;"}<br>
+<a href="http://www.ijg.org/">http://www.ijg.org/</a><br>
+[libpng]{style="font-weight:bold;"}<br>
+<a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png …</a></p>
+  </div>
+</article>
+    
+<div class="pagination">
+    <ul>
+        <li class="pagination__prev">
+            <div class="pagination__prev--none">&laquo;</div>
+        </li>
+
+
+
+          <li>
+            <a class="pagination__page--current" href="/category/peintotsuru.html">1</a>
+          </li>
+
+
+          <li>
+            <a  href="/category/peintotsuru2.html">2</a>
+          </li>
+
+        <li class="pagination__next">
+            <a href="/category/peintotsuru2.html">&raquo;</a>
+        </li>
+    </ul>
+</div>
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - サーバー管理</title><link href="/" rel="alternate"></link><link href="/feeds/sabaguan-li.atom.xml" rel="self"></link><id>/</id><updated>2015-05-25T20:44:00+09:00</updated><entry><title>2008年と2015年に組んだ省電力サーバーのベンチマーク比較</title><link href="/atom330_vs_athlon5350_benchmark.html" rel="alternate"></link><published>2015-05-25T20:44:00+09:00</published><updated>2015-05-25T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-05-25:/atom330_vs_athlon5350_benchmark.html</id><summary type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;サーバーを新しく組んだので、ベンチマークの比較をしてみます。&lt;br&gt;
+比較対象サーバーの構成の比較は下記のとおりです。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="center"&gt;&lt;/th&gt;
+&lt;th align="left"&gt;2008年&lt;/th&gt;
+&lt;th align="left"&gt;2015年&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;CPU&lt;/td&gt;
+&lt;td align="left"&gt;Intel Atom330&lt;/td&gt;
+&lt;td align="left"&gt;AMD Athlon5350&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;メモリ&lt;/td&gt;
+&lt;td align="left"&gt;DDR2-800 2GB&lt;/td&gt;
+&lt;td align="left"&gt;DDR3-1600 16GB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ベンチマークソフトは&lt;a href="https://code.google.com/p/byte-unixbench/"&gt;unixbench&lt;/a&gt;を使用します。&lt;/p&gt;
+&lt;h2&gt;Atom330とAthlon5350のスペック比較&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;&lt;/th&gt;
+&lt;th align="right"&gt;Atom330&lt;/th&gt;
+&lt;th align="right"&gt;Athlon5350&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;周波数&lt;/td&gt;
+&lt;td align="right"&gt;1.6GHz&lt;/td&gt;
+&lt;td align="right"&gt;2.05GHz&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;L1 cache&lt;/td&gt;
+&lt;td align="right"&gt;64 KB (code) / 48 KB (data)&lt;/td&gt;
+&lt;td align="right"&gt;128 KB (code) / 128 KB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;(data)&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;L2 cache&lt;/td&gt;
+&lt;td align="right"&gt;1024KB&lt;/td&gt;
+&lt;td align="right"&gt;2048KB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;TDP&lt;/td&gt;
+&lt;td align="right"&gt;8W&lt;/td&gt;
+&lt;td align="right"&gt;25W&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;実Core数&lt;/td&gt;
+&lt;td align="right"&gt;2 …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;サーバーを新しく組んだので、ベンチマークの比較をしてみます。&lt;br&gt;
+比較対象サーバーの構成の比較は下記のとおりです。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="center"&gt;&lt;/th&gt;
+&lt;th align="left"&gt;2008年&lt;/th&gt;
+&lt;th align="left"&gt;2015年&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;CPU&lt;/td&gt;
+&lt;td align="left"&gt;Intel Atom330&lt;/td&gt;
+&lt;td align="left"&gt;AMD Athlon5350&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;メモリ&lt;/td&gt;
+&lt;td align="left"&gt;DDR2-800 2GB&lt;/td&gt;
+&lt;td align="left"&gt;DDR3-1600 16GB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ベンチマークソフトは&lt;a href="https://code.google.com/p/byte-unixbench/"&gt;unixbench&lt;/a&gt;を使用します。&lt;/p&gt;
+&lt;h2&gt;Atom330とAthlon5350のスペック比較&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;&lt;/th&gt;
+&lt;th align="right"&gt;Atom330&lt;/th&gt;
+&lt;th align="right"&gt;Athlon5350&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;周波数&lt;/td&gt;
+&lt;td align="right"&gt;1.6GHz&lt;/td&gt;
+&lt;td align="right"&gt;2.05GHz&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;L1 cache&lt;/td&gt;
+&lt;td align="right"&gt;64 KB (code) / 48 KB (data)&lt;/td&gt;
+&lt;td align="right"&gt;128 KB (code) / 128 KB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;(data)&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;L2 cache&lt;/td&gt;
+&lt;td align="right"&gt;1024KB&lt;/td&gt;
+&lt;td align="right"&gt;2048KB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;TDP&lt;/td&gt;
+&lt;td align="right"&gt;8W&lt;/td&gt;
+&lt;td align="right"&gt;25W&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;実Core数&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Atom330とAthlon 5350のベンチマーク比較&lt;/h2&gt;
+&lt;p&gt;Atom330とAthlon5350のベンチマークの比較結果です。&lt;/p&gt;
+&lt;p&gt;4 parallel processの結果を比較しています。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Test&lt;/th&gt;
+&lt;th align="right"&gt;2007年(Atom330)&lt;/th&gt;
+&lt;th align="right"&gt;2015年(Athlon5350)&lt;/th&gt;
+&lt;th align="right"&gt;伸び率(2015年のスコア/ 2008年のスコア)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Dhrystone 2 using register variables&lt;/td&gt;
+&lt;td align="right"&gt;1362.9&lt;/td&gt;
+&lt;td align="right"&gt;4958.9&lt;/td&gt;
+&lt;td align="right"&gt;3.64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Double-Precision Whetstone&lt;/td&gt;
+&lt;td align="right"&gt;571.8&lt;/td&gt;
+&lt;td align="right"&gt;1846.4&lt;/td&gt;
+&lt;td align="right"&gt;3.23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Execl Throughput&lt;/td&gt;
+&lt;td align="right"&gt;377.4&lt;/td&gt;
+&lt;td align="right"&gt;2081.6&lt;/td&gt;
+&lt;td align="right"&gt;5.52&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 1024 bufsize 2000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;305.4&lt;/td&gt;
+&lt;td align="right"&gt;1832.6&lt;/td&gt;
+&lt;td align="right"&gt;6.00&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 256 bufsize 500 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;196.0&lt;/td&gt;
+&lt;td align="right"&gt;1384.9&lt;/td&gt;
+&lt;td align="right"&gt;7.07&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 4096 bufsize 8000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;573.1&lt;/td&gt;
+&lt;td align="right"&gt;3170.0&lt;/td&gt;
+&lt;td align="right"&gt;5.53&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe Throughput&lt;/td&gt;
+&lt;td align="right"&gt;434.5&lt;/td&gt;
+&lt;td align="right"&gt;1910.3&lt;/td&gt;
+&lt;td align="right"&gt;4.40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe-based Context Switching&lt;/td&gt;
+&lt;td align="right"&gt;224.1&lt;/td&gt;
+&lt;td align="right"&gt;918.6&lt;/td&gt;
+&lt;td align="right"&gt;4.10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Process Creation&lt;/td&gt;
+&lt;td align="right"&gt;361.8&lt;/td&gt;
+&lt;td align="right"&gt;1986.7&lt;/td&gt;
+&lt;td align="right"&gt;5.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (1 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;760.3&lt;/td&gt;
+&lt;td align="right"&gt;1785.4&lt;/td&gt;
+&lt;td align="right"&gt;2.35&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (8 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;700.2&lt;/td&gt;
+&lt;td align="right"&gt;2088.1&lt;/td&gt;
+&lt;td align="right"&gt;2.98&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Call Overhead&lt;/td&gt;
+&lt;td align="right"&gt;1052.5&lt;/td&gt;
+&lt;td align="right"&gt;2531.4&lt;/td&gt;
+&lt;td align="right"&gt;2.41&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Benchmarks Index Score:&lt;/td&gt;
+&lt;td align="right"&gt;491.6&lt;/td&gt;
+&lt;td align="right"&gt;2035.0&lt;/td&gt;
+&lt;td align="right"&gt;4.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;すべての項目でスコアが伸びてます。&lt;/p&gt;
+&lt;p&gt;特にFile Copyの伸びが大きいです。&lt;/p&gt;
+&lt;p&gt;File Copy
+1024...のテスト内容は、2MByteのファイルを1024Byteごとに処理します。&lt;/p&gt;
+&lt;p&gt;File Copy 256...は、500KByteのファイルを256Byteごと、File
+Copy4096...は、8MByteのファイルを4096Byteごとに処理します。&lt;/p&gt;
+&lt;p&gt;スコアの伸びが大きいのは、下記の要因が大きそうです。&lt;/p&gt;
+&lt;p&gt;・Atom330が物理コア2個に対して、Athlon5350が4個&lt;/p&gt;
+&lt;p&gt;・Atom330の動作クロック1.6GHzに対して、Athlon5350が2.05GHz&lt;/p&gt;
+&lt;p&gt;2008年と2015年に組んだときにかかったお金はほぼ同額です。&lt;/p&gt;
+&lt;p&gt;Atom330のボードとAthlon5350+マザーボードはどちらも1万円程度で購入しました。&lt;/p&gt;
+&lt;p&gt;7年も経つと同じ金額でもここまで全体的にスペックが底上げされたサーバーが組めるようになるようです。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;h3&gt;Atom330&lt;/h3&gt;
+&lt;h4&gt;1 parallel process&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Test&lt;/th&gt;
+&lt;th align="right"&gt;Score&lt;/th&gt;
+&lt;th align="left"&gt;Unit&lt;/th&gt;
+&lt;th align="right"&gt;Time&lt;/th&gt;
+&lt;th align="right"&gt;Iters.&lt;/th&gt;
+&lt;th align="right"&gt;Baseline&lt;/th&gt;
+&lt;th align="right"&gt;Index&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Dhrystone 2 using register variables&lt;/td&gt;
+&lt;td align="right"&gt;5881155.3&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;116700.0&lt;/td&gt;
+&lt;td align="right"&gt;504.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Double-Precision Whetstone&lt;/td&gt;
+&lt;td align="right"&gt;872.9&lt;/td&gt;
+&lt;td align="left"&gt;MWIPS&lt;/td&gt;
+&lt;td align="right"&gt;9.8 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;55.0&lt;/td&gt;
+&lt;td align="right"&gt;158.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Execl Throughput&lt;/td&gt;
+&lt;td align="right"&gt;657.2&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;29.6 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;43.0&lt;/td&gt;
+&lt;td align="right"&gt;152.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 1024 bufsize 2000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;118195.2&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;3960.0&lt;/td&gt;
+&lt;td align="right"&gt;298.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 256 bufsize 500 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;33060.5&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;1655.0&lt;/td&gt;
+&lt;td align="right"&gt;199.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 4096 bufsize 8000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;317990.6&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;5800.0&lt;/td&gt;
+&lt;td align="right"&gt;548.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe Throughput&lt;/td&gt;
+&lt;td align="right"&gt;404343.1&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;12440.0&lt;/td&gt;
+&lt;td align="right"&gt;325.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe-based Context Switching&lt;/td&gt;
+&lt;td align="right"&gt;21144.8&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;4000.0&lt;/td&gt;
+&lt;td align="right"&gt;52.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Process Creation&lt;/td&gt;
+&lt;td align="right"&gt;1800.5&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;126.0&lt;/td&gt;
+&lt;td align="right"&gt;142.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (1 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;1743.6&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;42.4&lt;/td&gt;
+&lt;td align="right"&gt;411.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (8 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;406.3&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.1 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;6.0&lt;/td&gt;
+&lt;td align="right"&gt;677.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Call Overhead&lt;/td&gt;
+&lt;td align="right"&gt;897649.1&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;15000.0&lt;/td&gt;
+&lt;td align="right"&gt;598.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Benchmarks Index Score:&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;271.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;4 parallel processes&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Test&lt;/th&gt;
+&lt;th align="right"&gt;Score&lt;/th&gt;
+&lt;th align="left"&gt;Unit&lt;/th&gt;
+&lt;th align="right"&gt;Time&lt;/th&gt;
+&lt;th align="right"&gt;Iters.&lt;/th&gt;
+&lt;th align="right"&gt;Baseline&lt;/th&gt;
+&lt;th align="right"&gt;Index&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Dhrystone 2 using register variables&lt;/td&gt;
+&lt;td align="right"&gt;15904701.2&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;116700.0&lt;/td&gt;
+&lt;td align="right"&gt;1362.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Double-Precision Whetstone&lt;/td&gt;
+&lt;td align="right"&gt;3144.8&lt;/td&gt;
+&lt;td align="left"&gt;MWIPS&lt;/td&gt;
+&lt;td align="right"&gt;9.8 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;55.0&lt;/td&gt;
+&lt;td align="right"&gt;571.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Execl Throughput&lt;/td&gt;
+&lt;td align="right"&gt;1622.7&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;29.6 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;43.0&lt;/td&gt;
+&lt;td align="right"&gt;377.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 1024 bufsize 2000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;120953.8&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;3960.0&lt;/td&gt;
+&lt;td align="right"&gt;305.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 256 bufsize 500 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;32443.7&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;1655.0&lt;/td&gt;
+&lt;td align="right"&gt;196.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 4096 bufsize 8000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;332388.0&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;5800.0&lt;/td&gt;
+&lt;td align="right"&gt;573.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe Throughput&lt;/td&gt;
+&lt;td align="right"&gt;540570.0&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;12440.0&lt;/td&gt;
+&lt;td align="right"&gt;434.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe-based Context Switching&lt;/td&gt;
+&lt;td align="right"&gt;89659.6&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;4000.0&lt;/td&gt;
+&lt;td align="right"&gt;224.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Process Creation&lt;/td&gt;
+&lt;td align="right"&gt;4558.4&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;126.0&lt;/td&gt;
+&lt;td align="right"&gt;361.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (1 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;3223.8&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;42.4&lt;/td&gt;
+&lt;td align="right"&gt;760.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (8 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;420.1&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.4 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;6.0&lt;/td&gt;
+&lt;td align="right"&gt;700.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Call Overhead&lt;/td&gt;
+&lt;td align="right"&gt;1578750.6&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;15000.0&lt;/td&gt;
+&lt;td align="right"&gt;1052.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Benchmarks Index Score:&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;491.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Athlon 5350&lt;/h3&gt;
+&lt;h4&gt;1 parallel processes&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Test&lt;/th&gt;
+&lt;th align="right"&gt;Score&lt;/th&gt;
+&lt;th align="left"&gt;Unit&lt;/th&gt;
+&lt;th align="right"&gt;Time&lt;/th&gt;
+&lt;th align="right"&gt;Iters.&lt;/th&gt;
+&lt;th align="right"&gt;Baseline&lt;/th&gt;
+&lt;th align="right"&gt;Index&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Dhrystone 2 using register variables&lt;/td&gt;
+&lt;td align="right"&gt;14343277.6&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;116700.0&lt;/td&gt;
+&lt;td align="right"&gt;1229.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Double-Precision Whetstone&lt;/td&gt;
+&lt;td align="right"&gt;2549.9&lt;/td&gt;
+&lt;td align="left"&gt;MWIPS&lt;/td&gt;
+&lt;td align="right"&gt;9.6 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;55.0&lt;/td&gt;
+&lt;td align="right"&gt;463.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Execl Throughput&lt;/td&gt;
+&lt;td align="right"&gt;861.3&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;29.9 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;43.0&lt;/td&gt;
+&lt;td align="right"&gt;200.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 1024 bufsize 2000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;347747.1&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;3960.0&lt;/td&gt;
+&lt;td align="right"&gt;878.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 256 bufsize 500 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;108403.5&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;1655.0&lt;/td&gt;
+&lt;td align="right"&gt;655.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 4096 bufsize 8000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;813482.5&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;5800.0&lt;/td&gt;
+&lt;td align="right"&gt;1402.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe Throughput&lt;/td&gt;
+&lt;td align="right"&gt;656602.5&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;12440.0&lt;/td&gt;
+&lt;td align="right"&gt;527.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe-based Context Switching&lt;/td&gt;
+&lt;td align="right"&gt;26988.5&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;4000.0&lt;/td&gt;
+&lt;td align="right"&gt;67.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Process Creation&lt;/td&gt;
+&lt;td align="right"&gt;2558.0&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;126.0&lt;/td&gt;
+&lt;td align="right"&gt;203.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (1 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;1233.7&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;42.4&lt;/td&gt;
+&lt;td align="right"&gt;291.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (8 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;1119.0&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;6.0&lt;/td&gt;
+&lt;td align="right"&gt;1865.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Call Overhead&lt;/td&gt;
+&lt;td align="right"&gt;1031068.0&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;15000.0&lt;/td&gt;
+&lt;td align="right"&gt;687.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Benchmarks Index Score:&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;500.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;4 parallel processes&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Test&lt;/th&gt;
+&lt;th align="right"&gt;Score&lt;/th&gt;
+&lt;th align="left"&gt;Unit&lt;/th&gt;
+&lt;th align="right"&gt;Time&lt;/th&gt;
+&lt;th align="right"&gt;Iters.&lt;/th&gt;
+&lt;th align="right"&gt;Baseline&lt;/th&gt;
+&lt;th align="right"&gt;Index&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Dhrystone 2 using register variables&lt;/td&gt;
+&lt;td align="right"&gt;57870650.9&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;116700.0&lt;/td&gt;
+&lt;td align="right"&gt;4958.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Double-Precision Whetstone&lt;/td&gt;
+&lt;td align="right"&gt;10155.4&lt;/td&gt;
+&lt;td align="left"&gt;MWIPS&lt;/td&gt;
+&lt;td align="right"&gt;9.6 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;55.0&lt;/td&gt;
+&lt;td align="right"&gt;1846.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Execl Throughput&lt;/td&gt;
+&lt;td align="right"&gt;8951.1&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;29.9 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;43.0&lt;/td&gt;
+&lt;td align="right"&gt;2081.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 1024 bufsize 2000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;725711.1&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;3960.0&lt;/td&gt;
+&lt;td align="right"&gt;1832.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 256 bufsize 500 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;229203.3&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;1655.0&lt;/td&gt;
+&lt;td align="right"&gt;1384.9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;File Copy 4096 bufsize 8000 maxblocks&lt;/td&gt;
+&lt;td align="right"&gt;1838586.1&lt;/td&gt;
+&lt;td align="left"&gt;KBps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;5800.0&lt;/td&gt;
+&lt;td align="right"&gt;3170.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe Throughput&lt;/td&gt;
+&lt;td align="right"&gt;2376358.0&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;12440.0&lt;/td&gt;
+&lt;td align="right"&gt;1910.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Pipe-based Context Switching&lt;/td&gt;
+&lt;td align="right"&gt;367444.3&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;4000.0&lt;/td&gt;
+&lt;td align="right"&gt;918.6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Process Creation&lt;/td&gt;
+&lt;td align="right"&gt;25032.3&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;30.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;126.0&lt;/td&gt;
+&lt;td align="right"&gt;1986.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (1 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;7570.2&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.0 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;42.4&lt;/td&gt;
+&lt;td align="right"&gt;1785.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Shell Scripts (8 concurrent)&lt;/td&gt;
+&lt;td align="right"&gt;1252.9&lt;/td&gt;
+&lt;td align="left"&gt;lpm&lt;/td&gt;
+&lt;td align="right"&gt;60.1 s&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;6.0&lt;/td&gt;
+&lt;td align="right"&gt;2088.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Call Overhead&lt;/td&gt;
+&lt;td align="right"&gt;3797050.7&lt;/td&gt;
+&lt;td align="left"&gt;lps&lt;/td&gt;
+&lt;td align="right"&gt;10.0 s&lt;/td&gt;
+&lt;td align="right"&gt;7&lt;/td&gt;
+&lt;td align="right"&gt;15000.0&lt;/td&gt;
+&lt;td align="right"&gt;2531.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;System Benchmarks Index Score:&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;2035.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</content><category term="unixbench"></category><category term="ベンチマーク"></category><category term="省電力サーバー"></category><category term="自宅サーバー"></category></entry><entry><title>だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</title><link href="/echo_home_server_2015.html" rel="alternate"></link><published>2015-04-25T19:58:00+09:00</published><updated>2015-04-25T19:58:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-04-25:/echo_home_server_2015.html</id><summary type="html">&lt;h2&gt;なぜ自宅サーバーか？&lt;/h2&gt;
+&lt;p&gt;「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。&lt;br&gt;
+たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。&lt;br&gt;
+しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。&lt;/p&gt;
+&lt;h2&gt;どんなサーバーを組むのか？&lt;/h2&gt;
+&lt;p&gt;どんなサーバーを組むのかによって、重視するポイントが変わってきます。&lt;br&gt;
+自分は下のような用途でサーバーを使用します。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Webサーバー&lt;/li&gt;
+&lt;li&gt;ビルドサーバー&lt;/li&gt;
+&lt;li&gt;ファイルサーバ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ビルドサーバー用途からなるべくCPU性能がいい方がいいし、メモリーも多い方がいい。&lt;br&gt;
+また、ファイルサーバにも使うのでディスク容量もたくさん欲しい。自宅にサーバーを置くので電気代はあまりかからない方がいい。&lt;br&gt;
+...と、要は性能はなるべく高く、かつ電気代はなるべく安くとないものねだりになってしまいした。&lt;br&gt;
+というわけで今回は、通常のデスクトップPCよりは低消費電力かつ、サーバーの用途に支障をきたさない程度のサーバーの構成を考えてみたいと思います。&lt;/p&gt;
+&lt;h2&gt;PCパーツの選択&lt;/h2&gt;
+&lt;p&gt;サーバーを建てるには、以下のパーツを用意する必要があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU&lt;/li&gt;
+&lt;li&gt;マザーボード&lt;/li&gt;
+&lt;li&gt;メモリー&lt;/li&gt;
+&lt;li&gt;HDDまたはSSD&lt;/li&gt;
+&lt;li&gt;電源&lt;/li&gt;
+&lt;li&gt;PCケース&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自分は、電源とPCケースは持ってるもの使用するので、ここではCPU、メモリーとHDD(SSD)を選んで行きます。&lt;/p&gt;
+&lt;h3&gt;CPU&lt;/h3&gt;
+&lt;p&gt;今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
+J1900やPentium …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;なぜ自宅サーバーか？&lt;/h2&gt;
+&lt;p&gt;「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。&lt;br&gt;
+たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。&lt;br&gt;
+しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。&lt;/p&gt;
+&lt;h2&gt;どんなサーバーを組むのか？&lt;/h2&gt;
+&lt;p&gt;どんなサーバーを組むのかによって、重視するポイントが変わってきます。&lt;br&gt;
+自分は下のような用途でサーバーを使用します。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Webサーバー&lt;/li&gt;
+&lt;li&gt;ビルドサーバー&lt;/li&gt;
+&lt;li&gt;ファイルサーバ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ビルドサーバー用途からなるべくCPU性能がいい方がいいし、メモリーも多い方がいい。&lt;br&gt;
+また、ファイルサーバにも使うのでディスク容量もたくさん欲しい。自宅にサーバーを置くので電気代はあまりかからない方がいい。&lt;br&gt;
+...と、要は性能はなるべく高く、かつ電気代はなるべく安くとないものねだりになってしまいした。&lt;br&gt;
+というわけで今回は、通常のデスクトップPCよりは低消費電力かつ、サーバーの用途に支障をきたさない程度のサーバーの構成を考えてみたいと思います。&lt;/p&gt;
+&lt;h2&gt;PCパーツの選択&lt;/h2&gt;
+&lt;p&gt;サーバーを建てるには、以下のパーツを用意する必要があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU&lt;/li&gt;
+&lt;li&gt;マザーボード&lt;/li&gt;
+&lt;li&gt;メモリー&lt;/li&gt;
+&lt;li&gt;HDDまたはSSD&lt;/li&gt;
+&lt;li&gt;電源&lt;/li&gt;
+&lt;li&gt;PCケース&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自分は、電源とPCケースは持ってるもの使用するので、ここではCPU、メモリーとHDD(SSD)を選んで行きます。&lt;/p&gt;
+&lt;h3&gt;CPU&lt;/h3&gt;
+&lt;p&gt;今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
+J1900やPentium J2900等のBay
+Trail-Dか、AMDのKabiniアーキテクチャをデスクトップ向けにしたAthlon5350やAthlon5310があります。&lt;br&gt;
+できるだけ高性能なCPUを選びたいので、今回は最上位モデルのIntelのPentium
+J2900とAMDのAthlon 5350を候補として比較しました。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="center"&gt;&lt;/th&gt;
+&lt;th align="left"&gt;Athlon5350&lt;/th&gt;
+&lt;th align="left"&gt;Pentium J2900&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;周波数&lt;/td&gt;
+&lt;td align="left"&gt;2.05GHz&lt;/td&gt;
+&lt;td align="left"&gt;2.41GHz&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;コア数/スレッド数&lt;/td&gt;
+&lt;td align="left"&gt;4コア/4スレッド&lt;/td&gt;
+&lt;td align="left"&gt;4コア/4スレッド&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;L2キャッシュ&lt;/td&gt;
+&lt;td align="left"&gt;2MB&lt;/td&gt;
+&lt;td align="left"&gt;2MB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;内蔵GPU&lt;/td&gt;
+&lt;td align="left"&gt;Radeon R3 Graphics HD 8400&lt;/td&gt;
+&lt;td align="left"&gt;Intel HD Graphics&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;対応メモリ&lt;/td&gt;
+&lt;td align="left"&gt;DDR3-1600 シングルチャンネル&lt;/td&gt;
+&lt;td align="left"&gt;DDR3-1333&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;デュアルチャンネル&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;TDP&lt;/td&gt;
+&lt;td align="left"&gt;25W&lt;/td&gt;
+&lt;td align="left"&gt;10W&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;おおよその価格※&lt;/td&gt;
+&lt;td align="left"&gt;10,000〜&lt;/td&gt;
+&lt;td align="left"&gt;13,500〜&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;※Pentium
+J2900はベアボーンで売られているので、価格の比較はマザーボード込みです。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.cpu-monkey.com/en/compare_cpu-amd_athlon_5350-381-vs-intel_pentium_j2900-326"&gt;ベンチマーク結果&lt;/a&gt;を見たところ、すべてのベンチマークでCPU性能はAthlon
+5350が上回っているようでした。&lt;/p&gt;
+&lt;p&gt;しかし、PassMark CPU以外のベンチマークは差は小さいようです。&lt;/p&gt;
+&lt;p&gt;例えば、Geekbench 3, 64bit (Multi-Core)でAthlon
+5350が「3640」に対してPentium J2900が「3537」など。&lt;br&gt;
+PassMark CPUはAthlon 5350が「2640」に対してPentium J2900が「1931」。&lt;/p&gt;
+&lt;p&gt;内蔵GPUに関してのスコアもAthlon
+5350が上回っているようです。(サーバー用途の場合は重要ではありませんが...)&lt;/p&gt;
+&lt;p&gt;Athlon5350の方が動作クロックの高いメモリに対応していますが、デュアルチャンネルに非対応です。&lt;br&gt;
+対して、Pentium
+J2900は対応しているメモリの動作クロックは低いですが、デュアルチャンネルに対応しています。&lt;br&gt;
+なので対応メモリに関しては、一長一短と判断しました。&lt;/p&gt;
+&lt;p&gt;消費電力に関しては、Athlon 5350のほうが10W高くなっています。&lt;/p&gt;
+&lt;p&gt;以上から、性能を取るならAthlon 5350、より低消費電力を取るならPentium
+J2900となりそうです。&lt;br&gt;
+自分は下記の理由からAthlon 5350を選びました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TDPの10W差を電気代にすると月に200円ぐらいの差にしかならない(アイドルの時間のほうが多いはずなので実際にはもっと小さくなるはず)&lt;/li&gt;
+&lt;li&gt;Athlon 5350の方がPentium
+    J2900より安いので、電気代が多くかかっても1、2年はAthlon5350の方がトータルでは安い&lt;/li&gt;
+&lt;li&gt;Athlon 5350の方がマザーボードの種類が多い&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;マザーボード&lt;/h3&gt;
+&lt;p&gt;CPUが決まったら、次はマザーボードを選びます。&lt;br&gt;
+Athlon
+5350のソケットはAM1なので、このソケットのマザーボードの中から選びます。&lt;br&gt;
+また、ファイルサーバの用途にも使う関係からHDD(SSD)が多く接続できるSATAポートの多いものを選びました。&lt;/p&gt;
+&lt;p&gt;SATAポートが多いボードには、ASRockのAM1B-ITXとAM1H-ITXがあります。&lt;/p&gt;
+&lt;p&gt;これらのボードにはSATAポートが4個ついています。&lt;br&gt;
+Athlon
+5350はチップセットがCPU側にあり、そのチップセットがSATA2ポートにしか対応していません。&lt;br&gt;
+しかし、このASRockのマザーボードは、マザーボード側でSATAのポートを増やすためにコントローラーを追加しているようです。&lt;br&gt;
+さすがASRock、変わったマザーボードが多いです。&lt;/p&gt;
+&lt;p&gt;このAM1B-ITXとAM1H-ITXですが、ほぼ同じボードです。&lt;br&gt;
+違いは、AM1H-ITXはACアダプターに対応しているという点です。&lt;br&gt;
+自分は、ACアダプターを持っておらず、新規に購入するとそこその出費になりそうだったので、AM1B-ITXの方を選びました。&lt;/p&gt;
+&lt;h3&gt;メモリー&lt;/h3&gt;
+&lt;p&gt;マザーボードが決まったので、次はメモリーです。&lt;br&gt;
+メモリーは使える規格の一番いいものをなるべくたくさん積む方針で行こうと思います。&lt;br&gt;
+メモリーが足りない状況になると、HDDへのアクセスが起きてサーバーの動きが極端に悪くなります。&lt;br&gt;
+ビルドサーバーに使ったり、データベースを使ったりすることを考えると積めるだけ積んで置くことに越したことはないと思います。&lt;/p&gt;
+&lt;p&gt;Athlon 5350の対応メモリのはDDR3-1600です。&lt;br&gt;
+DDR3-1600のメモリでは、8GBのメモリが1GBあたりの価格が安いようです。&lt;br&gt;
+マザーボードにはメモリのスロットが2つあるので、8GB x 2本 =
+16GB積むことにしました。&lt;br&gt;
+メーカーはノーブランドです。&lt;/p&gt;
+&lt;p&gt;Memtest等でエラーが出たときに交換をしたいという人は、交換に対応した店でメモリーを買うと良いと思います。&lt;/p&gt;
+&lt;h3&gt;HDDまたはSSD&lt;/h3&gt;
+&lt;p&gt;マーザーボードAM1B-ITXには、4つのSATAポートがあるので最大4つHDD(SSD)が接続できます。&lt;br&gt;
+HDDは、古いサーバーのものがあるのでそれをこちらに接続します。&lt;/p&gt;
+&lt;p&gt;OSをUbuntu
+ServerからCentOSに入れ替えようと思うので、OSを入れる用のHDDだけ買いました。&lt;br&gt;
+データをなるべく入れられるように3TBのHDDを選択しました。&lt;/p&gt;
+&lt;h2&gt;構成&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="center"&gt;&lt;/th&gt;
+&lt;th align="left"&gt;選択パーツ&lt;/th&gt;
+&lt;th align="right"&gt;価格&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;CPU&lt;/td&gt;
+&lt;td align="left"&gt;Athlon 5350&lt;/td&gt;
+&lt;td align="right"&gt;6,350円&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;マザーボード&lt;/td&gt;
+&lt;td align="left"&gt;ASRock AM1B-ITX&lt;/td&gt;
+&lt;td align="right"&gt;3,627円&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;メモリ&lt;/td&gt;
+&lt;td align="left"&gt;ノーブランドPC3-12800-DDR3-1600-8GB x 2枚&lt;/td&gt;
+&lt;td align="right"&gt;13,740円&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;HDD&lt;/td&gt;
+&lt;td align="left"&gt;東芝MD04ACA300 (バルク品)&lt;/td&gt;
+&lt;td align="right"&gt;10,973円&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="center"&gt;計&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="right"&gt;34,690円&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;以上が今回選んだパーツの構成です。&lt;/p&gt;
+&lt;p&gt;サーバーのベンチマーク等は、今後の記事で載せていこうと思います。&lt;/p&gt;
+&lt;p&gt;↓届いたパーツ&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_201837.jpg"&gt;&lt;img alt="IMG_20150408_201837" src="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_201837-300x225.jpg"&gt;{.alignnone
+.size-medium .wp-image-264 width="300"
+height="225"}&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;↓セットアップ中のサーバー&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_210434.jpg"&gt;&lt;img alt="IMG_20150408_210434" src="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_210434-300x225.jpg"&gt;{.alignnone
+.size-medium .wp-image-265 width="300"
+height="225"}&lt;/a&gt;&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>まるごと吸い出したHDDイメージをマウントする</title><link href="/201004091270823038.html" rel="alternate"></link><published>2010-04-09T23:23:00+09:00</published><updated>2010-04-09T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-09:/201004091270823038.html</id><summary type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+&lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次に、fdiskでパーティション構成を出力。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo fdisk /dev/loop0 -lu
+Disk /dev/loop0: &lt;span class="m"&gt;4034&lt;/span&gt; MB, &lt;span class="m"&gt;4034838528&lt;/span&gt; bytes
+&lt;span class="m"&gt;128&lt;/span&gt; heads, &lt;span class="m"&gt;63&lt;/span&gt; sectors/track, &lt;span class="m"&gt;977&lt;/span&gt; cylinders, total &lt;span class="m"&gt;7880544&lt;/span&gt; sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Disk identifier: 0x001c2022
+Device Boot      Start         End      Blocks   Id …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+&lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次に、fdiskでパーティション構成を出力。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo fdisk /dev/loop0 -lu
+Disk /dev/loop0: &lt;span class="m"&gt;4034&lt;/span&gt; MB, &lt;span class="m"&gt;4034838528&lt;/span&gt; bytes
+&lt;span class="m"&gt;128&lt;/span&gt; heads, &lt;span class="m"&gt;63&lt;/span&gt; sectors/track, &lt;span class="m"&gt;977&lt;/span&gt; cylinders, total &lt;span class="m"&gt;7880544&lt;/span&gt; sectors
+&lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Disk identifier: 0x001c2022
+Device Boot      Start         End      Blocks   Id  System
+/dev/loop0p1              &lt;span class="m"&gt;63&lt;/span&gt;      &lt;span class="m"&gt;112895&lt;/span&gt;       &lt;span class="m"&gt;56416&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+/dev/loop0p2          &lt;span class="m"&gt;112896&lt;/span&gt;     &lt;span class="m"&gt;7902719&lt;/span&gt;     &lt;span class="m"&gt;3894912&lt;/span&gt;    &lt;span class="m"&gt;5&lt;/span&gt;  Extended
+/dev/loop0p5          &lt;span class="m"&gt;112959&lt;/span&gt;     &lt;span class="m"&gt;3088511&lt;/span&gt;     &lt;span class="m"&gt;1487776&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+/dev/loop0p6         &lt;span class="m"&gt;3088575&lt;/span&gt;     &lt;span class="m"&gt;3588479&lt;/span&gt;      &lt;span class="m"&gt;249952&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+/dev/loop0p7         &lt;span class="m"&gt;3588543&lt;/span&gt;     &lt;span class="m"&gt;4217471&lt;/span&gt;      &lt;span class="m"&gt;314464&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+/dev/loop0p8         &lt;span class="m"&gt;4217535&lt;/span&gt;     &lt;span class="m"&gt;4846463&lt;/span&gt;      &lt;span class="m"&gt;314464&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+/dev/loop0p9         &lt;span class="m"&gt;4846527&lt;/span&gt;     &lt;span class="m"&gt;7257599&lt;/span&gt;     &lt;span class="m"&gt;1205536&lt;/span&gt;+  &lt;span class="m"&gt;83&lt;/span&gt;  Linux
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;例えば、/dev/loop0p9のパーティションをマウントするには、loop0p9の開始シリンダが4846527なので、セクターのサイズ512byteを掛けて&lt;br&gt;
+512 * 4846527 =
+2481421824byteのオフセットを指定してループバックデバイスに結びつけて、ループバックデバイスを適当なディレクトリにマウントする。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup -o &lt;span class="m"&gt;2481421824&lt;/span&gt; /dev/loop1 hdd.img
+$ sudo mount -o loop /dev/loop1 /mnt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使い終わったら以下のようにして解放する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup -d /dev/loop1
+$ sudo losetup -d /dev/loop0
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Ubuntuにmrtgをインストールする。</title><link href="/201004031270264748.html" rel="alternate"></link><published>2010-04-03T12:19:00+09:00</published><updated>2010-04-03T12:19:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-03:/201004031270264748.html</id><summary type="html">&lt;p&gt;mrtgは、cronで定期的に実行され
+snmpから機器の状態を取得して、HTML形式のグラフに加工し出力するツールです。&lt;br&gt;
+Ubuntu serverをインストールしてあるマシンにmrtgをインストールしてグラフ表示出来るようにします。&lt;/p&gt;
+&lt;h2&gt;パッケージのインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo apt-get install snmp snmpd mrtg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;snmpd.confの編集&lt;/h2&gt;
+&lt;p&gt;コミュニティ名 privateに設定します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vi /etc/snmp/snmpd.conf
+
+-com2sec paranoid default public
++#com2sec paranoid default public
++com2sec &lt;span class="nb"&gt;local&lt;/span&gt; localhost private
++group MyRWGroup any &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;また、ディスク使用量を監視するために、以下のコメントアウトを外します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-#disk / 10000
++disk / 10000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;snmpdデーモンを再起動させます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo /etc/init …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;mrtgは、cronで定期的に実行され
+snmpから機器の状態を取得して、HTML形式のグラフに加工し出力するツールです。&lt;br&gt;
+Ubuntu serverをインストールしてあるマシンにmrtgをインストールしてグラフ表示出来るようにします。&lt;/p&gt;
+&lt;h2&gt;パッケージのインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo apt-get install snmp snmpd mrtg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;snmpd.confの編集&lt;/h2&gt;
+&lt;p&gt;コミュニティ名 privateに設定します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vi /etc/snmp/snmpd.conf
+
+-com2sec paranoid default public
++#com2sec paranoid default public
++com2sec &lt;span class="nb"&gt;local&lt;/span&gt; localhost private
++group MyRWGroup any &lt;span class="nb"&gt;local&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;また、ディスク使用量を監視するために、以下のコメントアウトを外します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-#disk / 10000
++disk / 10000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;snmpdデーモンを再起動させます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo /etc/init.d/snmpd restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;mrtg.confの編集&lt;/h2&gt;
+&lt;h3&gt;cfgmakerを使用してひな形の作成&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo su
+# cfgmaker private@localhost &amp;gt; /etc/mrtg.cfg
+# exit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;WorkDirの値を変更して、グラフの出力ディレクトリを指定します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;WorkDir: /var/www/mrtg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;CPU Load&lt;/h3&gt;
+&lt;p&gt;CPU Loadのグラフを出力する場合は以下の記述を
+mrtg.confに付け足します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## CPU Load
+Target[cpu_load]: .1.3.6.1.4.1.2021.10.1.5.1&lt;span class="err"&gt;&amp;amp;&lt;/span&gt;.1.3.6.1.4.1.2021.10.1.5.2:private@localhost
+MaxBytes[cpu_load]: 100
+Unscaled[cpu_load]: dwmy
+Options[cpu_load]: gauge, absolute, growright, noinfo, nopercent
+YLegend[cpu_load]: CPU Load(%)
+ShortLegend[cpu_load]: (%)
+LegendI[cpu_load]: 1m
+LegendO[cpu_load]: 5m
+Legend1[cpu_load]: 1m(%)
+Legend2[cpu_load]: 5m(%)
+Title[cpu_load]: CPU Load(%)
+PageTop[cpu_load]: &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;CPU Load(%)&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Memory Free&lt;/h3&gt;
+&lt;p&gt;Memory Freeのグラフを出力する場合は以下の記述を
+mrtg.confに付け足します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Memory Free
+Target[mem_free]: .1.3.6.1.4.1.2021.4.6.0&lt;span class="err"&gt;&amp;amp;&lt;/span&gt;.1.3.6.1.4.1.2021.4.4.0:private@localhost
+MaxBytes1[mem_free]: 1797580
+MaxBytes2[mem_free]: 1383680
+Unscaled[mem_free]: dwmy
+Options[mem_free]: gauge, absolute, growright, noinfo
+YLegend[mem_free]: Mem Free(Bytes)
+ShortLegend[mem_free]: Bytes
+kilo[mem_free]: 1024
+kMG[mem_free]: k,M,G,T,P
+LegendI[mem_free]: Real
+LegendO[mem_free]: Swap
+Legend1[mem_free]: free physical memory[MBytes]
+Legend2[mem_free]: free swap[MBytes]
+Title[mem_free]: Memory Free
+PageTop[mem_free]: &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Memory Free&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;MaxBytesの値は freeコマンドのtotalの値を使用しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ free
+total       used       free     shared    buffers     cached
+Mem:       &lt;span class="m"&gt;1797580&lt;/span&gt;    &lt;span class="m"&gt;1782504&lt;/span&gt;      &lt;span class="m"&gt;15076&lt;/span&gt;          &lt;span class="m"&gt;0&lt;/span&gt;      &lt;span class="m"&gt;41784&lt;/span&gt;    &lt;span class="m"&gt;1622584&lt;/span&gt;
+-/+ buffers/cache:     &lt;span class="m"&gt;118136&lt;/span&gt;    &lt;span class="m"&gt;1679444&lt;/span&gt;
+Swap:      &lt;span class="m"&gt;1383680&lt;/span&gt;          &lt;span class="m"&gt;0&lt;/span&gt;    &lt;span class="m"&gt;1383680&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Disk Usage&lt;/h3&gt;
+&lt;p&gt;Disk Usageのグラフを出力する場合は以下の記述を
+mrtg.confに付け足します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Disk Usage
+Target[disk_usage]: .1.3.6.1.4.1.2021.9.1.9.1&lt;span class="err"&gt;&amp;amp;&lt;/span&gt;.1.3.6.1.4.1.2021.9.1.9.1:private@localhost
+MaxBytes[disk_usage]: 100
+Unscaled[disk_usage]: dwmy
+Options[disk_usage]: gauge, absolute, growright, nopercent, noinfo
+YLegend[disk_usage]: Disk Usage (%)
+ShortLegend[disk_usage]: (%)
+LegendI[disk_usage]: / Disk Usage
+LegendO[disk_usage]: / Disk Usage
+Legend1[disk_usage]: / Disk Usage
+Legend2[disk_usage]: / Disk Usage
+Title[disk_usage]: Disk Usage
+PageTop[disk_usage]: &lt;span class="nt"&gt;&amp;lt;H1&amp;gt;&lt;/span&gt;Disk Usage (%)&lt;span class="nt"&gt;&amp;lt;/H1&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;index.htmlの作成&lt;/h2&gt;
+&lt;p&gt;indexmakerを使用して、グラフ出力ディレクトリに index.htmlを作成します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo su
+&lt;span class="c1"&gt;# indexmaker /etc/mrtg/mrtg.cfg &amp;gt; /home/www/mrtg/index.html&lt;/span&gt;
+&lt;span class="c1"&gt;# exit&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;最後に、グラフ出力ディレクトリとその中にあるファイルをウェブサーバから参照出来るように&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%DF%A5%C3%A5%B7%A5%E7%A5%F3"&gt;パーミッション&lt;/a&gt;などの設定をします。&lt;/p&gt;
+&lt;h2&gt;参考リンク&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/slywalker/20080927/1222501190"&gt;http://d.hatena.ne.jp/slywalker/20080927/1222501190&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html"&gt;http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>ssh経由でgit</title><link href="/200906281246189191.html" rel="alternate"></link><published>2009-06-28T20:39:00+09:00</published><updated>2009-06-28T20:39:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-06-28:/200906281246189191.html</id><summary type="html">&lt;p&gt;Git Extensionsから&lt;a href="http://d.hatena.ne.jp/keyword/SSH"&gt;SSH&lt;/a&gt;経由でgitを使うために&lt;a href="http://d.hatena.ne.jp/keyword/WinSCP"&gt;WinSCP&lt;/a&gt;についてくるPuttyGen等で作成する。
+Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;ssh&lt;/a&gt;のppkキーはssh1のものでないとエラーがでる。
+ Urlはこんな感じで指定する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
+&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Git Extensionsから&lt;a href="http://d.hatena.ne.jp/keyword/SSH"&gt;SSH&lt;/a&gt;経由でgitを使うために&lt;a href="http://d.hatena.ne.jp/keyword/WinSCP"&gt;WinSCP&lt;/a&gt;についてくるPuttyGen等で作成する。
+Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;ssh&lt;/a&gt;のppkキーはssh1のものでないとエラーがでる。
+ Urlはこんな感じで指定する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>gitサーバからソースを取ってきて、編集してサーバに変更を反映する</title><link href="/200904201240227874.html" rel="alternate"></link><published>2009-04-20T20:44:00+09:00</published><updated>2009-04-20T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-04-20:/200904201240227874.html</id><summary type="html">&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を新規作成&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;フォルダを新規作成&lt;/li&gt;
+&lt;li&gt;[フォルダを右クリック]→[Git Extensions]→[Browse]でGit
+    Extensionsを起動&lt;/li&gt;
+&lt;li&gt;[Initialize new repository]で初期化&lt;/li&gt;
+&lt;li&gt;pullダイアログを開いてRemote
+    repositoryにgitサーバの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を指定してpull&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;で作業&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ソースを変更したらCommitダイアログを開く&lt;/li&gt;
+&lt;li&gt;~~[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる~~&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これだと.gitgnoreで弾いたものまでcommitされてしまう&lt;/p&gt;
+&lt;h2&gt;サーバにpush&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;pushダイアログを開いてRemote
+    repositoryにgitサーバの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を指定してpush&lt;/li&gt;
+&lt;/ul&gt;</summary><content type="html">&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を新規作成&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;フォルダを新規作成&lt;/li&gt;
+&lt;li&gt;[フォルダを右クリック]→[Git Extensions]→[Browse]でGit
+    Extensionsを起動&lt;/li&gt;
+&lt;li&gt;[Initialize new repository]で初期化&lt;/li&gt;
+&lt;li&gt;pullダイアログを開いてRemote
+    repositoryにgitサーバの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を指定してpull&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;で作業&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ソースを変更したらCommitダイアログを開く&lt;/li&gt;
+&lt;li&gt;~~[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる~~&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これだと.gitgnoreで弾いたものまでcommitされてしまう&lt;/p&gt;
+&lt;h2&gt;サーバにpush&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;pushダイアログを開いてRemote
+    repositoryにgitサーバの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を指定してpush&lt;/li&gt;
+&lt;/ul&gt;</content></entry><entry><title>Debian上にgitサーバーを立てる</title><link href="/200904141239716590.html" rel="alternate"></link><published>2009-04-14T22:43:00+09:00</published><updated>2009-04-14T22:43:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-04-14:/200904141239716590.html</id><summary type="html">&lt;h2&gt;gitとgitデーモン起動用のパッケージをインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#apt-get install git-core git-daemon-run
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/daemon"&gt;daemon&lt;/a&gt;の起動&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8"&gt;スクリプト&lt;/a&gt;編集&lt;/h2&gt;
+&lt;p&gt;そのままの設定では面倒なこと(&lt;a href="http://d.hatena.ne.jp/fuzzy2/20090228/p2"&gt;http://d.hatena.ne.jp/fuzzy2/20090228/p2&lt;/a&gt;)になるので、git-daemonの起動スクリプトを編集する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#vi /etc/sv/git-daemon/run
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#exec git-daemon --verbose --base-path=/var/cache /var/cache/git
+exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-pack 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;の作成&lt;/h2&gt;
+&lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;の作成&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;gitとgitデーモン起動用のパッケージをインストール&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#apt-get install git-core git-daemon-run
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/daemon"&gt;daemon&lt;/a&gt;の起動&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8"&gt;スクリプト&lt;/a&gt;編集&lt;/h2&gt;
+&lt;p&gt;そのままの設定では面倒なこと(&lt;a href="http://d.hatena.ne.jp/fuzzy2/20090228/p2"&gt;http://d.hatena.ne.jp/fuzzy2/20090228/p2&lt;/a&gt;)になるので、git-daemonの起動スクリプトを編集する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#vi /etc/sv/git-daemon/run
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#exec git-daemon --verbose --base-path=/var/cache /var/cache/git
+exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-pack 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;の作成&lt;/h2&gt;
+&lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;の作成&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p /home/hiroki/repos/tstrepos
+$ &lt;span class="nb"&gt;cd&lt;/span&gt; /home/hiroki/repos/tstrepos
+$ git init
+$ touch init
+$ git add .
+$ git commit -m &lt;span class="s2"&gt;&amp;quot;コメント&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;公開用&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;の作成&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# mkdir /var/repos
+# cd /var/repos
+# git clone --bare /home/hiroki/repos/tstrepos ./tstrepos.git
+# touch tstrepos.git/git-daemon-export-ok
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/amacou/20090113/1231831940"&gt;http://d.hatena.ne.jp/amacou/20090113/1231831940&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html"&gt;http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>玄箱に組み込んだSeagateのHDDのチェック</title><link href="/200901191232360978.html" rel="alternate"></link><published>2009-01-19T19:29:00+09:00</published><updated>2009-01-19T19:29:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-01-19:/200901191232360978.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
+&lt;a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm"&gt;http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; # apt-get install hdparam
+ # hdparm -i /dev/hda
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;で、HDDの型番とシリアル番号をチェック。&lt;/p&gt;
+&lt;p&gt;CCとかLCがシリアル番号に入ってたらセーフ&lt;br&gt;
+&lt;a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957"&gt;http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
+&lt;a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm"&gt;http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; # apt-get install hdparam
+ # hdparm -i /dev/hda
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;で、HDDの型番とシリアル番号をチェック。&lt;/p&gt;
+&lt;p&gt;CCとかLCがシリアル番号に入ってたらセーフ&lt;br&gt;
+&lt;a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957"&gt;http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>tftpboot成功</title><link href="/200711181195406346.html" rel="alternate"></link><published>2007-11-18T02:19:00+09:00</published><updated>2007-11-18T02:19:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-18:/200711181195406346.html</id><summary type="html">&lt;p&gt;余り物のCPUとマザーボードをtftpbootで起動するようにしてみた。 
+&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;の設定でpxebootで対称のマシンが起動するようにしておく。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/IPv6"&gt;IPv6&lt;/a&gt;が動作していると上手くいかないようなので切っておく。&lt;br&gt;
+ここの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;のオプションでルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;を&lt;a href="http://d.hatena.ne.jp/keyword/nfs"&gt;nfs&lt;/a&gt;でマウントするようにしておく。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;は2.6.22.10でnfsrootをサポート、&lt;a href="http://d.hatena.ne.jp/keyword/NIC"&gt;NIC&lt;/a&gt;ドライバを組み込むようにした。&lt;br&gt;
+ルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;はdebootstrapでつくり、&lt;a href="http://d.hatena.ne.jp/keyword/chroot"&gt;chroot&lt;/a&gt;でいろいろ設定。&lt;/p&gt;
+&lt;p&gt;動いてるのはCPUのファンだけなので結構静か。&lt;/p&gt;</summary><content type="html">&lt;p&gt;余り物のCPUとマザーボードをtftpbootで起動するようにしてみた。 
+&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;の設定でpxebootで対称のマシンが起動するようにしておく。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/IPv6"&gt;IPv6&lt;/a&gt;が動作していると上手くいかないようなので切っておく。&lt;br&gt;
+ここの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;のオプションでルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;を&lt;a href="http://d.hatena.ne.jp/keyword/nfs"&gt;nfs&lt;/a&gt;でマウントするようにしておく。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;は2.6.22.10でnfsrootをサポート、&lt;a href="http://d.hatena.ne.jp/keyword/NIC"&gt;NIC&lt;/a&gt;ドライバを組み込むようにした。&lt;br&gt;
+ルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;はdebootstrapでつくり、&lt;a href="http://d.hatena.ne.jp/keyword/chroot"&gt;chroot&lt;/a&gt;でいろいろ設定。&lt;/p&gt;
+&lt;p&gt;動いてるのはCPUのファンだけなので結構静か。&lt;/p&gt;</content></entry><entry><title>sambaが。。</title><link href="/200711031194114825.html" rel="alternate"></link><published>2007-11-03T03:33:00+09:00</published><updated>2007-11-03T03:33:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-03:/200711031194114825.html</id><summary type="html">&lt;p&gt;いろいろいじってたら&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;と&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;が調子悪くなった・・・・&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;は何とか復旧したものの&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の方は。。。orz&lt;/p&gt;
+&lt;p&gt;ついでにようやくsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へアップグレードした。。&lt;/p&gt;</summary><content type="html">&lt;p&gt;いろいろいじってたら&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;と&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;が調子悪くなった・・・・&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;は何とか復旧したものの&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の方は。。。orz&lt;/p&gt;
+&lt;p&gt;ついでにようやくsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へアップグレードした。。&lt;/p&gt;</content></entry><entry><title>DHCPサーバー構築</title><link href="/200710291193673267.html" rel="alternate"></link><published>2007-10-29T00:54:00+09:00</published><updated>2007-10-29T00:54:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-10-29:/200710291193673267.html</id><summary type="html">&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
+nfsboot環境を構築するために、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバーを立ててみた。&lt;/p&gt;
+&lt;p&gt;aptで&lt;a href="http://d.hatena.ne.jp/keyword/dhcp"&gt;dhcp&lt;/a&gt;をインストールしてdhcpd.confをいじる。
+編集後はこんな感じになる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;shared-network KURO-DHCP{
+default-lease-time 6000;
+max-lease-time 72000;
+    subnet 192.168.1.0 netmask 255.255.255.0 {
+        range 192.168.1.100 192.168.1.200;
+        option domain-name-servers (ルーターのIP);
+        option routers (ルーターのIP);
+        option broadcast-address 192.168 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
+nfsboot環境を構築するために、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバーを立ててみた。&lt;/p&gt;
+&lt;p&gt;aptで&lt;a href="http://d.hatena.ne.jp/keyword/dhcp"&gt;dhcp&lt;/a&gt;をインストールしてdhcpd.confをいじる。
+編集後はこんな感じになる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;shared-network KURO-DHCP{
+default-lease-time 6000;
+max-lease-time 72000;
+    subnet 192.168.1.0 netmask 255.255.255.0 {
+        range 192.168.1.100 192.168.1.200;
+        option domain-name-servers (ルーターのIP);
+        option routers (ルーターのIP);
+        option broadcast-address 192.168.1.255;
+        option subnet-mask 255.255.255.0;
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;のほうの&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;機能を切って、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;のdhcpdを立ち上げて完了。&lt;/p&gt;</content></entry><entry><title>Debian etchへバージョンアップ</title><link href="/200708141187191261.html" rel="alternate"></link><published>2007-08-14T00:21:00+09:00</published><updated>2007-08-14T00:21:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-08-14:/200708141187191261.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get upgrade  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;してみたけど、エラーが出た。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://90h.dip.jp/archives/2007/05/hgetch.html"&gt;http://90h.dip.jp/archives/2007/05/hgetch.html&lt;/a&gt;&lt;br&gt;
+↑の方法でいけるみたいだ。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;が2.6じゃないとだめなのか？&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get upgrade  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;してみたけど、エラーが出た。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://90h.dip.jp/archives/2007/05/hgetch.html"&gt;http://90h.dip.jp/archives/2007/05/hgetch.html&lt;/a&gt;&lt;br&gt;
+↑の方法でいけるみたいだ。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;が2.6じゃないとだめなのか？&lt;/p&gt;</content></entry><entry><title>共有ドライブ完成</title><link href="/200705081178633500.html" rel="alternate"></link><published>2007-05-08T23:11:00+09:00</published><updated>2007-05-08T23:11:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-05-08:/200705081178633500.html</id><summary type="html">&lt;p&gt;SWATで&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の設定をして、&lt;br&gt;
+ネットの情報を見ながら、&lt;br&gt;
+問題なく共有ドライブが完成。&lt;/p&gt;
+&lt;p&gt;次は、NTPを入れて、時刻あわせをした。&lt;br&gt;
+ここも、同じく問題なし。&lt;/p&gt;
+&lt;p&gt;しかし、&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;が、Sleep状態に入ってしまい、&lt;br&gt;
+そのまま元に戻らなくなるという症状が発覚。&lt;br&gt;
+おそらく、&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;化する前Sleepするように設定していたので&lt;br&gt;
+それが原因かな･･･&lt;/p&gt;</summary><content type="html">&lt;p&gt;SWATで&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の設定をして、&lt;br&gt;
+ネットの情報を見ながら、&lt;br&gt;
+問題なく共有ドライブが完成。&lt;/p&gt;
+&lt;p&gt;次は、NTPを入れて、時刻あわせをした。&lt;br&gt;
+ここも、同じく問題なし。&lt;/p&gt;
+&lt;p&gt;しかし、&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;が、Sleep状態に入ってしまい、&lt;br&gt;
+そのまま元に戻らなくなるという症状が発覚。&lt;br&gt;
+おそらく、&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;化する前Sleepするように設定していたので&lt;br&gt;
+それが原因かな･･･&lt;/p&gt;</content></entry><entry><title>Samba起動</title><link href="/200705061178454893.html" rel="alternate"></link><published>2007-05-06T21:34:00+09:00</published><updated>2007-05-06T21:34:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-05-06:/200705061178454893.html</id><summary type="html">&lt;p&gt;玄箱のセットアップCDについていた、開発ツール類を入れようとしたが、なぜか展開できなかったので断念。&lt;/p&gt;
+&lt;p&gt;しょうがないので、apt-getを、使えるようにするしかない･･･&lt;br&gt;
+sources.list の「woody」を「sarge」に書き換え、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Samba
+# ded　ｈttp://everybody.good-day.net/\~nsaito samba3  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;をリストに追加して、&lt;br&gt;
+apt-getでインストールが完了。
+次に、SWATをインストールした。&lt;br&gt;
+今日は、ここまでで終了。&lt;/p&gt;</summary><content type="html">&lt;p&gt;玄箱のセットアップCDについていた、開発ツール類を入れようとしたが、なぜか展開できなかったので断念。&lt;/p&gt;
+&lt;p&gt;しょうがないので、apt-getを、使えるようにするしかない･･･&lt;br&gt;
+sources.list の「woody」を「sarge」に書き換え、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Samba
+# ded　ｈttp://everybody.good-day.net/\~nsaito samba3  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;をリストに追加して、&lt;br&gt;
+apt-getでインストールが完了。
+次に、SWATをインストールした。&lt;br&gt;
+今日は、ここまでで終了。&lt;/p&gt;</content></entry></feed>

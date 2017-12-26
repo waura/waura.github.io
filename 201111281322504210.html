@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 28 11月 2011</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>↓の続き<br>
+<a href="http://d.hatena.ne.jp/hiroki0/20090914/1252931917">http://d.hatena.ne.jp/hiroki0/20090914/1252931917</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20100320/1269074009">http://d.hatena.ne.jp/hiroki0/20100320/1269074009</a></p>
+<h2>使用するアルファブレンド計算式</h2>
+<p>チャンネルサイズ8bitとして<br>
+<img alt="a_{dst} = 255 - (255 - a_{over})(255 - a_{under}) /
+255" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=a_%7Bdst%7D%20%3D%20255%20-%20%28255%20-%20a_%7Bover%7D%29%28255%20-%20a_%7Bunder%7D%29%20%2F%20255"><br>
+<img alt="d_{dst} = (d_{over} a_{over} + (d_{under} a_{under} (255 -
+a_{over}) / 255) /
+a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3D%20%28d_%7Bover%7D%20a_%7Bover%7D%20%2B%20%28d_%7Bunder%7D%20a_%7Bunder%7D%20%28255%20-%20a_%7Bover%7D%29%20%2F%20255%29%20%2F%20a_%7Bdst%7D"></p>
+<p>ここで、aはアルファ値、dは画素値である。</p>
+<p>この計算式をコードにすると以下のようになる。<br>
+255による除算は、高速化のために256の除算に変更しシフト演算で処理している。<br>
+また、計算量を減らすためにアルファ値により分岐を行なっている。<br>
+今回は、この処理をSSEにより実装して計測を行う。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">((</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+    <span class="kt">uint8_t</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="p">(</span><span class="n">ra</span><span class="o">*</span><span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">inv_alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">alpha</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>計測方法</h2>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ol>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_psでメモリ読み込み、_mm_storeu_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_store_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ol>
+<p>の4通りの処理の処理速度を計測する。</p>
+<ul>
+<li>チャンネルサイズ8bit
+    5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
+    2.3を用いた。</li>
+<li>アルファブレンド部分の処理のみ処理時間を計測した。</li>
+<li>アライメントは常に合っている状態で処理を行う。</li>
+</ul>
+<p>アルファブレンドの処理は、アルファ値により分岐を入れているので<br>
+ただコピーを行う部分、アルファ値1つによるアルファブレンドを行う部分、<br>
+アルファ値2つでアルファブレンドを行う部分の3箇所の計測を行いたい。</p>
+<p>なので、与えるアルファチャンネルは、</p>
+<ol>
+<li>上下ともにアルファ値255</li>
+<li>下になる画像全てアルファ値255、上になる画像はアルファ値を均等に分布</li>
+<li>上下ともにアルファ値を均等に分布</li>
+</ol>
+<p>の三通りとした。</p>
+<h2>計測に使用した環境</h2>
+<ul>
+<li>CPU: <a href="http://d.hatena.ne.jp/keyword/Core%20i7">Core i7</a>
+    2600 3.40GHz</li>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/windows%207">windows 7</a>
+    64bit</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio</a>
+    2010</li>
+<li>最適化オプション: 実行速度 (/O2)</li>
+</ul>
+<h2>計測結果</h2>
+<h3>上下ともにアルファ値255</h3>
+<ul>
+<li>
+<p>32bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   111.002 msec   95.006 msec                          90.9281 msec                       90.853 msec
+  2回目   87.0272 msec   70.3019 msec                         64.3998 msec                       77.862 msec
+  3回目   86.3182 msec   66.67 msec                           72.2693 msec                       62.0172 msec</p>
+</li>
+<li>
+<p>64bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   85.2114 msec   82.4653 msec                         85.074 msec                        83.51 msec
+  2回目   56.3726 msec   63.0728 msec                         71.2231 msec                       56.5069 msec
+  3回目   55.2358 msec   62.6271 msec                         62.9312 msec                       58.8877 msec</p>
+</li>
+</ul>
+<p>このアルファ値では、分岐処理により上の画像の画素を出力メモリにコピーする処理だけになる。<br>
+SSEのロード・ストア命令による違いはバラツキがあり、殆ど無いと思われる。<br>
+32bitでは、SSEを使ったほうが1.1倍程度速くなっている。<br>
+32bitと64bitの結果を比較して、SSEを使わない処理では64bitの方が早くなっている。</p>
+<h3>下になる画像全てアルファ値255、上になる画像はアルファ値を均等に分布</h3>
+<ul>
+<li>
+<p>32bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   193.727 msec   114.325 msec                         94.4707 msec                       101.514 msec
+  2回目   187.955 msec   93.6102 msec                         93.4529 msec                       91.6304 msec
+  3回目   190.177 msec   104.997 msec                         94.9949 msec                       91.032 msec</p>
+</li>
+<li>
+<p>64bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   167.373 msec   99.5402 msec                         89.3116 msec                       100.947 msec
+  2回目   198.225 msec   91.6833 msec                         99.7168 msec                       89.8282 msec
+  3回目   186.376 msec   87.6821 msec                         98.8608 msec                       97.6576 msec</p>
+</li>
+</ul>
+<p>このアルファ値では、分岐処理により主に一つのアルファ値によるアルファブレンドを行う処理になる。<br>
+SSEのロード・ストア命令による違いはバラツキがあり、殆ど無いと思われる。<br>
+32bitと64bitによる違いは殆ど見られない。<br>
+また、SSEにより1.6倍〜2.0倍程度速くなっていることがわかる。</p>
+<h3>上下ともにアルファ値を均等に分布</h3>
+<ul>
+<li>
+<p>32bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   615.202 msec   182.197 msec                         208.116 msec                       176.766 msec
+  2回目   576.132 msec   182.21 msec                          196.25 msec                        172.828 msec
+  3回目   586.831 msec   176.329 msec                         179.473 msec                       171.598 msec</p>
+</li>
+<li>
+<p>64bit向け実行ファイル</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   327.867 msec   208.067 msec                         204.649 msec                       170.796 msec
+  2回目   328.621 msec   173.355 msec                         176.605 msec                       160.269 msec
+  3回目   336.624 msec   167.226 msec                         168.419 msec                       170.916 msec</p>
+</li>
+</ul>
+<p>このアルファ値では、分岐処理により主に2つのアルファ値によるアルファブレンドを行う処理になる。<br>
+SSEのロード・ストア命令による違いはバラツキがあり、殆ど無いと思われる。<br>
+非SSEの処理の32bitの方は64bitに対して1.8倍程度遅くなっており、かなり時間がかかっていることがわかる。<br>
+SSEによる速度の向上は32bitで約3倍64bitで約1.8倍である。</p>
+<h3>まとめ</h3>
+<p>測定条件のいずれの場合もSSEのロード・ストア命令による違いは見られなかった。<br>
+今回は、アライメントは常に合っている状態で計測を行ったのでアライメントをずらいた状態では違いが見られるかもしれない。</p>
+<h2>コード</h2>
+<p>SSEでの実装方針は、4ピクセル分のデータをロード、SSEの<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>に16bitで8つのデータを持ち2ピクセルづつ処理し、<br>
+4ピクセル分ストアするようにする。</p>
+<p>2つのアルファ値をもつアルファブレンドの処理では途中、除算処理が入る。<br>
+SSEの命令には整数除算が無いので、[16bit整数]→[32bit整数]→[32bit<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>]と変換して<br>
+_mm_rcp_ps()で逆数を求めて除算を行う。<br>
+_mm_rcp_ps()を用いることで_mm_div_ps()よりも高速に計算することができる。<br>
+_mm_rcp_ps()は11bit程度しか精度がないが、最後は8bit整数にするので問題ないはず。</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/cv.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/highgui.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;IETimer.h&quot;</span><span class="cp"></span>
+<span class="k">union</span> <span class="n">UCvPixel32</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span>
+    <span class="p">{</span>
+        <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">a</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="k">typedef</span> <span class="n">UCvPixel32</span> <span class="n">UCvPixel</span><span class="p">;</span>
+<span class="kr">inline</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="nf">GetNextLineAddress</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">addr</span> <span class="o">+</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="nf">GetPixelAddress</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">depth</span> <span class="o">==</span> <span class="n">IPL_DEPTH_8U</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="nf">GetNextLineAddress32</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">UCvPixel32</span><span class="o">*</span><span class="p">)((</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">addr</span> <span class="o">+</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="nf">GetPixelAddress32</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">depth</span> <span class="o">==</span> <span class="n">IPL_DEPTH_8U</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">UCvPixel32</span><span class="o">*</span><span class="p">)(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r1</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">b1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r2</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">b2</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span><span class="p">;</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test1</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test1.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test2</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test2.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">b_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">g_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">r_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">a_ch1</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">a_ch2</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img1</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img2</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img3</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img4</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img5</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img6</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="c1">//上になる画像のアルファ値をすべて255にする</span>
+    <span class="n">cvSet</span><span class="p">(</span><span class="n">a_ch1</span><span class="p">,</span> <span class="n">cvScalar</span><span class="p">(</span><span class="mi">255</span><span class="p">));</span>
+    <span class="c1">//下になる画像のアルファ値をすべて255にする</span>
+    <span class="n">cvSet</span><span class="p">(</span><span class="n">a_ch2</span><span class="p">,</span> <span class="n">cvScalar</span><span class="p">(</span><span class="mi">255</span><span class="p">));</span>
+    <span class="c1">//上になる画像のアルファ値を均等に分布させる</span>
+    <span class="c1">//uint8_t* line1 = GetPixelAddress(a_ch1, 0, 0);</span>
+    <span class="c1">//for (y = 0; y &lt; a_ch1-&gt;height; y++) {</span>
+    <span class="c1">// uint8_t* pix = line1;</span>
+    <span class="c1">// for (x = 0; x &lt; a_ch1-&gt;width; x++) {</span>
+    <span class="c1">//     (*pix++) = ((double)x / a_ch1-&gt;width) * 255;</span>
+    <span class="c1">// }</span>
+    <span class="c1">// line1 = GetNextLineAddress(a_ch1, line1);</span>
+    <span class="c1">//}</span>
+    <span class="c1">//下になる画像のアルファ値を均等に分布させる</span>
+    <span class="c1">//uint8_t* line2 = GetPixelAddress(a_ch2, 0, 0);</span>
+    <span class="c1">//for (y = 0; y &lt; a_ch2-&gt;height; y++) {</span>
+    <span class="c1">// uint8_t* pix = line2;</span>
+    <span class="c1">// for (x = 0; x &lt; a_ch2-&gt;width; x++) {</span>
+    <span class="c1">//     (*pix++) = ((double)y / a_ch2-&gt;height) * 255;</span>
+    <span class="c1">// }</span>
+    <span class="c1">// line2 = GetNextLineAddress(a_ch2, line2);</span>
+    <span class="c1">//}</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test1</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch1</span><span class="p">,</span> <span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test2</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch2</span><span class="p">,</span> <span class="n">img2</span><span class="p">);</span>
+    <span class="c1">//非SSE</span>
+    <span class="n">IETimer</span> <span class="n">timer</span><span class="p">;</span>
+    <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">over_pix</span> <span class="o">=</span> <span class="n">over_line</span><span class="p">;</span>
+        <span class="n">under_pix</span> <span class="o">=</span> <span class="n">under_line</span><span class="p">;</span>
+        <span class="n">dst_pix</span> <span class="o">=</span> <span class="n">dst_line</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+            <span class="c1">//alpha blend</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+                <span class="kt">uint8_t</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="p">(</span><span class="n">ra</span><span class="o">*</span><span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span>
+                <span class="kt">double</span> <span class="n">inv_alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">alpha</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+                <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">over_pix</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">under_pix</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">dst_pix</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test3.bmp&quot;</span><span class="p">,</span> <span class="n">img3</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_loadu_ps + _mm_storeu_ps</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="p">{</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+        <span class="kr">__m128i</span> <span class="n">xmff16</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mh">0xff</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">over_pix</span> <span class="o">=</span> <span class="n">over_line</span><span class="p">;</span>
+            <span class="n">under_pix</span> <span class="o">=</span> <span class="n">under_line</span><span class="p">;</span>
+            <span class="n">dst_pix</span> <span class="o">=</span> <span class="n">dst_line</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+                <span class="c1">//4ピクセルロード</span>
+                <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_loadu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">under_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_loadu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">over_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">xmo16</span><span class="p">,</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">;</span>
+                <span class="kr">__m128</span> <span class="n">xmf_lo</span><span class="p">,</span> <span class="n">xmf_hi</span><span class="p">,</span> <span class="n">xmf_alpha_lo</span><span class="p">,</span> <span class="n">xmf_alpha_hi</span><span class="p">;</span>
+                <span class="c1">//load lo double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="c1">//アルファ値を各個読み出し比較し分岐へ</span>
+                <span class="kt">int</span> <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">//16bitのアルファ値8個をシャッフルをつかってならべ、</span>
+                    <span class="c1">//[a1,a1,a1,a1,a2,a2,a2]というようにする。</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">//255 - over_alpha</span>
+                    <span class="c1">//2ピクセル同時にアルファブレンドの計算</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="c1">//アルファ値255を出力用のレジスタに各個書き込み</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//16bitのアルファ値8個をシャッフルをつかってならべ</span>
+                    <span class="c1">//[a1,a1,a1,a1,a2,a2,a2]というようにする。</span>
+                    <span class="c1">//上になる画像と下になる画像の2つぶんを行なっておく</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// 255 - over_alpha</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span> <span class="c1">// 255 - under_alpha</span>
+                    <span class="c1">//新しくアルファ値になる値の計算</span>
+                    <span class="c1">//ここのアルファ値も[a1,a1,a1,a1,a2,a2,a2]となるようにしている</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="c1">//16bit幅での2ピクセル同時処理</span>
+                    <span class="c1">//ここで 16bit乗算　→ 8bit右シフト → 16bit乗算という順で計算しているので誤差が出る。</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * under_alpha * over_ralpha)&gt;&gt;8</span>
+                    <span class="c1">//32bit浮動小数に変換してピクセル1の除算の計算</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">////32bit浮動小数に変換してピクセル2の除算の計算</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//16bit整数に戻してレジスタに書き込み</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="c1">//新しくアルファ値になる値を取り出して各個書き込み</span>
+                    <span class="kt">int</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//load hi double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="c1">//calc pixel1</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">//calc pixel 2</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//pack to 16bit data</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="kt">int</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a4</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//16bit幅、2ピクセルのデータが入った2つのレジスタを合わせて8bitへ</span>
+                <span class="c1">//4ピクセルのデータをメモリへストア</span>
+                <span class="n">_mm_storeu_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">dst_pix</span><span class="p">,</span>
+                <span class="n">_mm_castsi128_ps</span><span class="p">(</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">))</span> <span class="p">);</span>
+                <span class="c1">//</span>
+                <span class="n">over_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">under_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">dst_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+            <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+            <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img4</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test4.bmp&quot;</span><span class="p">,</span> <span class="n">img4</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_store_ps          </span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="p">{</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+        <span class="kr">__m128i</span> <span class="n">xmff16</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mh">0xff</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">over_pix</span> <span class="o">=</span> <span class="n">over_line</span><span class="p">;</span>
+            <span class="n">under_pix</span> <span class="o">=</span> <span class="n">under_line</span><span class="p">;</span>
+            <span class="n">dst_pix</span> <span class="o">=</span> <span class="n">dst_line</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+                <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">under_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">over_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">xmo16</span><span class="p">,</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">;</span>
+                <span class="kr">__m128</span> <span class="n">xmf_lo</span><span class="p">,</span> <span class="n">xmf_hi</span><span class="p">,</span> <span class="n">xmf_alpha_lo</span><span class="p">,</span> <span class="n">xmf_alpha_hi</span><span class="p">;</span>
+                <span class="c1">//load lo double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * under_alpha * over_ralpha)&gt;&gt;8</span>
+                    <span class="c1">//calc pixel 1</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">//calc pixel 2</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//pack to 16bit data</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="kt">int</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//load hi double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="c1">//calc pixel1</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">//calc pixel 2</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//pack to 16bit data</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="kt">int</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a4</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//store to memory</span>
+                <span class="n">_mm_store_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">dst_pix</span><span class="p">,</span>
+                <span class="n">_mm_castsi128_ps</span><span class="p">(</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">))</span> <span class="p">);</span>
+                <span class="c1">//</span>
+                <span class="n">over_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">under_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">dst_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+            <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+            <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img5</span>    <span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test5.bmp&quot;</span><span class="p">,</span> <span class="n">img5</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_stream_si128</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="p">{</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">img6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>
+        <span class="kr">__m128i</span> <span class="n">xmff16</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mh">0xff</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">over_pix</span> <span class="o">=</span> <span class="n">over_line</span><span class="p">;</span>
+            <span class="n">under_pix</span> <span class="o">=</span> <span class="n">under_line</span><span class="p">;</span>
+            <span class="n">dst_pix</span> <span class="o">=</span> <span class="n">dst_line</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">+=</span><span class="mi">4</span><span class="p">){</span>
+                <span class="kr">__m128i</span> <span class="n">under</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">under_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">over</span> <span class="o">=</span> <span class="n">_mm_castps_si128</span><span class="p">(</span> <span class="n">_mm_load_ps</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">over_pix</span><span class="p">)</span> <span class="p">);</span>
+                <span class="kr">__m128i</span> <span class="n">xmo16</span><span class="p">,</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">;</span>
+                <span class="kr">__m128i</span> <span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">,</span> <span class="n">xmalpha</span><span class="p">;</span>
+                <span class="kr">__m128</span> <span class="n">xmf_lo</span><span class="p">,</span> <span class="n">xmf_hi</span><span class="p">,</span> <span class="n">xmf_alpha_lo</span><span class="p">,</span> <span class="n">xmf_alpha_hi</span><span class="p">;</span>
+                <span class="c1">//load lo double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * under_alpha * over_ralpha)&gt;&gt;8</span>
+                    <span class="c1">//calc pixel 1</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">//calc pixel 2</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//pack to 16bit data</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//load hi double ward</span>
+                <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">);</span>
+                <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmo16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">xmu16</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">);</span> <span class="c1">// under_pix * over_ralpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha)</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">// (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="c1">//</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+                    <span class="n">xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">xmunder_alpha</span><span class="p">);</span>
+                    <span class="n">xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmover_ralpha</span><span class="p">,</span> <span class="n">xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="c1">//255 - ((over_ralpha * under_ralpha) &gt;&gt; 8)</span>
+                    <span class="n">xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmunder_alpha</span><span class="p">,</span> <span class="n">xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">xmu16</span><span class="p">);</span> <span class="c1">//under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmover_alpha</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha</span>
+                    <span class="n">xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">xmu16</span><span class="p">,</span> <span class="n">xmo16</span><span class="p">);</span> <span class="c1">// over_pix * over_alpha + (under_pix * ((under_alpha * over_ralpha)&gt;&gt;8)</span>
+                    <span class="c1">//calc pixel1</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_lo</span><span class="p">));</span>
+                    <span class="c1">//calc pixel 2</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmo16</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="n">xmzero</span><span class="p">)</span> <span class="p">);</span>
+                    <span class="n">xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">xmf_alpha_hi</span><span class="p">));</span>
+                    <span class="c1">//pack to 16bit data</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">xmf_hi</span><span class="p">));</span>
+                    <span class="kt">int</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                    <span class="kt">int</span> <span class="n">a4</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+                    <span class="n">xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">xmhi</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="c1">//write alpha</span>
+                <span class="p">}</span>
+                <span class="c1">//store to memory</span>
+                <span class="n">_mm_stream_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst_pix</span><span class="p">,</span> <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">xmlo</span><span class="p">,</span> <span class="n">xmhi</span><span class="p">));</span>
+                <span class="c1">//</span>
+                <span class="n">over_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">under_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+                <span class="n">dst_pix</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+            <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+            <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">img6</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test6.bmp&quot;</span><span class="p">,</span> <span class="n">img6</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a_ch1</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a_ch2</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img2</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img3</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img4</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img5</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img6</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

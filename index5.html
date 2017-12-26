@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+
+  <title>
+    waura's blog
+  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200908021249208355.html">PSDデータのフォーマット</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 02 8月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h3>PSDファイルの構成</h3>
+<p>PSDファイルは、先頭から以下の順で構成されている。<br>
+値はビッグエンディアンで格納されているのでリトルエンディアンへの変換が必要</p>
+<div class="highlight"><pre><span></span><span class="k">[Header]</span>
+<span class="k">[Color Mode Data Block]</span>
+<span class="k">[Image Resources Block]</span>
+<span class="k">[Layer and Mask Information Block]</span>
+<span class="k">[Image Data]</span>
+</pre></div>
+
+
+<h3>Header</h3>
+<p>[4byte] Signature  "8BPS"が入ってるらしい
+[2byte] Version バージョン
+[6byte] Reserved 0で無いといけない
+[2byte] channels カラーチャンネル数 (例えば、RGBAだと4)
+[4byte] rows 画像の高さ
+[4byte] columns 画像の幅
+[2byte] Depth 1pixelのデータ深度
+[2byte] color_mode カラーモード</p>
+<ul>
+<li>カラーモード<ul>
+<li>0 Bitmap …</li></ul></li></ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200906281246189191.html">ssh経由でgit</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 28 6月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>Git Extensionsから<a href="http://d.hatena.ne.jp/keyword/SSH">SSH</a>経由でgitを使うために<a href="http://d.hatena.ne.jp/keyword/WinSCP">WinSCP</a>についてくるPuttyGen等で作成する。
+Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>のppkキーはssh1のものでないとエラーがでる。
+ Urlはこんな感じで指定する。</p>
+<div class="highlight"><pre><span></span>[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
+</pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200904201240227874.html">gitサーバからソースを取ってきて、編集してサーバに変更を反映する</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 20 4月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2><a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>を新規作成</h2>
+<ul>
+<li>フォルダを新規作成</li>
+<li>[フォルダを右クリック]→[Git Extensions]→[Browse]でGit
+    Extensionsを起動</li>
+<li>[Initialize new repository]で初期化</li>
+<li>pullダイアログを開いてRemote
+    repositoryにgitサーバの<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>を指定してpull</li>
+</ul>
+<h2>ローカル<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>で作業</h2>
+<ul>
+<li>ソースを変更したらCommitダイアログを開く</li>
+<li>~~[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>にcommitできる~~</li>
+</ul>
+<p>これだと.gitgnoreで弾いたものまでcommitされてしまう</p>
+<h2>サーバにpush</h2>
+<ul>
+<li>pushダイアログを開いてRemote
+    repositoryにgitサーバの<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>を指定してpush</li>
+</ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200904141239716589.html">git addしたくないファイルを指定する。</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 火 14 4月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2>Git Extensionsのメニューから.gitgnoreの編集ダイアログを出す。</h2>
+<p>[Settings] -&gt; [Edit .gitgnore]</p>
+<h2>.gitgnoreの編集</h2>
+<p>.gitgnoreの設定方法</p>
+<div class="highlight"><pre><span></span># &#39;#&#39; で始まる行は無視されます
+# foo.txt という名前の全てのファイルを無視する
+foo.txt
+# (生成された) html ファイルは無視する
+*.html
+# foo.html は例外とし、手でメンテナンスします
+!foo.html
+# object と archive ファイルは無視する
+*.[oa]
+</pre></div>
+
+
+<p>[Add default]ボタンを押すと、大抵の邪魔なファイルを取り除くように設定される。</p>
+<h2>参考</h2>
+<p><a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files">http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files</a></p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200904141239716590.html">Debian上にgitサーバーを立てる</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 火 14 4月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2>gitとgitデーモン起動用のパッケージをインストール</h2>
+<div class="highlight"><pre><span></span>#apt-get install git-core git-daemon-run
+</pre></div>
+
+
+<h2><a href="http://d.hatena.ne.jp/keyword/daemon">daemon</a>の起動<a href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>編集</h2>
+<p>そのままの設定では面倒なこと(<a href="http://d.hatena.ne.jp/fuzzy2/20090228/p2">http://d.hatena.ne.jp/fuzzy2/20090228/p2</a>)になるので、git-daemonの起動スクリプトを編集する。</p>
+<div class="highlight"><pre><span></span>#vi /etc/sv/git-daemon/run
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>#exec git-daemon --verbose --base-path=/var/cache /var/cache/git
+exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-pack 
+</pre></div>
+
+
+<h2><a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
+<h2>ローカル<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
+<div class="highlight"><pre><span></span>$ mkdir -p …</pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200902111234333888.html">LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 水 11 2月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の公式<a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>で、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>形式でモデルを出力してくれる<a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>
+Exporterというのがあるのだが、、、<br>
+ダメダメすぎて、ストレスがたまる。</p>
+<ul>
+<li>出力したファイルにメッシュ情報がのってない。空のフレームだけ</li>
+<li>(おそらくだけど)IKをつかってないモーションモデルをBake
+    IKで出力させると<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>まで巻き込んで落ちる</li>
+<li>ようやく、メッシュ情報がのったファイルが出力されたと思ったらファイルが壊れててViewerで再生できない････</li>
+</ul>
+<p>直に<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>のファイルをさわったほうがはやい、というかさわらざるをえない<br>
+・<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1">デベロッパ</a>ー情報<br>
+<a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm">http://www.dstorm.co.jp/products/lw8/developer/game/index.htm</a></p>
+<p>DirectX10で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので<br>
+<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>にこだわることも無いのかもしれない。</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200902071233968785.html">Xファイルのフォーマット(5)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 07 2月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>今回はスキンメッシュに使うテンプレートの説明。</p>
+<div class="highlight"><pre><span></span>    <span class="n">SkinMeshHeader</span> <span class="p">{</span>
+        <span class="err">一つの頂点に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">一つの面に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">ボーンの数</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">SkinWeight</span> <span class="p">{</span>
+        <span class="err">ボーン</span><span class="p">(</span><span class="err">フレーム</span><span class="p">)</span><span class="err">の名前</span><span class="p">;</span>
+        <span class="err">重みの数</span><span class="p">;</span>
+        <span class="err">重みを与える頂点</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="mi">0</span><span class="o">~</span><span class="mi">1</span><span class="err">の値の頂点に対する重み</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4行列</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。<br>
+AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって<br>
+スキンメッシュを実装します。</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200902051233792037.html">Xファイルのフォーマット(4)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 木 05 2月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/hiroki0/20070324">http://d.hatena.ne.jp/hiroki0/20070324</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20070325">http://d.hatena.ne.jp/hiroki0/20070325</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20090204">http://d.hatena.ne.jp/hiroki0/20090204</a></p>
+<p>今回は、アニメーションのまとめ。<br>
+アニメーションは以下のように表されます。</p>
+<div class="highlight"><pre><span></span>AnimationSet AnimationSet_name {
+Animation Animation0 {
+{ frame1 } //フレーム名frame1のアニメーション
+AnimationKey {
+キータイプ;
+キー数;
+キー値;データ個数;データ;, //繰り返し
+}
+}
+}
+</pre></div>
+
+
+<p>AnimationSetは、一つのアニメーションを表し、1\~N個のAnimationを持ちます。<br>
+Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。<br>
+AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。</p>
+<ul>
+<li>回転の場合は、w …</li></ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200902041233704553.html">Xファイルのフォーマット(3)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 水 04 2月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/hiroki0/20070324">http://d.hatena.ne.jp/hiroki0/20070324</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20070325">http://d.hatena.ne.jp/hiroki0/20070325</a></p>
+<p>学校の課題で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のアニメーションを<a href="http://d.hatena.ne.jp/keyword/OpenGL">OpenGL</a>で再生することになりそうなので、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のフォーマットの続きをまとめてみる。</p>
+<p>今回はフレームについて、<br>
+フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。<br>
+フレームの形式はは、このようになっている。</p>
+<div class="highlight"><pre><span></span><span class="n">Frame</span> <span class="n">Aframe</span> <span class="p">{</span> <span class="c1">// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。</span>
+    <span class="n">FrameTransformMatrix</span> <span class="p">{</span>
+        <span class="mi">4</span><span class="n">x4行列</span>
+    <span class="p">}</span>
+    <span class="p">[</span> <span class="n">Meshes</span> <span class="p">]</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="p">[</span> <span class="n">More</span> <span class="n">frames</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。<br>
+行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。</p>
+<p>最小のフレームを持つXファイルの形式は以下のようになります。</p>
+<div class="highlight"><pre><span></span>Frame …</pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200901191232360978.html">玄箱に組み込んだSeagateのHDDのチェック</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 19 1月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/Seagate">Seagate</a>の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。<br>
+<a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm">http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm</a></p>
+<div class="highlight"><pre><span></span> # apt-get install hdparam
+ # hdparm -i /dev/hda
+</pre></div>
+
+
+<p>で、HDDの型番とシリアル番号をチェック。</p>
+<p>CCとかLCがシリアル番号に入ってたらセーフ<br>
+<a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957">http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957</a></p>
+  </div>
+</article>
+    
+<div class="pagination">
+    <ul>
+        <li class="pagination__prev">
+            <a href="/index4.html">&laquo;</a>
+        </li>
+
+
+
+          <li>
+            <a  href="/index.html">1</a>
+          </li>
+
+
+          <li>
+            <a  href="/index2.html">2</a>
+          </li>
+
+
+          <li>
+            <a  href="/index3.html">3</a>
+          </li>
+
+
+          <li>
+            <a  href="/index4.html">4</a>
+          </li>
+
+
+          <li>
+            <a class="pagination__page--current" href="/index5.html">5</a>
+          </li>
+
+
+          <li>
+            <a  href="/index6.html">6</a>
+          </li>
+
+
+          <li>
+            <a  href="/index7.html">7</a>
+          </li>
+
+
+          <li>
+            <a  href="/index8.html">8</a>
+          </li>
+
+
+          <li>
+            <a  href="/index9.html">9</a>
+          </li>
+
+        <li class="pagination__next">
+            <a href="/index6.html">&raquo;</a>
+        </li>
+    </ul>
+</div>
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

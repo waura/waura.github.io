@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+
+  <title>
+    waura's blog
+&ndash; Tag: サーバー管理  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/echo_home_server_2015.html">だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 25 4月 2015</p>
+ Tags:
+      <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
+  </div>
+  <div class="article__text">
+    <h2>なぜ自宅サーバーか？</h2>
+<p>「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。<br>
+たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。<br>
+しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。</p>
+<h2>どんなサーバーを組むのか？</h2>
+<p>どんなサーバーを組むのかによって、重視するポイントが変わってきます。<br>
+自分は下のような用途でサーバーを使用します。</p>
+<ul>
+<li>Webサーバー</li>
+<li>ビルドサーバー</li>
+<li>ファイルサーバ</li>
+</ul>
+<p>ビルドサーバー用途からなるべくCPU性能がいい方がいいし、メモリーも多い方がいい。<br>
+また、ファイルサーバにも使うのでディスク容量もたくさん欲しい。自宅にサーバーを置くので電気代はあまりかからない方がいい。<br>
+...と、要は性能はなるべく高く、かつ電気代はなるべく安くとないものねだりになってしまいした。<br>
+というわけで今回は、通常のデスクトップPCよりは低消費電力かつ、サーバーの用途に支障をきたさない程度のサーバーの構成を考えてみたいと思います。</p>
+<h2>PCパーツの選択</h2>
+<p>サーバーを建てるには、以下のパーツを用意する必要があります。</p>
+<ul>
+<li>CPU</li>
+<li>マザーボード</li>
+<li>メモリー</li>
+<li>HDDまたはSSD</li>
+<li>電源</li>
+<li>PCケース</li>
+</ul>
+<p>自分は、電源とPCケースは持ってるもの使用するので、ここではCPU、メモリーとHDD(SSD)を選んで行きます。</p>
+<h3>CPU</h3>
+<p>今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
+J1900やPentium …</p>
+  </div>
+</article>
+    
+<div class="pagination">
+    <ul>
+        <li class="pagination__prev">
+            <div class="pagination__prev--none">&laquo;</div>
+        </li>
+
+
+
+          <li>
+            <a class="pagination__page--current" href="/tag/sabaguan-li.html">1</a>
+          </li>
+
+        <li class="pagination__next">
+            <div class="pagination__next--none">&raquo;</div>
+        </li>
+    </ul>
+</div>
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

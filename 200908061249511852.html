@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200908061249511852.html">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 木 06 8月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。<br>
+リンクされているのが同じホスト内のhtmlならそのhtmlもパースします。</p>
+<div class="highlight"><pre><span></span><span class="ch">#!ruby -Ks</span>
+<span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;hpricot&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
+<span class="k">class</span> <span class="nc">GetWebFile</span>
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+<span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="k">end</span>
+<span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">begin</span>
+<span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+<span class="k">begin</span>
+<span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+<span class="p">}</span>
+<span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
+<span class="nb">warn</span> <span class="n">to</span>
+<span class="k">return</span>
+<span class="k">end</span>
+<span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
+<span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">empty?</span> <span class="k">then</span>
+<span class="k">next</span>
+<span class="k">elsif</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="k">then</span>
+<span class="k">next</span>
+<span class="k">end</span>
+<span class="n">file_url</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">if</span> <span class="sr">/http:\/\//</span> <span class="o">=~</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="k">then</span>
+<span class="n">file_url</span> <span class="o">=</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span>
+<span class="k">else</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">dirname</span><span class="p">(</span><span class="n">root_uri</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<span class="n">file_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">host</span><span class="si">}#{</span><span class="n">root_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+<span class="k">begin</span>
+<span class="n">link_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+<span class="k">rescue</span> <span class="no">URI</span><span class="o">::</span><span class="no">InvalidURIError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+<span class="k">next</span>
+<span class="k">end</span>
+<span class="c1">#同じホストのもののみ処理</span>
+<span class="k">if</span> <span class="n">root_uri</span><span class="o">.</span><span class="n">host</span> <span class="o">!=</span> <span class="n">link_uri</span><span class="o">.</span><span class="n">host</span> <span class="k">then</span>
+<span class="k">next</span>
+<span class="k">end</span>
+<span class="c1">#処理したものは飛ばす</span>
+<span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="vi">@file_ary</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">next</span>
+<span class="k">end</span>
+<span class="n">ext</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">extname</span><span class="p">(</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="p">)</span>
+<span class="c1">#ファイル配列へ追加</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ext</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="sr">/\?/</span> <span class="o">=~</span> <span class="n">ext</span><span class="p">))</span> <span class="k">then</span>
+<span class="vi">@file_ary</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1">#リンクをたどる</span>
+<span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span> <span class="k">then</span>
+<span class="n">parse_url</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="k">end</span>
+<span class="k">rescue</span> <span class="no">OpenURI</span><span class="o">::</span><span class="no">HTTPError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+<span class="nb">warn</span> <span class="n">ex</span><span class="o">.</span><span class="n">message</span>
+<span class="k">end</span>
+<span class="k">end</span>
+<span class="k">def</span> <span class="nf">print_files</span><span class="p">()</span>
+<span class="vi">@file_ary</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+<span class="nb">puts</span> <span class="n">file</span>
+<span class="k">end</span>
+<span class="k">end</span>
+<span class="k">end</span>
+<span class="k">if</span> <span class="vg">$0</span> <span class="o">==</span> <span class="bp">__FILE__</span> <span class="k">then</span>
+<span class="n">get_web_file</span> <span class="o">=</span> <span class="no">GetWebFile</span><span class="o">.</span><span class="n">new</span>
+<span class="n">get_web_file</span><span class="o">.</span><span class="n">parse_url</span><span class="p">(</span><span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+<span class="n">get_web_file</span><span class="o">.</span><span class="n">print_files</span><span class="p">()</span>
+<span class="k">end</span>
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

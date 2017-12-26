@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; Xファイルのフォーマット(2)  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200703251174775823.html">Xファイルのフォーマット(2)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 日 25 3月 2007</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <div class="highlight"><pre><span></span>//これはコメントです。  
+#これもコメントです。  
+//この例は、正しいポリゴンでない可能性があります。  
+Mesh (ここにメッシュの名前をつけることもできる。){  
+    3; //頂点の数  
+    0.00000;271.38129;0.00000;,　//頂点1の座標  
+    0.00000;240.92551;-153.11031;, //頂点2の座標  
+    0.00000;-128.71561;-400.09680;; //頂点3の座標
+
+    1; //面の数  
+    3;0,1,2;; //インデックスの数;インデックスの配列
+
+    //ここまでが必須要素です。
+</pre></div>
+
+
+<p>これに付随してオプションのデータをつけることができます。<br>
+使用できるオプションのデータは、<br>
+･MeshFaceWraps (今では使われてないらしい)<br>
+･MeshTextureCoords<br>
+･MeshNormals<br>
+･MeshVertexColors<br>
+･MeshMaterialList<br>
+である。</p>
+<div class="highlight"><pre><span></span>/////////////////////////////////////////////////////////////  
+//MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
+template MeshTextureCoords  
+{&lt; F6F23F40-7686-11cf-8F52-0040333594A3 &gt;  
+    DWORD nTextureCoords;  
+    array coords2d textureCoords[nTextureCoords];  
+}
+</pre></div>
+
+
+<p>nTextureCoords-テクスチャ座標の数。<br>
+array
+textureCoords-要<a href="http://d.hatena.ne.jp/keyword/%C1%C7%BF%F4">素数</a>nTextureCoordsのCoords2dの配列。<br>
+Coords2dは、テクスチャのUV座標を設定するためのテンプレート。</p>
+<div class="highlight"><pre><span></span>////////////////////////////////////////////////////  
+//MeshNormalsは、メッシュの法線を定義する。  
+template MeshNormals  
+{&lt; F6F23F43-7686-11cf-8F52-0040333594A3 &gt;  
+    DWORD nNormals;  
+    array Vector;
+    normals[nNormals];  
+    DWORD nFaceNormals;  
+    array MeshFace meshFaces[nFaceNormals];  
+}
+</pre></div>
+
+
+<p>nNormals-法線の数。<br>
+array
+normals-要素数nNormalsの<a href="http://d.hatena.ne.jp/keyword/Vector">Vector</a>テンプレートの配列、法線のベクトル。<br>
+nFaceNormals-面法線の数。<br>
+array
+meshFaces-要素数nFaceNormalsのMeshFaceの配列、面法線をあらわす。</p>
+<div class="highlight"><pre><span></span>//////////////////////////////////////////////////////  
+//MeshVertexColorsは、面またはメッシュごとに頂点色を設定する。  
+template MeshVertexColors  
+{\&lt;1630B821-7842-11cf-8F52-0040333594A3\&gt;  
+    DWORD nVertexColors;  
+    array IndexColor vertexColors[nVertexColors\];  
+}
+</pre></div>
+
+
+<p>nVertexColors-色の数。<br>
+array
+vertexColors-要素数nVertexColorsのIndexColorの配列。<br>
+IndexColorは、インデックス引数とRGBA色で構成される。</p>
+<div class="highlight"><pre><span></span>/////////////////////////////////////////////////////////  
+//MeshMaterialListは、どのマテリアルをどの面に適用するのかを指定する。  
+template MeshMaterialList  
+{&lt; F6F23F42-7686-11cf-8F52-0040333594A3 &gt;  
+    DWORD nMaterials;  
+    DWORD nFaceIndexes;  
+    DWORD FaceIndexes;  
+    [Material]  
+}
+</pre></div>
+
+
+<p>nMaterials-存在するマテリアルの数をしてする。<br>
+nFaceIndexes-FaceIndexesの数。<br>
+FaceIndexe-インデックス番号。<br>
+Materialテンプレートをオプションとしてつけることができる。</p>
+<div class="highlight"><pre><span></span>//////////////////////////////////////////////////////////  
+//Materialは、メッシュ全体またはそれぞれの面に適用できる。マテリアル色を定義す。template
+Material  
+{&lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &gt;  
+    ColorRGBA faceColor;  
+    float power;  
+    DWORD specularColor;  
+    DWORD emissiveColor;  
+    [TextureFilename]  
+}
+</pre></div>
+
+
+<p>faceColor-面の色<br>
+power-マテリアルのスペキュラ色指数<br>
+specularColor-スペキュラ色<br>
+emissiveColor-エミッション色<br>
+TextureFilenameをオプションとしてつけることもできる。<br>
+TextureFilenameは、テクスチャファイルのパスを指定する。</p>
+<p>よって最小の構成の<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>は、一般的に以下のような形式になる。</p>
+<div class="highlight"><pre><span></span>    Mesh {
+        頂点の数;
+        頂点の座標達;
+        面の数;
+        面のを表す頂点のインデックス;
+        MeshMaterialList {
+            使用するマテリアルの数;
+            面の数;
+            それぞれの面の使用する引数;//繰り返し
+            使用するマテリアルへの参照;//繰り返し
+            TextureFilename{
+                &quot;ファイルへのパス&quot;;
+            }
+        }
+        MeshNormals {
+            法線の数;
+            法線の座標達;
+            面法線インデックスの数;
+            インデックス達;
+        }
+        MeshTextureCoords {
+            頂点の数;
+            テクスチャ座標u;テクスチャ座標v;//繰り返し
+        }
+    }
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

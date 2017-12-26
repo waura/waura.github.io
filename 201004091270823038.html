@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; まるごと吸い出したHDDイメージをマウントする  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201004091270823038.html">まるごと吸い出したHDDイメージをマウントする</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 金 09 4月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。</p>
+<p>まずは、HDDディスクイメージをループバックデバイスに結びつける。</p>
+<div class="highlight"><pre><span></span>$ sudo losetup /dev/loop0 hdd.img
+</pre></div>
+
+
+<p>次に、fdiskでパーティション構成を出力。</p>
+<div class="highlight"><pre><span></span>$ sudo fdisk /dev/loop0 -lu
+Disk /dev/loop0: <span class="m">4034</span> MB, <span class="m">4034838528</span> bytes
+<span class="m">128</span> heads, <span class="m">63</span> sectors/track, <span class="m">977</span> cylinders, total <span class="m">7880544</span> sectors
+<span class="nv">Units</span> <span class="o">=</span> sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
+Disk identifier: 0x001c2022
+Device Boot      Start         End      Blocks   Id  System
+/dev/loop0p1              <span class="m">63</span>      <span class="m">112895</span>       <span class="m">56416</span>+  <span class="m">83</span>  Linux
+/dev/loop0p2          <span class="m">112896</span>     <span class="m">7902719</span>     <span class="m">3894912</span>    <span class="m">5</span>  Extended
+/dev/loop0p5          <span class="m">112959</span>     <span class="m">3088511</span>     <span class="m">1487776</span>+  <span class="m">83</span>  Linux
+/dev/loop0p6         <span class="m">3088575</span>     <span class="m">3588479</span>      <span class="m">249952</span>+  <span class="m">83</span>  Linux
+/dev/loop0p7         <span class="m">3588543</span>     <span class="m">4217471</span>      <span class="m">314464</span>+  <span class="m">83</span>  Linux
+/dev/loop0p8         <span class="m">4217535</span>     <span class="m">4846463</span>      <span class="m">314464</span>+  <span class="m">83</span>  Linux
+/dev/loop0p9         <span class="m">4846527</span>     <span class="m">7257599</span>     <span class="m">1205536</span>+  <span class="m">83</span>  Linux
+</pre></div>
+
+
+<p>例えば、/dev/loop0p9のパーティションをマウントするには、loop0p9の開始シリンダが4846527なので、セクターのサイズ512byteを掛けて<br>
+512 * 4846527 =
+2481421824byteのオフセットを指定してループバックデバイスに結びつけて、ループバックデバイスを適当なディレクトリにマウントする。</p>
+<div class="highlight"><pre><span></span>$ sudo losetup -o <span class="m">2481421824</span> /dev/loop1 hdd.img
+$ sudo mount -o loop /dev/loop1 /mnt
+</pre></div>
+
+
+<p>使い終わったら以下のようにして解放する。</p>
+<div class="highlight"><pre><span></span>$ sudo losetup -d /dev/loop1
+$ sudo losetup -d /dev/loop0
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; Xファイルのフォーマット(5)  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200902071233968785.html">Xファイルのフォーマット(5)</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 07 2月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>今回はスキンメッシュに使うテンプレートの説明。</p>
+<div class="highlight"><pre><span></span>    <span class="n">SkinMeshHeader</span> <span class="p">{</span>
+        <span class="err">一つの頂点に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">一つの面に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">ボーンの数</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">SkinWeight</span> <span class="p">{</span>
+        <span class="err">ボーン</span><span class="p">(</span><span class="err">フレーム</span><span class="p">)</span><span class="err">の名前</span><span class="p">;</span>
+        <span class="err">重みの数</span><span class="p">;</span>
+        <span class="err">重みを与える頂点</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="mi">0</span><span class="o">~</span><span class="mi">1</span><span class="err">の値の頂点に対する重み</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4行列</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。<br>
+AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって<br>
+スキンメッシュを実装します。</p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

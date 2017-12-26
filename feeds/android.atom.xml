@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - Android</title><link href="/" rel="alternate"></link><link href="/feeds/android.atom.xml" rel="self"></link><id>/</id><updated>2015-11-14T21:46:00+09:00</updated><entry><title>SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</title><link href="/swiperefreshlayout_setrefreshing.html" rel="alternate"></link><published>2015-11-14T21:46:00+09:00</published><updated>2015-11-14T21:46:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-11-14:/swiperefreshlayout_setrefreshing.html</id><summary type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href="https://code.google.com/p/android/issues/detail?id=77712"&gt;https://code.google.com/p/android/issues/detail?id=77712&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// MySwipeRefreshLayout.java  &lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MySwipeRefreshLayout&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;SwipeRefreshLayout&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+  &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;mMeasured&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;mPreMeasureRefreshing&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="nf"&gt;MySwipeRefreshLayout&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+  &lt;span class="o"&gt;}&lt;/span&gt;
+
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="nf"&gt;MySwipeRefreshLayout&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AttributeSet&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;context …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href="https://code.google.com/p/android/issues/detail?id=77712"&gt;https://code.google.com/p/android/issues/detail?id=77712&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// MySwipeRefreshLayout.java  &lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MySwipeRefreshLayout&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;SwipeRefreshLayout&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+  &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;mMeasured&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;mPreMeasureRefreshing&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="nf"&gt;MySwipeRefreshLayout&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+  &lt;span class="o"&gt;}&lt;/span&gt;
+
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="nf"&gt;MySwipeRefreshLayout&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AttributeSet&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;attrs&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+  &lt;span class="o"&gt;}&lt;/span&gt;
+
+  &lt;span class="nd"&gt;@Override&lt;/span&gt;  
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;onMeasure&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;widthMeasureSpec&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;heightMeasureSpec&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onMeasure&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;widthMeasureSpec&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;heightMeasureSpec&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;mMeasured&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+      &lt;span class="n"&gt;mMeasured&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;  
+      &lt;span class="n"&gt;setRefreshing&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mPreMeasureRefreshing&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+    &lt;span class="o"&gt;}&lt;/span&gt;  
+  &lt;span class="o"&gt;}&lt;/span&gt;
+
+  &lt;span class="nd"&gt;@Override&lt;/span&gt;  
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;setRefreshing&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;refreshing&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mMeasured&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+      &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setRefreshing&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;refreshing&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;  
+    &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;  
+      &lt;span class="n"&gt;mPreMeasureRefreshing&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;refreshing&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;  
+    &lt;span class="o"&gt;}&lt;/span&gt;  
+  &lt;span class="o"&gt;}&lt;/span&gt;  
+&lt;span class="o"&gt;}&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Android"></category></entry><entry><title>Android Studioで作成したプロジェクトをJenkinsでビルドする</title><link href="/201305181368891937.html" rel="alternate"></link><published>2013-05-18T00:45:00+09:00</published><updated>2013-05-18T00:45:00+09:00</updated><author><name>waura</name></author><id>tag:None,2013-05-18:/201305181368891937.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;AndroidStudio&lt;/a&gt;のプロジェクトはgradleベースなので簡単にJenkinsでビルドすることができます。&lt;br&gt;
+以下、ビルドするために行った手順です。&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android"&gt;Android&lt;/a&gt; &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;をインストールする&lt;/h4&gt;
+&lt;p&gt;[Jenkinsの管理]-&amp;gt;[システムの設定]で環境変数$ANDROID_HOEMを追加して、値にAndroid SDKをインストールしたディレクトリへのパスを入力する&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;Android Studio&lt;/a&gt;で作成したプロジェクトをgit等に追加する&lt;/h4&gt;
+&lt;h4&gt;Jenkinsの設定&lt;/h4&gt;
+&lt;p&gt;[Jenkinsの管理]-&amp;gt;[プラグインの管理]からJenkins
+Gradle pluginをインストールする。&lt;br&gt;
+[Jenkinsの管理]-&amp;gt;[システムの設定]-&amp;gt;[Gradle]&lt;br&gt;
+Gradle追加ボタンを押して、下記のように選択する&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;name : Gradle 1.6&lt;/li&gt;
+&lt;li&gt;自動インストール : チェックあり&lt;/li&gt;
+&lt;li&gt;インストーラの追加：Install
+    from Gradle.org&lt;/li&gt;
+&lt;li&gt;バージョン : Gradle 1.6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Jenkins ジョブの作成&lt;/h4&gt;
+&lt;p&gt;ジョブの設定から[ビルド]-&amp;gt;[ビルド手順の追加]を押してInvoke Gradlescriptを選択する。&lt;br&gt;
+Invoke …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;AndroidStudio&lt;/a&gt;のプロジェクトはgradleベースなので簡単にJenkinsでビルドすることができます。&lt;br&gt;
+以下、ビルドするために行った手順です。&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android"&gt;Android&lt;/a&gt; &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;をインストールする&lt;/h4&gt;
+&lt;p&gt;[Jenkinsの管理]-&amp;gt;[システムの設定]で環境変数$ANDROID_HOEMを追加して、値にAndroid SDKをインストールしたディレクトリへのパスを入力する&lt;/p&gt;
+&lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;Android Studio&lt;/a&gt;で作成したプロジェクトをgit等に追加する&lt;/h4&gt;
+&lt;h4&gt;Jenkinsの設定&lt;/h4&gt;
+&lt;p&gt;[Jenkinsの管理]-&amp;gt;[プラグインの管理]からJenkins
+Gradle pluginをインストールする。&lt;br&gt;
+[Jenkinsの管理]-&amp;gt;[システムの設定]-&amp;gt;[Gradle]&lt;br&gt;
+Gradle追加ボタンを押して、下記のように選択する&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;name : Gradle 1.6&lt;/li&gt;
+&lt;li&gt;自動インストール : チェックあり&lt;/li&gt;
+&lt;li&gt;インストーラの追加：Install
+    from Gradle.org&lt;/li&gt;
+&lt;li&gt;バージョン : Gradle 1.6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Jenkins ジョブの作成&lt;/h4&gt;
+&lt;p&gt;ジョブの設定から[ビルド]-&amp;gt;[ビルド手順の追加]を押してInvoke Gradlescriptを選択する。&lt;br&gt;
+Invoke Gradleのラジオボタンを選択して、Gradle VersionでGradle 1.6を選択する&lt;/p&gt;</content></entry><entry><title>Androidアプリを複数のプロジェクトに分割して開発する時の設定</title><link href="/201210011349098138.html" rel="alternate"></link><published>2012-10-01T22:28:00+09:00</published><updated>2012-10-01T22:28:00+09:00</updated><author><name>waura</name></author><id>tag:None,2012-10-01:/201210011349098138.html</id><summary type="html">&lt;p&gt;eclipseのプロジェクトのプロパティから「Java Build Path」や「Project References」を設定してみたら、ビルドは通るが実行時にClassNotFoundExceptionが出て上手くいかなかった。&lt;/p&gt;
+&lt;p&gt;正しくは、プロジェクトのプロパティの「Android」を選んでLibraryの設定をするようだ。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;呼び出される側のプロジェクトはIs Libraryにチェックを入れる。&lt;/li&gt;
+&lt;li&gt;呼び出す側のプロジェクトはAddから呼び出すプロジェクトを選択する。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;また、AndroidManifest.xmlに呼び出す側のActivityなりServiceなりを下記のように書いておく必要がある。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;・・・
+&amp;lt;service android:name=&amp;quot;key0note.GoogleReaderWidget.GoogleReaderWidgetDataService&amp;quot; /&amp;gt;
+・・・
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;参考リンク&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://tmpla.info/archives/1211"&gt;http://tmpla.info/archives/1211&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;eclipseのプロジェクトのプロパティから「Java Build Path」や「Project References」を設定してみたら、ビルドは通るが実行時にClassNotFoundExceptionが出て上手くいかなかった。&lt;/p&gt;
+&lt;p&gt;正しくは、プロジェクトのプロパティの「Android」を選んでLibraryの設定をするようだ。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;呼び出される側のプロジェクトはIs Libraryにチェックを入れる。&lt;/li&gt;
+&lt;li&gt;呼び出す側のプロジェクトはAddから呼び出すプロジェクトを選択する。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;また、AndroidManifest.xmlに呼び出す側のActivityなりServiceなりを下記のように書いておく必要がある。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;・・・
+&amp;lt;service android:name=&amp;quot;key0note.GoogleReaderWidget.GoogleReaderWidgetDataService&amp;quot; /&amp;gt;
+・・・
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;参考リンク&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://tmpla.info/archives/1211"&gt;http://tmpla.info/archives/1211&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</title><link href="/201106061307361103.html" rel="alternate"></link><published>2011-06-06T20:51:00+09:00</published><updated>2011-06-06T20:51:00+09:00</updated><author><name>waura</name></author><id>tag:None,2011-06-06:/201106061307361103.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./internal_install_SDK.exp: コマンドが見つかりませんでした
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;とエラーがでる場合は次のようにして、expectパッケージをインストールする。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install expect
+&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./internal_install_SDK.exp: コマンドが見つかりませんでした
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;とエラーがでる場合は次のようにして、expectパッケージをインストールする。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install expect
+&lt;/pre&gt;&lt;/div&gt;</content></entry></feed>

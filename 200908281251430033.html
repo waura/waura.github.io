@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="Windows">
+
+  <title>
+    waura's blog
+&ndash; TreeViewコントロール 選択されたアイテムの文字列を取得するには  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200908281251430033.html">TreeViewコントロール 選択されたアイテムの文字列を取得するには</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 金 28 8月 2009</p>
+ Tags:
+      <a href="/tag/windows.html">#Windows</a>    </p>
+  </div>
+  <div class="article__text">
+    <p>まず、親ウィンドウでWM_NOTIFYを捕まえる。<br>
+WM_NOTIFYでTreeViewのイベントが送られてくるのでこれを処理する。<br>
+このときLPARAMにはNMTREEVIEW構造体のアドレスが入っている。</p>
+<div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">idFrom</span> <span class="o">!=</span> <span class="n">IDC_CONFIG_TREE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">code</span><span class="p">){</span>
+  <span class="k">case</span> <span class="nl">NM_CLICK</span><span class="p">:</span> <span class="c1">//ツリーアイテムクリック時</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">TVN_SELCHANGED</span><span class="p">:</span> <span class="c1">//ツリーアイテム選択変更時</span>
+    <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>このように<br>
+lpnmtview-&gt;hdr.idFromにツリービューのIDが、<br>
+lpnmtview-&gt;hdr.codeのイベントのIDが入っている。</p>
+<p>クリックイベント時にはまだ、アイテムは選択されていないので、<br>
+NM_CLICKを捕まえて、選択アイテムを取得するというやり方では上手くいかない。</p>
+<p>なので、TVN_SELCHANGED時に、選択アイテムを取得するという方法で行います。<br>
+このとき、送られてくる、NMTREEVIEW構造体に選択されているTVITEMが入ってるが、<br>
+このTVITEMのラベル名は正しく格納されていないので自分で取得する必要がある。</p>
+<p>コード例は以下のようになる。</p>
+<div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">idFrom</span> <span class="o">!=</span> <span class="n">IDC_CONFIG_TREE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">code</span><span class="p">){</span>
+  <span class="k">case</span> <span class="nl">TVN_SELCHANGED</span><span class="p">:</span> <span class="c1">//ツリーアイテム選択変更時</span>
+  <span class="p">{</span>
+    <span class="n">HTREEITEM</span> <span class="n">hItem</span> <span class="o">=</span> <span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">itemNew</span><span class="p">.</span><span class="n">hItem</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">pszText</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+    <span class="n">TVITEM</span> <span class="n">ti</span><span class="p">;</span>
+    <span class="n">ti</span><span class="p">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">TVIF_TEXT</span><span class="p">;</span>
+    <span class="n">ti</span><span class="p">.</span><span class="n">hItem</span> <span class="o">=</span> <span class="n">hItem</span><span class="p">;</span>
+    <span class="n">ti</span><span class="p">.</span><span class="n">pszText</span> <span class="o">=</span> <span class="n">pszText</span><span class="p">;</span>
+    <span class="n">ti</span><span class="p">.</span><span class="n">cchTextMax</span> <span class="o">=</span> <span class="mi">256</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">TreeView_GetItem</span><span class="p">(</span><span class="n">hTree</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ti</span><span class="p">)){</span>
+      <span class="c1">//ここで、pszTextに選択アイテムのラベルが入っている。</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

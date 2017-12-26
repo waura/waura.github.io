@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201112031322919731.html">SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 03 12月 2011</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>↓の続き  </p>
+<p><a href="../200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
+<a href="../http://localhost:8000/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
+<a href="../201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<p>今回はアライメントをずらした場合での計測をします。</p>
+<p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
+前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
+<p>しかし、アライメントを合わせる必要があるロード・ストア命令を使用する場合は、<br>
+処理方法をアライメントのズレによって変える必要があります。</p>
+<p>今回のアルファブレンド処理では、</p>
+<ol>
+<li>入出力メモリともアライメントが揃っている場合</li>
+<li>入出力メモリともアライメントから同じだけずれている場合</li>
+<li>入力、出力メモリのアライメントのずれ量が違う場合</li>
+</ol>
+<p>の3通りに分けてコードを実装しました。</p>
+<p>1の場合は、前回と同様のコードで処理します。<br>
+2の場合は、ずれてる分を処理して入出力ともアライメントを合わせた状態にして、1と同じように処理します。<br>
+3の場合は、ずれてる分をシフト演算を使用してずれを合わせる処理をいれて、<br>
+ロード・ストア命令がアライメントが合った状態で実行されるようにします。</p>
+<h4>計測方法</h4>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ol>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_si128でメモリ読み込み、_mm_storeu_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_store_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ol>
+<p>の4通りの処理の処理速度を計測する。<br>
+前回までは間違えて<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点用の_mm_loadu_ps等を使っていたので、今回は_mm_loadu_si128等を使います。</p>
+<ul>
+<li>チャンネルサイズ8bit
+    5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
+    2.3を用いた。</li>
+<li>アルファブレンド部分の処理のみ処理時間を計測した。</li>
+<li>与えるアルファチャンネルは、上下ともにアルファ値を均等に分布させる</li>
+<li>アルファブレンドでの入力画像は上下でアライメントのずれ量が合った状態にする。</li>
+</ul>
+<p>以下の3通りのように意図的にアライメントをずらして計測を行います。</p>
+<ol>
+<li>入出力画像ともにずらさない</li>
+<li>入出力画像とも2ピクセルずつずらす</li>
+<li>入力画像を2ピクセル、出力画像を1ピクセルずらす</li>
+</ol>
+<h4>計測1</h4>
+<h5>環境</h5>
+<ul>
+<li>CPU: <a href="http://d.hatena.ne.jp/keyword/Core%20i7">Core i7</a>
+    2600 3.40GHz</li>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/Windows%207">Windows 7</a>
+    64bit</li>
+<li>Mem: 8.00GB(7.73GB usable)</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio</a>
+    2010</li>
+<li>最適化オプション: 実行速度 (/O2)</li>
+</ul>
+<h5>32bit向け実行ファイル</h5>
+<ul>
+<li>
+<p>入出力画像ともにずらさない</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   675.374 msec   203.678 msec                               166 msec                                 166.106 msec
+  2回目   591.512 msec   181.441 msec                               175.978 msec                             207.662 msec
+  3回目   563.755 msec   170.575 msec                               179.13 msec                              165.016 msec</p>
+</li>
+<li>
+<p>入出力画像とも2ピクセルずつずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   584.079 msec   184.901 msec                               163.356 msec                             197.957 msec
+  2回目   601.959 msec   229.62 msec                                169.618 msec                             179.718 msec
+  3回目   576.596 msec   172.858 msec                               172.926 msec                             238.996 msec</p>
+</li>
+<li>
+<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   581.447 msec   215.271 msec                               194.737 msec                             183.298 msec
+  2回目   583.466 msec   168.634 msec                               175.305 msec                             204.374 msec
+  3回目   585.919 msec   170.421 msec                               179.532 msec                             177.077 msec</p>
+</li>
+</ul>
+<h5>64bit向け実行ファイル</h5>
+<ul>
+<li>
+<p>入出力画像ともにずらさない</p>
+<div class="highlight"><pre><span></span>  非SSE                                                         _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   <a href="http://d.hatena.ne.jp/keyword/321">321</a>.546 msec   178.499 msec                               181.309 msec                             192.388 msec
+  2回目   370.826 msec                                                  170.399 msec                               159.175 msec                             185.213 msec
+  3回目   311.765 msec                                                  162.117 msec                               166.067 msec                             167.506 msec</p>
+</li>
+<li>
+<p>入出力画像とも2ピクセルずつずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   316.697 msec   172.909 msec                               162.31 msec                              167.428 msec
+  2回目   308.39 msec    169.355 msec                               163.629 msec                             159.495 msec
+  3回目   312.266 msec   165.965 msec                               158.519 msec                             173.99 msec</p>
+</li>
+<li>
+<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   303.656 msec   175.868 msec                               172.008 msec                             163.839 msec
+  2回目   329.698 msec   157.363 msec                               171.484 msec                             166.765 msec
+  3回目   297.241 msec   159.257 msec                               164.473 msec                             163.332 msec</p>
+</li>
+</ul>
+<h4>計測2</h4>
+<h5>環境</h5>
+<ul>
+<li>CPU: Core2 Duo E8300 3.00GHZ</li>
+<li>OS: Windows 7 32bit</li>
+<li>Mem: 4.00GM(3.50GB usable)</li>
+<li>コンパイラ: Visual Studio 2010</li>
+<li>最適化オプション: 実行速度 (/O2)</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>
+<p>入出力画像ともにずらさない</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   1098.98 msec   217.239 msec                               191.035 msec                             197.02 msec
+  2回目   1103 msec      218.563 msec                               190.894 msec                             193.745 msec
+  3回目   1104.15 msec   218.304 msec                               190.167 msec                             196.236 msec</p>
+</li>
+<li>
+<p>入出力画像とも2ピクセルずつずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   1106.91 msec   218.914 msec                               194.721 msec                             199.865 msec
+  2回目   1109.58 msec   223.114 msec                               196.515 msec                             199.412 msec
+  3回目   1127.07 msec   216.637 msec                               190.159 msec                             196.093 msec</p>
+</li>
+<li>
+<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
+<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
+</pre></div>
+
+
+<hr>
+<p>1回目   1119.89 msec   255.483 msec                               245.189 msec                             243.91 msec
+  2回目   1086.53 msec   221.121 msec                               210.191 msec                             211.133 msec
+  3回目   1086.65 msec   221.38 msec                                209.693 msec                             221.721 msec</p>
+</li>
+</ul>
+<h4>まとめ</h4>
+<p><a href="http://d.hatena.ne.jp/keyword/Core%20i7">Core i7</a>
+2600では、_mm_loadu_si128を使っても_mm_load_si128とバラツキがあるが同程度という結果だった。</p>
+<p>32bit <a href="http://d.hatena.ne.jp/keyword/Core2%20Duo">Core2 Duo</a>
+E8400では、アライメントを合わせた効果がCorei7に比べてよく出ていて<br>
+入出力画像とも2ピクセルずつずらした場合には約10%、<br>
+入力画像を1ピクセル、出力画像を2ピクセルずらした場合には約5%速くなっていることがわかった。</p>
+<h4>使用したコード</h4>
+<p>SSEのアルファブレンド関数はinlineを付けてもインライン展開されなかったのでマクロ関数で実装しています。</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/cv.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/highgui.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;IETimer.h&quot;</span><span class="cp"></span>
+
+<span class="k">union</span> <span class="n">UCvPixel32</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span>
+    <span class="p">{</span>
+        <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">a</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="k">typedef</span> <span class="n">UCvPixel32</span> <span class="n">UCvPixel</span><span class="p">;</span>
+<span class="kr">inline</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="nf">GetNextLineAddress</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">addr</span> <span class="o">+</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="nf">GetPixelAddress</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">depth</span> <span class="o">==</span> <span class="n">IPL_DEPTH_8U</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="nf">GetNextLineAddress32</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">UCvPixel32</span><span class="o">*</span><span class="p">)((</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">addr</span> <span class="o">+</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">UCvPixel32</span><span class="o">*</span> <span class="nf">GetPixelAddress32</span><span class="p">(</span><span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">depth</span> <span class="o">==</span> <span class="n">IPL_DEPTH_8U</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">UCvPixel32</span><span class="o">*</span><span class="p">)(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">imageData</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">widthStep</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#define ALPHABLEND_SSE(dst, under, over)                                         </span>
+<span class="p">{</span>                                                                                
+  <span class="kr">__m128i</span> <span class="n">__xmzero</span> <span class="o">=</span> <span class="n">_mm_setzero_si128</span><span class="p">();</span>                                       
+  <span class="kr">__m128i</span> <span class="n">__xmff16</span> <span class="o">=</span> <span class="n">_mm_set1_epi16</span><span class="p">(</span><span class="mh">0xff</span><span class="p">);</span>                                     
+
+  <span class="kr">__m128i</span> <span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmu16</span><span class="p">;</span>                                                     
+  <span class="kr">__m128i</span> <span class="n">__xmlo</span><span class="p">,</span> <span class="n">__xmhi</span><span class="p">;</span>                                                       
+  <span class="kr">__m128i</span> <span class="n">__xmover_alpha</span><span class="p">,</span> <span class="n">__xmover_ralpha</span><span class="p">,</span> <span class="n">__xmunder_alpha</span><span class="p">,</span> <span class="n">__xmunder_ralpha</span><span class="p">,</span> <span class="n">__xmalpha</span><span class="p">;</span>  
+  <span class="kr">__m128</span> <span class="n">__xmf_lo</span><span class="p">,</span> <span class="n">__xmf_hi</span><span class="p">,</span> <span class="n">__xmf_alpha_lo</span><span class="p">,</span> <span class="n">__xmf_alpha_hi</span><span class="p">;</span>                    
+
+  <span class="cm">/*load lo double ward */</span>                                                      
+  <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">);</span>                                  
+  <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_unpacklo_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">);</span>                                 
+
+  <span class="kt">int</span> <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                                
+  <span class="kt">int</span> <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                                
+  <span class="k">if</span> <span class="p">((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="p">{</span>                                     
+      <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">__xmo16</span><span class="p">;</span>                                                         
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                                                    
+      <span class="kt">int</span> <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                           
+      <span class="kt">int</span> <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                           
+      <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>                                     
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">__xmo16</span><span class="p">;</span>                                                     
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>                            
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">__xmu16</span><span class="p">;</span>                                                     
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>                        
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span>            
+
+          <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmover_ralpha</span><span class="p">);</span> <span class="cm">/* under_pix * over_ralpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmo16</span><span class="p">);</span> <span class="cm">/* (under_pix * over_ralpha + over_pix * over_alpha) */</span>  
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="cm">/* (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8 */</span>  
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="cm">/* write alpha */</span>        
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmlo</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="cm">/* write alpha */</span>        
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                                                
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span>            
+          <span class="n">__xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmunder_alpha</span><span class="p">);</span>          
+          <span class="n">__xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmover_ralpha</span><span class="p">,</span> <span class="n">__xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="cm">/* 255 - ((over_ralpha * under_ralpha) &gt;&gt; 8) */</span>  
+
+          <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmunder_alpha</span><span class="p">,</span> <span class="n">__xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">__xmu16</span><span class="p">);</span> <span class="cm">/* under_pix * ((under_alpha * over_ralpha)&gt;&gt;8) */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmo16</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha + (under_pix * under_alpha * over_ralpha)&gt;&gt;8 */</span>  
+
+          <span class="cm">/* calc pixel 1 */</span>                                                    
+          <span class="n">__xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">__xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">__xmf_alpha_lo</span><span class="p">));</span>          
+
+          <span class="cm">/* calc pixel 2 */</span>                                                    
+          <span class="n">__xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">__xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">__xmf_alpha_hi</span><span class="p">));</span>          
+
+          <span class="cm">/* pack to 16bit data */</span>                                              
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">__xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">__xmf_hi</span><span class="p">));</span>  
+          <span class="kt">int</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                           
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmlo</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="cm">/* write alpha */</span>              
+          <span class="kt">int</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                           
+          <span class="n">__xmlo</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmlo</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="cm">/* write alpha */</span>              
+      <span class="p">}</span>                                                                         
+  <span class="p">}</span>                                                                             
+
+  <span class="cm">/* load hi double ward */</span>                                                     
+  <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">);</span>                                  
+  <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_unpackhi_epi8</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">);</span>                                 
+
+  <span class="n">over_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                                     
+  <span class="n">over_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                                     
+  <span class="k">if</span> <span class="p">((</span><span class="n">over_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">over_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">))</span> <span class="p">{</span>                                     
+      <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">__xmo16</span><span class="p">;</span>                                                         
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                                                    
+      <span class="kt">int</span> <span class="n">under_a1</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                           
+      <span class="kt">int</span> <span class="n">under_a2</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                           
+      <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>                                     
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">__xmo16</span><span class="p">;</span>                                                     
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>                            
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">__xmu16</span><span class="p">;</span>                                                     
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under_a1</span> <span class="o">==</span> <span class="mi">255</span> <span class="o">&amp;&amp;</span> <span class="n">under_a2</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>                        
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span>            
+
+          <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmover_ralpha</span><span class="p">);</span> <span class="cm">/* under_pix * over_ralpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmo16</span><span class="p">);</span> <span class="cm">/* (under_pix * over_ralpha + over_pix * over_alpha) */</span>  
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="cm">/* (under_pix * over_ralpha + over_pix * over_alpha) &gt;&gt; 8 */</span>  
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="cm">/* write alpha */</span>        
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmhi</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="cm">/* write alpha */</span>        
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                                                
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmover_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmover_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span>            
+          <span class="n">__xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflelo_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmunder_alpha</span> <span class="o">=</span> <span class="n">_mm_shufflehi_epi16</span><span class="p">(</span><span class="n">__xmunder_alpha</span><span class="p">,</span> <span class="n">_MM_SHUFFLE</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  
+          <span class="n">__xmunder_ralpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">__xmunder_alpha</span><span class="p">);</span>          
+          <span class="n">__xmalpha</span> <span class="o">=</span> <span class="n">_mm_sub_epi16</span><span class="p">(</span><span class="n">__xmff16</span><span class="p">,</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmover_ralpha</span><span class="p">,</span> <span class="n">__xmunder_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">));</span> <span class="cm">/* 255 - ((over_ralpha * under_ralpha) &gt;&gt; 8) */</span>  
+
+          <span class="n">__xmu16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span> <span class="n">_mm_srli_epi16</span><span class="p">(</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmunder_alpha</span><span class="p">,</span> <span class="n">__xmover_ralpha</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span> <span class="n">__xmu16</span><span class="p">);</span> <span class="cm">/* under_pix * ((under_alpha * over_ralpha)&gt;&gt;8) */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_mullo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmover_alpha</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha */</span>  
+          <span class="n">__xmo16</span> <span class="o">=</span> <span class="n">_mm_add_epi16</span><span class="p">(</span><span class="n">__xmu16</span><span class="p">,</span> <span class="n">__xmo16</span><span class="p">);</span> <span class="cm">/* over_pix * over_alpha + (under_pix * ((under_alpha * over_ralpha)&gt;&gt;8) */</span>  
+
+          <span class="cm">/* calc pixel1 */</span>                                                     
+          <span class="n">__xmf_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_alpha_lo</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpacklo_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_lo</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">__xmf_lo</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">__xmf_alpha_lo</span><span class="p">));</span>          
+
+          <span class="cm">/* calc pixel 2 */</span>                                                    
+          <span class="n">__xmf_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">__xmo16</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_alpha_hi</span> <span class="o">=</span> <span class="n">_mm_cvtepi32_ps</span><span class="p">(</span> <span class="n">_mm_unpackhi_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="n">__xmzero</span><span class="p">)</span> <span class="p">);</span>  
+          <span class="n">__xmf_hi</span> <span class="o">=</span> <span class="n">_mm_mul_ps</span><span class="p">(</span><span class="n">__xmf_hi</span><span class="p">,</span> <span class="n">_mm_rcp_ps</span><span class="p">(</span><span class="n">__xmf_alpha_hi</span><span class="p">));</span>          
+
+          <span class="cm">/* pack to 16bit data */</span>                                              
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_packs_epi32</span><span class="p">(</span><span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">__xmf_lo</span><span class="p">),</span> <span class="n">_mm_cvtps_epi32</span><span class="p">(</span><span class="n">__xmf_hi</span><span class="p">));</span>  
+          <span class="kt">int</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>                           
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmhi</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="cm">/* write alpha */</span>              
+          <span class="kt">int</span> <span class="n">a4</span> <span class="o">=</span> <span class="n">_mm_extract_epi16</span><span class="p">(</span><span class="n">__xmalpha</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>                           
+          <span class="n">__xmhi</span> <span class="o">=</span> <span class="n">_mm_insert_epi16</span><span class="p">(</span><span class="n">__xmhi</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span> <span class="cm">/* write alpha */</span>              
+      <span class="p">}</span>                                                                         
+  <span class="p">}</span>                                                                             
+  <span class="n">dst</span> <span class="o">=</span>  <span class="n">_mm_packus_epi16</span><span class="p">(</span><span class="n">__xmlo</span><span class="p">,</span> <span class="n">__xmhi</span><span class="p">);</span>                                      
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">blt_width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="c1">//alpha blend</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">under</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="n">ra</span> <span class="o">=</span> <span class="o">~</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+            <span class="kt">uint8_t</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="p">(</span><span class="n">ra</span><span class="o">*</span><span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span>
+            <span class="kt">double</span> <span class="n">inv_alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">alpha</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">*</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">g</span><span class="o">*</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">over</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="p">((</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">r</span><span class="o">*</span><span class="n">under</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">*</span><span class="n">ra</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">))</span><span class="o">*</span><span class="n">inv_alpha</span><span class="p">;</span>
+            <span class="n">dst</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">over</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">under</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">dst</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">BltLineAlphaBlend_SSE_unaligned</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//4ピクセルずつ処理するときのループ回数を求める</span>
+    <span class="kt">int</span> <span class="n">nloop</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//blt_width / 4</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">nloop</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="kr">__m128i</span> <span class="n">xmunder</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">under</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmover</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">over</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmdst</span><span class="p">;</span>
+        <span class="n">ALPHABLEND_SSE</span><span class="p">(</span><span class="n">xmdst</span><span class="p">,</span> <span class="n">xmunder</span><span class="p">,</span> <span class="n">xmover</span><span class="p">);</span>
+        <span class="n">_mm_storeu_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst</span><span class="p">,</span> <span class="n">xmdst</span><span class="p">);</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//波数を1ピクセルずつ処理</span>
+    <span class="kt">int</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">;</span> <span class="c1">//blt_width % 4</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span><span class="p">,</span>
+        <span class="n">over</span><span class="p">,</span>
+        <span class="n">bn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">SubBltLineAlphaBlend_SSE</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span> <span class="o">==</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">));</span>
+    <span class="c1">//4ピクセルずつ処理するときのループ回数を求める</span>
+    <span class="kt">int</span> <span class="n">nloop</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//blt_width / 4</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">nloop</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="kr">__m128i</span> <span class="n">xmunder</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">under</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmover</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">over</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmdst</span><span class="p">;</span>
+        <span class="n">ALPHABLEND_SSE</span><span class="p">(</span><span class="n">xmdst</span><span class="p">,</span> <span class="n">xmunder</span><span class="p">,</span> <span class="n">xmover</span><span class="p">);</span>
+        <span class="n">_mm_store_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst</span><span class="p">,</span> <span class="n">xmdst</span><span class="p">);</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//1ピクセルずつ処理</span>
+    <span class="kt">int</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">;</span> <span class="c1">//blt_width % 4</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span><span class="p">,</span>
+        <span class="n">over</span><span class="p">,</span>
+        <span class="n">bn</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">_SHIFT</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">ShiftSubBltLineAlphaBlend_SSE</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">_dst</span> <span class="o">=</span> <span class="n">dst</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">_over</span> <span class="o">=</span> <span class="n">over</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="kt">int</span> <span class="n">nshift_pix</span> <span class="o">=</span> <span class="n">_SHIFT</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nloop</span> <span class="o">=</span> <span class="p">(</span><span class="n">blt_width</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//(blt_width / 4) - 1</span>
+    <span class="kr">__m128i</span> <span class="n">xmunder</span><span class="p">,</span> <span class="n">xmunder0</span><span class="p">,</span> <span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmover</span><span class="p">,</span> <span class="n">xmover0</span><span class="p">,</span> <span class="n">xmover1</span><span class="p">;</span>
+    <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">under</span><span class="p">);</span>
+    <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">over</span><span class="p">);</span>
+    <span class="c1">//_SHIFT byte分処理</span>
+    <span class="c1">//出力メモリを次回からアライメントを合わせて書き込めるようにする。</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">nshift_pix</span><span class="p">);</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">dst</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">));</span>
+    <span class="c1">//</span>
+    <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmunder0</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder0 &gt;&gt; _SHIFT</span>
+    <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmover0</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmover0 &gt;&gt; _SHIFT</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">nloop</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="c1">//</span>
+        <span class="n">xmunder</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">under</span> <span class="o">+</span> <span class="mi">4</span><span class="p">));</span>
+        <span class="n">xmover</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">over</span> <span class="o">+</span> <span class="mi">4</span><span class="p">));</span>
+        <span class="c1">//読み込んだ分をアライメントを合わせて書き込む時に</span>
+        <span class="c1">//合うようにシフト演算でずらしてOR演算で前回の残りと組み合わせる。</span>
+        <span class="n">xmunder1</span> <span class="o">=</span> <span class="n">_mm_slli_si128</span><span class="p">(</span><span class="n">xmunder</span><span class="p">,</span> <span class="mi">16</span> <span class="o">-</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder &lt;&lt; (16 - _SHIFT)</span>
+        <span class="n">xmover1</span> <span class="o">=</span> <span class="n">_mm_slli_si128</span><span class="p">(</span><span class="n">xmover</span><span class="p">,</span> <span class="mi">16</span> <span class="o">-</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmmover &lt;&lt; (16 - _SHIFT)</span>
+        <span class="n">xmunder1</span> <span class="o">=</span> <span class="n">_mm_or_si128</span><span class="p">(</span><span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmunder0</span><span class="p">);</span>
+        <span class="n">xmover1</span> <span class="o">=</span> <span class="n">_mm_or_si128</span><span class="p">(</span><span class="n">xmover1</span><span class="p">,</span> <span class="n">xmover0</span><span class="p">);</span>
+        <span class="c1">//次回のループで使う分をずらして残しておく</span>
+        <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmunder</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder &gt;&gt; _SHIFT</span>
+        <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmover</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmover &gt;&gt; _SHIFT</span>
+        <span class="kr">__m128i</span> <span class="n">xmdst</span><span class="p">;</span>
+        <span class="n">ALPHABLEND_SSE</span><span class="p">(</span><span class="n">xmdst</span><span class="p">,</span> <span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmover1</span><span class="p">);</span>
+        <span class="n">_mm_store_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst</span><span class="p">,</span> <span class="n">xmdst</span><span class="p">);</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//波数を1ピクセルずつ処理</span>
+    <span class="kt">int</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">nloop</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">nshift_pix</span><span class="p">;</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">,</span>
+        <span class="n">over</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">,</span>
+        <span class="n">bn</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">BltLineAlphaBlend_SSE</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">//入出力ともアライメントがあってるならSSEで処理</span>
+    <span class="n">SubBltLineAlphaBlend_SSE</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">dif_d</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span> <span class="c1">//アライメントのずれ量を求める</span>
+    <span class="kt">int</span> <span class="n">dif_s</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">dif_d</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//1pixel、4byteなので4の倍数になるはず</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">dif_s</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dif_d</span> <span class="o">==</span> <span class="n">dif_s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dif_npix</span> <span class="o">=</span> <span class="n">dif_s</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//アライメントがあっていないピクセル数を得る</span>
+        <span class="c1">//アライメントがあっていない分を1ピクセルずつしょり</span>
+        <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+            <span class="n">dst</span><span class="p">,</span>
+            <span class="n">under</span><span class="p">,</span>
+            <span class="n">over</span><span class="p">,</span>
+            <span class="n">dif_npix</span><span class="p">);</span>
+        <span class="c1">//残りはSSEで</span>
+        <span class="n">SubBltLineAlphaBlend_SSE</span><span class="p">(</span>
+        <span class="n">dst</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+        <span class="n">under</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+        <span class="n">over</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+        <span class="n">blt_width</span> <span class="o">-</span> <span class="n">dif_npix</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">//読み込み元のアライメントを合わせる。</span>
+        <span class="kt">int</span> <span class="n">dif_npix</span> <span class="o">=</span> <span class="n">dif_s</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+            <span class="n">dst</span><span class="p">,</span>
+            <span class="n">under</span><span class="p">,</span>
+            <span class="n">over</span><span class="p">,</span>
+            <span class="n">dif_npix</span><span class="p">);</span>
+        <span class="c1">//書き込み先のアライメントのズレを再度計算</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">nshift_byte</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span>
+        <span class="n">assert</span><span class="p">((</span><span class="n">nshift_byte</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">nshift_byte</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">4</span><span class="o">:</span> <span class="c1">//1pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE</span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="mi">8</span><span class="o">:</span> <span class="c1">//2pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="mi">12</span><span class="o">:</span> <span class="c1">//3pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE</span><span class="o">&lt;</span><span class="mi">12</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="n">assert</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">SubBltLineAlphaBlend_SSE_nocache</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span> <span class="o">==</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">));</span>
+    <span class="kt">int</span> <span class="n">nloop</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//blt_width / 4</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">nloop</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="kr">__m128i</span> <span class="n">xmunder</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">under</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmover</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">over</span><span class="p">);</span>
+        <span class="kr">__m128i</span> <span class="n">xmdst</span><span class="p">;</span>
+        <span class="n">ALPHABLEND_SSE</span><span class="p">(</span><span class="n">xmdst</span><span class="p">,</span> <span class="n">xmunder</span><span class="p">,</span> <span class="n">xmover</span><span class="p">);</span>
+        <span class="n">_mm_stream_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst</span><span class="p">,</span> <span class="n">xmdst</span><span class="p">);</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">;</span> <span class="c1">//blt_width % 4</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span><span class="p">,</span>
+        <span class="n">over</span><span class="p">,</span>
+        <span class="n">bn</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">_SHIFT</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">ShiftSubBltLineAlphaBlend_SSE_nocache</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="kt">int</span> <span class="n">nshift_pix</span> <span class="o">=</span> <span class="n">_SHIFT</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nloop</span> <span class="o">=</span> <span class="p">(</span><span class="n">blt_width</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//(blt_width / 4) - 1</span>
+    <span class="kr">__m128i</span> <span class="n">xmunder</span><span class="p">,</span> <span class="n">xmunder0</span><span class="p">,</span> <span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmover</span><span class="p">,</span> <span class="n">xmover0</span><span class="p">,</span> <span class="n">xmover1</span><span class="p">;</span>
+    <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">under</span><span class="p">);</span>
+    <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">over</span><span class="p">);</span>
+    <span class="c1">//_SHIFT byte分処理</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">nshift_pix</span><span class="p">);</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">dst</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">));</span>
+    <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmunder0</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder0 &gt;&gt; _SHIFT</span>
+    <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmover0</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmover0 &gt;&gt; _SHIFT</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">nloop</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">xmunder</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">under</span> <span class="o">+</span> <span class="mi">4</span><span class="p">));</span>
+        <span class="n">xmover</span> <span class="o">=</span> <span class="n">_mm_load_si128</span><span class="p">((</span><span class="k">const</span> <span class="kr">__m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">over</span> <span class="o">+</span> <span class="mi">4</span><span class="p">));</span>
+        <span class="n">xmunder1</span> <span class="o">=</span> <span class="n">_mm_slli_si128</span><span class="p">(</span><span class="n">xmunder</span><span class="p">,</span> <span class="mi">16</span> <span class="o">-</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder &lt;&lt; (16 - _SHIFT)</span>
+        <span class="n">xmover1</span> <span class="o">=</span> <span class="n">_mm_slli_si128</span><span class="p">(</span><span class="n">xmover</span><span class="p">,</span> <span class="mi">16</span> <span class="o">-</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmmover &lt;&lt; (16 - _SHIFT)</span>
+        <span class="n">xmunder1</span> <span class="o">=</span> <span class="n">_mm_or_si128</span><span class="p">(</span><span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmunder0</span><span class="p">);</span>
+        <span class="n">xmover1</span> <span class="o">=</span> <span class="n">_mm_or_si128</span><span class="p">(</span><span class="n">xmover1</span><span class="p">,</span> <span class="n">xmover0</span><span class="p">);</span>
+        <span class="n">xmunder0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmunder</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmunder &gt;&gt; _SHIFT</span>
+        <span class="n">xmover0</span> <span class="o">=</span> <span class="n">_mm_srli_si128</span><span class="p">(</span><span class="n">xmover</span><span class="p">,</span> <span class="n">_SHIFT</span><span class="p">);</span> <span class="c1">//xmover &gt;&gt; _SHIFT</span>
+        <span class="kr">__m128i</span> <span class="n">xmdst</span><span class="p">;</span>
+        <span class="n">ALPHABLEND_SSE</span><span class="p">(</span><span class="n">xmdst</span><span class="p">,</span> <span class="n">xmunder1</span><span class="p">,</span> <span class="n">xmover1</span><span class="p">);</span>
+        <span class="n">_mm_store_si128</span><span class="p">((</span><span class="kr">__m128i</span><span class="o">*</span><span class="p">)</span><span class="n">dst</span><span class="p">,</span> <span class="n">xmdst</span><span class="p">);</span>
+        <span class="n">over</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">under</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">dst</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">blt_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">nloop</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">nshift_pix</span><span class="p">;</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">,</span>
+        <span class="n">over</span> <span class="o">+</span> <span class="n">nshift_pix</span><span class="p">,</span>
+        <span class="n">bn</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">BltLineAlphaBlend_SSE_nocache</span><span class="p">(</span>
+    <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">dst</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">under</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">UCvPixel</span><span class="o">*</span> <span class="n">over</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span> <span class="p">(</span><span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">)</span> <span class="o">==</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">over</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">IS_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">SubBltLineAlphaBlend_SSE</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">dif_d</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">dif_s</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">under</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">dif_d</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//1pixel、4byteなので4の倍数になるはず</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">dif_s</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dif_d</span> <span class="o">==</span> <span class="n">dif_s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dif_npix</span> <span class="o">=</span> <span class="n">dif_s</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//アライメントがあっていないピクセル数を得る</span>
+        <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+            <span class="n">dst</span><span class="p">,</span>
+            <span class="n">under</span><span class="p">,</span>
+            <span class="n">over</span><span class="p">,</span>
+            <span class="n">dif_npix</span><span class="p">);</span>
+        <span class="n">SubBltLineAlphaBlend_SSE_nocache</span><span class="p">(</span>
+            <span class="n">dst</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+            <span class="n">under</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+            <span class="n">over</span> <span class="o">+</span> <span class="n">dif_npix</span><span class="p">,</span>
+            <span class="n">blt_width</span> <span class="o">-</span> <span class="n">dif_npix</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">//読み込み元のアライメントを合わせる。</span>
+    <span class="kt">int</span> <span class="n">dif_npix</span> <span class="o">=</span> <span class="n">dif_s</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">BltLineAlphaBlend</span><span class="p">(</span>
+        <span class="n">dst</span><span class="p">,</span>
+        <span class="n">under</span><span class="p">,</span>
+        <span class="n">over</span><span class="p">,</span>
+        <span class="n">dif_npix</span><span class="p">);</span>
+    <span class="c1">//</span>
+    <span class="n">dst</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+    <span class="n">under</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+    <span class="n">over</span> <span class="o">+=</span> <span class="n">dif_npix</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nshift_byte</span> <span class="o">=</span> <span class="n">DIFF_16BYTE_ALIGNMENT</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">nshift_byte</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">nshift_byte</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">4</span><span class="o">:</span> <span class="c1">//1pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE_nocache</span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="mi">8</span><span class="o">:</span> <span class="c1">//2pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE_nocache</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="mi">12</span><span class="o">:</span> <span class="c1">//3pixelずれ</span>
+            <span class="n">ShiftSubBltLineAlphaBlend_SSE_nocache</span><span class="o">&lt;</span><span class="mi">12</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">under</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="n">assert</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BltAlphaBlend1</span><span class="p">(</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">dst_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startY</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_height</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">under_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startY</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">over_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startY</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_startX</span><span class="p">,</span> <span class="n">over_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_startX</span><span class="p">,</span> <span class="n">under_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_startX</span><span class="p">,</span> <span class="n">dst_startY</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">blt_height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">BltLineAlphaBlend</span><span class="p">(</span><span class="n">dst_line</span><span class="p">,</span> <span class="n">under_line</span><span class="p">,</span> <span class="n">over_line</span><span class="p">,</span> <span class="n">blt_width</span><span class="p">);</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BltAlphaBlend2</span><span class="p">(</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">dst_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startY</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_height</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">under_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startY</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">over_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startY</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_startX</span><span class="p">,</span> <span class="n">over_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_startX</span><span class="p">,</span> <span class="n">under_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_startX</span><span class="p">,</span> <span class="n">dst_startY</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">blt_height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">BltLineAlphaBlend_SSE_unaligned</span><span class="p">(</span>
+    <span class="n">dst_line</span><span class="p">,</span>
+    <span class="n">under_line</span><span class="p">,</span>
+    <span class="n">over_line</span><span class="p">,</span>
+    <span class="n">blt_width</span><span class="p">);</span>
+    <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+    <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+    <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BltAlphaBlend3</span><span class="p">(</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">dst_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startY</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_height</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">under_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startY</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">over_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startY</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_startX</span><span class="p">,</span> <span class="n">over_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_startX</span><span class="p">,</span> <span class="n">under_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_startX</span><span class="p">,</span> <span class="n">dst_startY</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">blt_height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">BltLineAlphaBlend_SSE</span><span class="p">(</span>
+            <span class="n">dst_line</span><span class="p">,</span>
+            <span class="n">under_line</span><span class="p">,</span>
+            <span class="n">over_line</span><span class="p">,</span>
+            <span class="n">blt_width</span><span class="p">);</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BltAlphaBlend4</span><span class="p">(</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">dst_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">dst_startY</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_width</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">blt_height</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">under_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">under_startY</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">over_img</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startX</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">over_startY</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_startX</span><span class="p">,</span> <span class="n">over_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_startX</span><span class="p">,</span> <span class="n">under_startY</span><span class="p">);</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetPixelAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_startX</span><span class="p">,</span> <span class="n">dst_startY</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">blt_height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">BltLineAlphaBlend_SSE_nocache</span><span class="p">(</span>
+            <span class="n">dst_line</span><span class="p">,</span>
+            <span class="n">under_line</span><span class="p">,</span>
+            <span class="n">over_line</span><span class="p">,</span>
+            <span class="n">blt_width</span><span class="p">);</span>
+        <span class="n">over_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">over_img</span><span class="p">,</span> <span class="n">over_line</span><span class="p">);</span>
+        <span class="n">under_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">under_img</span><span class="p">,</span> <span class="n">under_line</span><span class="p">);</span>
+        <span class="n">dst_line</span> <span class="o">=</span> <span class="n">GetNextLineAddress32</span><span class="p">(</span><span class="n">dst_img</span><span class="p">,</span> <span class="n">dst_line</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//sseを使った4ch同士のalphablend </span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//cvCreateImageで帰ってくる画像データのアドレスは先頭が16byteアライメントに合わせてある</span>
+    <span class="c1">//これをわざとずらす。</span>
+    <span class="kt">int</span> <span class="n">dst_dif</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//この数分、正方向にずらす</span>
+    <span class="kt">int</span> <span class="n">src_dif</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//この数分、正方向にずらす</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r1</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">b1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r2</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">b2</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_pix</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">over_line</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">under_line</span><span class="p">;</span>
+    <span class="n">UCvPixel</span> <span class="o">*</span><span class="n">dst_line</span><span class="p">;</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test1</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test1.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">test2</span> <span class="o">=</span> <span class="n">cvLoadImage</span><span class="p">(</span><span class="s">&quot;test2.bmp&quot;</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">b_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">g_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">r_ch</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">a_ch1</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">a_ch2</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img1</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img2</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img3</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img4</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img5</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="n">IplImage</span><span class="o">*</span> <span class="n">img6</span> <span class="o">=</span> <span class="n">cvCreateImage</span><span class="p">(</span><span class="n">cvGetSize</span><span class="p">(</span><span class="n">test1</span><span class="p">),</span> <span class="n">IPL_DEPTH_8U</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="c1">//上になる画像のアルファ値を均等に分布させる</span>
+    <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">line1</span> <span class="o">=</span> <span class="n">GetPixelAddress</span><span class="p">(</span><span class="n">a_ch1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">a_ch1</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">pix</span> <span class="o">=</span> <span class="n">line1</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">a_ch1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span><span class="o">*</span><span class="n">pix</span><span class="o">++</span><span class="p">)</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">x</span> <span class="o">/</span> <span class="n">a_ch1</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">line1</span> <span class="o">=</span> <span class="n">GetNextLineAddress</span><span class="p">(</span><span class="n">a_ch1</span><span class="p">,</span> <span class="n">line1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//下になる画像のアルファ値を均等に分布させる</span>
+    <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">line2</span> <span class="o">=</span> <span class="n">GetPixelAddress</span><span class="p">(</span><span class="n">a_ch2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">a_ch2</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">pix</span> <span class="o">=</span> <span class="n">line2</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">a_ch2</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span><span class="o">*</span><span class="n">pix</span><span class="o">++</span><span class="p">)</span> <span class="o">=</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">y</span> <span class="o">/</span> <span class="n">a_ch2</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">line2</span> <span class="o">=</span> <span class="n">GetNextLineAddress</span><span class="p">(</span><span class="n">a_ch2</span><span class="p">,</span> <span class="n">line2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test1</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch1</span><span class="p">,</span> <span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvSplit</span><span class="p">(</span><span class="n">test2</span><span class="p">,</span> <span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">cvMerge</span><span class="p">(</span><span class="n">b_ch</span><span class="p">,</span> <span class="n">g_ch</span><span class="p">,</span> <span class="n">r_ch</span><span class="p">,</span> <span class="n">a_ch2</span><span class="p">,</span> <span class="n">img2</span><span class="p">);</span>
+    <span class="c1">//ずれがある分、書き込み幅を減らす。</span>
+    <span class="kt">int</span> <span class="n">write_width</span> <span class="o">=</span> <span class="n">img1</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span> <span class="n">max</span><span class="p">(</span><span class="n">dst_dif</span><span class="p">,</span> <span class="n">src_dif</span><span class="p">);</span>
+    <span class="c1">//非SSE</span>
+    <span class="n">IETimer</span> <span class="n">timer</span><span class="p">;</span>
+    <span class="n">BltAlphaBlend1</span><span class="p">(</span>
+        <span class="n">img3</span><span class="p">,</span>
+        <span class="n">dst_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">write_width</span><span class="p">,</span> <span class="n">img3</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">img2</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">img1</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test3.bmp&quot;</span><span class="p">,</span> <span class="n">img3</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_loadu_ps + _mm_storeu_ps</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="n">BltAlphaBlend2</span><span class="p">(</span>
+        <span class="n">img4</span><span class="p">,</span>
+        <span class="n">dst_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">write_width</span><span class="p">,</span> <span class="n">img4</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">img2</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">img1</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test4.bmp&quot;</span><span class="p">,</span> <span class="n">img4</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_store_ps          </span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="n">BltAlphaBlend3</span><span class="p">(</span>
+        <span class="n">img5</span><span class="p">,</span>
+        <span class="n">dst_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">write_width</span><span class="p">,</span> <span class="n">img5</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">img2</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">img1</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test5.bmp&quot;</span><span class="p">,</span> <span class="n">img5</span><span class="p">);</span>
+    <span class="c1">//SSE: _mm_load_ps + _mm_stream_si128</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">restart</span><span class="p">();</span>
+    <span class="n">BltAlphaBlend4</span><span class="p">(</span>
+        <span class="n">img6</span><span class="p">,</span>
+        <span class="n">dst_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">write_width</span><span class="p">,</span> <span class="n">img6</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">img2</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">img1</span><span class="p">,</span>
+        <span class="n">src_dif</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; msec&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cvSaveImage</span><span class="p">(</span><span class="s">&quot;test6.bmp&quot;</span><span class="p">,</span> <span class="n">img6</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r_ch</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a_ch1</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a_ch2</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img1</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img2</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img3</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img4</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img5</span><span class="p">);</span>
+    <span class="n">cvReleaseImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">img6</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

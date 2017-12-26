@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; Vista用のアイコン  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/200706161182012117.html">Vista用のアイコン</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 16 6月 2007</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/Windows%20Vista">Windows
+Vista</a>では、256x256までの<a href="http://d.hatena.ne.jp/keyword/PNG">PNG</a>圧縮の、アイコンを扱える。<br>
+これは、普通に<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>しようとすると<br>
+<a href="http://d.hatena.ne.jp/keyword/error">error</a> RC2176 : old DIB
+in･･･<br>
+というエラーになるので、別の方法をとる必要があります。<br>
+下の2つの方法があります。</p>
+<p>・VisualStadioのパッチを当てる<br>
+・ダミーのアイコンで<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>しておき、後に入れ替える</p>
+<p>2番目のダミーのアイコンを使用する方法を、解説します。</p>
+<p>まず、IcoFXなどで<a href="http://d.hatena.ne.jp/keyword/Vista">Vista</a>用のアイコンの作製を行います。<br>
+『IcoFX』<a href="http://icofx.xhost.ro/">http://icofx.xhost.ro/</a><br>
+自分は、このとき256x256と46x46,32x32,16x16のサイズも一緒に作っておきました。<br>
+こうするとXPでもアイコンが表示されるようです。</p>
+<p>次に、ReplaceVistaIcon.exeをつかってアイコンを入れ替えました。<br>
+『ReplaceVistaIcon.exe』<a href="http://www.rw-designer.com/compile-vista-icon">http://www.rw-designer.com/compile-vista-icon</a><br>
+<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%DE%A5%F3%A5%C9%A5%D7%A5%ED%A5%F3%A5%D7%A5%C8">コマンドプロンプト</a>上で、<br>
+ReplaceVistaIcon.exe executable.dll
+icon.<a href="http://d.hatena.ne.jp/keyword/ico">ico</a>
+[アイコンのID]　または、<br>
+ReplaceVistaIcon.exe executable.dll
+icon.<a href="http://d.hatena.ne.jp/keyword/ico">ico</a><br>
+と、するとアイコンを入れ替えることができます。このときファイルへのパスもちゃんと書くように</p>
+<p>VisualC++のプロジェクトの「プロパティー」→「ビルドイベント」→「ビルド後のイベント」で<br>
+上のコマンドを入力しておくと、自動でアイコンを入れ替えることができます。</p>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

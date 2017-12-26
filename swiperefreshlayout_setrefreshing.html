@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="Android">
+
+  <title>
+    waura's blog
+&ndash; SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/swiperefreshlayout_setrefreshing.html">SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 土 14 11月 2015</p>
+ Tags:
+      <a href="/tag/android.html">#Android</a>    </p>
+  </div>
+  <div class="article__text">
+    <p>SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。</p>
+<p>参考：<a href="https://code.google.com/p/android/issues/detail?id=77712">https://code.google.com/p/android/issues/detail?id=77712</a></p>
+<p>このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。</p>
+<div class="highlight"><pre><span></span><span class="c1">// MySwipeRefreshLayout.java  </span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MySwipeRefreshLayout</span> <span class="kd">extends</span> <span class="n">SwipeRefreshLayout</span> <span class="o">{</span>  
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">mMeasured</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">mPreMeasureRefreshing</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">MySwipeRefreshLayout</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>  
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nf">MySwipeRefreshLayout</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">);</span>  
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>  
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMeasure</span><span class="o">(</span><span class="kt">int</span> <span class="n">widthMeasureSpec</span><span class="o">,</span> <span class="kt">int</span> <span class="n">heightMeasureSpec</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="kd">super</span><span class="o">.</span><span class="na">onMeasure</span><span class="o">(</span><span class="n">widthMeasureSpec</span><span class="o">,</span> <span class="n">heightMeasureSpec</span><span class="o">);</span>  
+    <span class="k">if</span> <span class="o">(!</span><span class="n">mMeasured</span><span class="o">)</span> <span class="o">{</span>  
+      <span class="n">mMeasured</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>  
+      <span class="n">setRefreshing</span><span class="o">(</span><span class="n">mPreMeasureRefreshing</span><span class="o">);</span>  
+    <span class="o">}</span>  
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>  
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setRefreshing</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">refreshing</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="k">if</span> <span class="o">(</span><span class="n">mMeasured</span><span class="o">)</span> <span class="o">{</span>  
+      <span class="kd">super</span><span class="o">.</span><span class="na">setRefreshing</span><span class="o">(</span><span class="n">refreshing</span><span class="o">);</span>  
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>  
+      <span class="n">mPreMeasureRefreshing</span> <span class="o">=</span> <span class="n">refreshing</span><span class="o">;</span>  
+    <span class="o">}</span>  
+  <span class="o">}</span>  
+<span class="o">}</span>  
+</pre></div>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

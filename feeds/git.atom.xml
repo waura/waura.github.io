@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - Git</title><link href="/" rel="alternate"></link><link href="/feeds/git.atom.xml" rel="self"></link><id>/</id><updated>2009-04-14T22:43:00+09:00</updated><entry><title>git addしたくないファイルを指定する。</title><link href="/200904141239716589.html" rel="alternate"></link><published>2009-04-14T22:43:00+09:00</published><updated>2009-04-14T22:43:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-04-14:/200904141239716589.html</id><summary type="html">&lt;h2&gt;Git Extensionsのメニューから.gitgnoreの編集ダイアログを出す。&lt;/h2&gt;
+&lt;p&gt;[Settings] -&amp;gt; [Edit .gitgnore]&lt;/p&gt;
+&lt;h2&gt;.gitgnoreの編集&lt;/h2&gt;
+&lt;p&gt;.gitgnoreの設定方法&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# &amp;#39;#&amp;#39; で始まる行は無視されます
+# foo.txt という名前の全てのファイルを無視する
+foo.txt
+# (生成された) html ファイルは無視する
+*.html
+# foo.html は例外とし、手でメンテナンスします
+!foo.html
+# object と archive ファイルは無視する
+*.[oa]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;[Add default]ボタンを押すと、大抵の邪魔なファイルを取り除くように設定される。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files"&gt;http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Git Extensionsのメニューから.gitgnoreの編集ダイアログを出す。&lt;/h2&gt;
+&lt;p&gt;[Settings] -&amp;gt; [Edit .gitgnore]&lt;/p&gt;
+&lt;h2&gt;.gitgnoreの編集&lt;/h2&gt;
+&lt;p&gt;.gitgnoreの設定方法&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# &amp;#39;#&amp;#39; で始まる行は無視されます
+# foo.txt という名前の全てのファイルを無視する
+foo.txt
+# (生成された) html ファイルは無視する
+*.html
+# foo.html は例外とし、手でメンテナンスします
+!foo.html
+# object と archive ファイルは無視する
+*.[oa]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;[Add default]ボタンを押すと、大抵の邪魔なファイルを取り除くように設定される。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files"&gt;http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files&lt;/a&gt;&lt;/p&gt;</content></entry></feed>

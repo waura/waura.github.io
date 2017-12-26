@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - Windows</title><link href="/" rel="alternate"></link><link href="/feeds/windows.atom.xml" rel="self"></link><id>/</id><updated>2010-11-06T18:40:00+09:00</updated><entry><title>CPUID命令のIntrinsic関数を使用して、SSEに対応しているか調べるコード</title><link href="/201011061289036459.html" rel="alternate"></link><published>2010-11-06T18:40:00+09:00</published><updated>2010-11-06T18:40:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-11-06:/201011061289036459.html</id><summary type="html">&lt;p&gt;↓のコードをIntrinsic関数を使用して書き換えてみます。&lt;/p&gt;
+&lt;p&gt;&lt;a href="../200909121252748821.html"&gt;CPUID命令を使用して、SSEに対応しているか調べるコード&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;__cpuid()&lt;/h4&gt;
+&lt;p&gt;CPUID命令のIntrinsic関数は、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;void __cpuid(
+int CPUInfo[4],
+int InfoType
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;です。&lt;br&gt;
+InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります。&lt;br&gt;
+今回はSSEの対応情報を調べるので、InfoTypeには 1を入れます。&lt;/p&gt;
+&lt;p&gt;先頭をbit0として、次のように対応情報が格納され、&lt;br&gt;
+対応している場合はbitが1になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPUInfo[3] bit23
+    &lt;a href="http://d.hatena.ne.jp/keyword/MMX"&gt;MMX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[3] bit25 SSE&lt;/li&gt;
+&lt;li&gt;CPUInfo[3] bit26
+    &lt;a href="http://d.hatena.ne.jp/keyword/SSE2"&gt;SSE2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit0
+    &lt;a href="http://d.hatena.ne.jp/keyword/SSE3"&gt;SSE3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit19 SSE4.1&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit20 SSE4.2
+:::&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;コード&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;intrin …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;↓のコードをIntrinsic関数を使用して書き換えてみます。&lt;/p&gt;
+&lt;p&gt;&lt;a href="../200909121252748821.html"&gt;CPUID命令を使用して、SSEに対応しているか調べるコード&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;__cpuid()&lt;/h4&gt;
+&lt;p&gt;CPUID命令のIntrinsic関数は、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;void __cpuid(
+int CPUInfo[4],
+int InfoType
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;です。&lt;br&gt;
+InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります。&lt;br&gt;
+今回はSSEの対応情報を調べるので、InfoTypeには 1を入れます。&lt;/p&gt;
+&lt;p&gt;先頭をbit0として、次のように対応情報が格納され、&lt;br&gt;
+対応している場合はbitが1になっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPUInfo[3] bit23
+    &lt;a href="http://d.hatena.ne.jp/keyword/MMX"&gt;MMX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[3] bit25 SSE&lt;/li&gt;
+&lt;li&gt;CPUInfo[3] bit26
+    &lt;a href="http://d.hatena.ne.jp/keyword/SSE2"&gt;SSE2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit0
+    &lt;a href="http://d.hatena.ne.jp/keyword/SSE3"&gt;SSE3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit19 SSE4.1&lt;/li&gt;
+&lt;li&gt;CPUInfo[2] bit20 SSE4.2
+:::&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;コード&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;intrin.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;InfoType&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;__cpuid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;InfoType&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00800000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support MMX&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x02000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x04000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE2&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00000001&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE3&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00080000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE4.1&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CPUInfo&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00100000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE4.2&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;実行結果&lt;/h4&gt;
+&lt;p&gt;Core i7 870での実行結果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;support MMX
+support SSE
+support SSE2
+support SSE3
+support SSE4.1
+support SSE4.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Core2 Duo E8400での実行結果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;support MMX
+support SSE
+support SSE2
+support SSE3
+support SSE4.1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;参考URL&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/hskdteyh%28v=VS.90%29.aspx"&gt;http://msdn.microsoft.com/en-us/library/hskdteyh%28v=VS.90%29.aspx&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>ブレークポイントがヒットしない時の対処</title><link href="/201003171268808033.html" rel="alternate"></link><published>2010-03-17T15:40:00+09:00</published><updated>2010-03-17T15:40:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-03-17:/201003171268808033.html</id><summary type="html">&lt;p&gt;デバック時、リビルドしたソースに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8"&gt;ブレークポイント&lt;/a&gt;を設定しても、&lt;br&gt;
+「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8"&gt;ブレークポイント&lt;/a&gt;は、現在の設定ではヒットしません。&lt;a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9"&gt;ソースコード&lt;/a&gt;
+が元のバージョンと異なります。」&lt;br&gt;
+と表示されるときの対処&lt;/p&gt;
+&lt;p&gt;[「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB"&gt;ツール&lt;/a&gt;」→「オプション」→「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。]{style="font-weight:bold;"}&lt;br&gt;
+&lt;a href="http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14"&gt;http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;デバック時、リビルドしたソースに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8"&gt;ブレークポイント&lt;/a&gt;を設定しても、&lt;br&gt;
+「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8"&gt;ブレークポイント&lt;/a&gt;は、現在の設定ではヒットしません。&lt;a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9"&gt;ソースコード&lt;/a&gt;
+が元のバージョンと異なります。」&lt;br&gt;
+と表示されるときの対処&lt;/p&gt;
+&lt;p&gt;[「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB"&gt;ツール&lt;/a&gt;」→「オプション」→「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。]{style="font-weight:bold;"}&lt;br&gt;
+&lt;a href="http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14"&gt;http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>C言語、32bit環境と64bit環境の変数のサイズ</title><link href="/201003131268457303.html" rel="alternate"></link><published>2010-03-13T14:15:00+09:00</published><updated>2010-03-13T14:15:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-03-13:/201003131268457303.html</id><summary type="html">&lt;ul&gt;
+&lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/Windows%207"&gt;Windows 7&lt;/a&gt;
+    64bit&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9"&gt;コンパイラ&lt;/a&gt;:
+    &lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+    Studio&lt;/a&gt;
+    2008&lt;/li&gt;
+&lt;li&gt;CPU: &lt;a href="http://d.hatena.ne.jp/keyword/Core2%20Duo"&gt;Core2
+    Duo&lt;/a&gt; E8400&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;32bit環境と64bit環境向けに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;したものを実行して、sizeofでサイズを調べた。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;            32bit   64bit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;hr&gt;
+&lt;p&gt;char          1       1
+  short         2       2
+  int           4       4
+  long          4       4
+  long long     8       8
+  float         8       8
+  double        8       8
+  long double   8       8&lt;/p&gt;
+&lt;p&gt;どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。&lt;/p&gt;</summary><content type="html">&lt;ul&gt;
+&lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/Windows%207"&gt;Windows 7&lt;/a&gt;
+    64bit&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9"&gt;コンパイラ&lt;/a&gt;:
+    &lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+    Studio&lt;/a&gt;
+    2008&lt;/li&gt;
+&lt;li&gt;CPU: &lt;a href="http://d.hatena.ne.jp/keyword/Core2%20Duo"&gt;Core2
+    Duo&lt;/a&gt; E8400&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;32bit環境と64bit環境向けに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;したものを実行して、sizeofでサイズを調べた。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;            32bit   64bit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;hr&gt;
+&lt;p&gt;char          1       1
+  short         2       2
+  int           4       4
+  long          4       4
+  long long     8       8
+  float         8       8
+  double        8       8
+  long double   8       8&lt;/p&gt;
+&lt;p&gt;どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。&lt;/p&gt;</content></entry><entry><title>WH_KEYBOARDのフックプロシージャサンプル</title><link href="/201003071267910248.html" rel="alternate"></link><published>2010-03-07T06:17:00+09:00</published><updated>2010-03-07T06:17:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-03-07:/201003071267910248.html</id><summary type="html">&lt;p&gt;キーボードが押されてない状態から押された状態へ遷移した時と、押している状態から、押されていない状態へ遷移した時に、押されたキーの仮想コード、shift、ctrl、altのそれぞれの状態を表示するフックプロシージャのコード&lt;/p&gt;
+&lt;p&gt;WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;KeyboardHookProc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;HC_NOREMOVE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;CallNextHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_hHook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;keyboard hook! &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;optChar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//check keyup shift&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_SHIFT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;shift &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//check keyup …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;キーボードが押されてない状態から押された状態へ遷移した時と、押している状態から、押されていない状態へ遷移した時に、押されたキーの仮想コード、shift、ctrl、altのそれぞれの状態を表示するフックプロシージャのコード&lt;/p&gt;
+&lt;p&gt;WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;KeyboardHookProc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;HC_NOREMOVE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;CallNextHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_hHook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;keyboard hook! &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;optChar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//check keyup shift&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_SHIFT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;shift &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//check keyup ctrl&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_CONTROL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctrl &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//check keydup alt&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;20000000&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;alt &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="n"&gt;wsprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%d up&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mh"&gt;0x00000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;optChar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//check keydown shift&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_SHIFT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;shift &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//check keydown ctrl&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_CONTROL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctrl &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;//check keydown alt&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x20000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;alt &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="n"&gt;wsprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%d down&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ローカルフック使用時にはスレッドIDが必要</title><link href="/201002111265869988.html" rel="alternate"></link><published>2010-02-11T15:33:00+09:00</published><updated>2010-02-11T15:33:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-02-11:/201002111265869988.html</id><summary type="html">&lt;p&gt;ローカルフックを作成するには、&lt;br&gt;
+第3引数にNULL、第4引数にスレッドIDを指定する。&lt;/p&gt;
+&lt;p&gt;対して、グローバルフックの場合は、&lt;br&gt;
+第3引数にDLLモジュールのハンドル、第4引数に0を指定する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;//ローカルフックの作成&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;SetWindowsHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="n"&gt;WH_GETMESSAGE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HOOKPROC&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;hookfunc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetCurrentThreadId&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;ローカルフックを作成するには、&lt;br&gt;
+第3引数にNULL、第4引数にスレッドIDを指定する。&lt;/p&gt;
+&lt;p&gt;対して、グローバルフックの場合は、&lt;br&gt;
+第3引数にDLLモジュールのハンドル、第4引数に0を指定する。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;//ローカルフックの作成&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;SetWindowsHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="n"&gt;WH_GETMESSAGE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HOOKPROC&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;hookfunc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetCurrentThreadId&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>プロセッサ数を求めるコード</title><link href="/200911141258218733.html" rel="alternate"></link><published>2009-11-14T02:12:00+09:00</published><updated>2009-11-14T02:12:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-11-14:/200911141258218733.html</id><summary type="html">&lt;p&gt;GetSystemInfoでシステムの情報をSYSTEM_INFO構造体に取得すると、dwNumberOfProcessorsにプロセッサ数が入る。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SYSTEM_INFO si;
+GetSystemInfo(&amp;amp;si);
+si.dwNumberOfProcessors; //プロセッサ数
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/cc429808.aspx&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;GetSystemInfoでシステムの情報をSYSTEM_INFO構造体に取得すると、dwNumberOfProcessorsにプロセッサ数が入る。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SYSTEM_INFO si;
+GetSystemInfo(&amp;amp;si);
+si.dwNumberOfProcessors; //プロセッサ数
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/cc429808.aspx&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>画面の大きさを取得するWinAPI メモ</title><link href="/200909231253715978.html" rel="alternate"></link><published>2009-09-23T23:26:00+09:00</published><updated>2009-09-23T23:26:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-09-23:/200909231253715978.html</id><summary type="html">&lt;h2&gt;メイン画面の大きさを取得&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CXSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CYSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;マルチディスプレイ環境で全ての画面領域の大きさを取得&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CXVIRTUALSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CYVIRTUALSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/cc429812.aspx&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;メイン画面の大きさを取得&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CXSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CYSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;マルチディスプレイ環境で全ての画面領域の大きさを取得&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CXVIRTUALSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CYVIRTUALSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/cc429812.aspx&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>インラインアセンブラでデバッグ時にレジスタの値を表示させる。</title><link href="/200909131252813492.html" rel="alternate"></link><published>2009-09-13T12:44:00+09:00</published><updated>2009-09-13T12:44:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-09-13:/200909131252813492.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;の値を表示させる。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;中に[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;]→[ウィンドウ]→[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;]で&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;ウィンドウを開く。&lt;/p&gt;
+&lt;p&gt;SSEの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;などが表示されていない場合は、&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;ウィンドウを&lt;br&gt;
+右クリックして、表示したいアイテムをクリックする。&lt;/p&gt;
+&lt;h3&gt;参考URL&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;の値を表示させる。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;中に[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;]→[ウィンドウ]→[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;]で&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;ウィンドウを開く。&lt;/p&gt;
+&lt;p&gt;SSEの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;などが表示されていない場合は、&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;ウィンドウを&lt;br&gt;
+右クリックして、表示したいアイテムをクリックする。&lt;/p&gt;
+&lt;h3&gt;参考URL&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>CPUID命令を使用して、SSEに対応しているか調べるコード</title><link href="/200909121252748821.html" rel="alternate"></link><published>2009-09-12T18:47:00+09:00</published><updated>2009-09-12T18:47:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-09-12:/200909121252748821.html</id><summary type="html">&lt;p&gt;VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。&lt;/p&gt;
+&lt;h2&gt;CPUID命令&lt;/h2&gt;
+&lt;p&gt;EAXレジスタに値を入れてCPUID命令を呼び出すと、&lt;br&gt;
+各レジスタにCPUの情報が格納されます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EAX=0 ベンダIDの取得&lt;/li&gt;
+&lt;li&gt;EAX=1 プロセッサ情報とプロセッサの機能&lt;/li&gt;
+&lt;li&gt;EAX=2
+    キャッシュとTLB&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%B9%A5%AF%A5%EA%A5%D7%A5%BF"&gt;ディスクリプタ&lt;/a&gt;情報&lt;/li&gt;
+&lt;li&gt;EAX=3 プロッセッサ・シリアル・ナンバ&lt;/li&gt;
+&lt;li&gt;EAX=80000000h
+    サポートする最大&lt;a href="http://d.hatena.ne.jp/keyword/%B3%C8%C4%A5%B5%A1%C7%BD"&gt;拡張機能&lt;/a&gt;番号の取得&lt;/li&gt;
+&lt;li&gt;EAX=80000001h 拡張プロセッサ情報とプロセッサの機能&lt;/li&gt;
+&lt;li&gt;EAX=80000002h,80000003h,80000004h プロセッサブランド文字列&lt;/li&gt;
+&lt;li&gt;EAX=80000006h 拡張L2キャッシュ情報&lt;/li&gt;
+&lt;li&gt;EAX=80000008h
+    仮想アドレスと&lt;a href="http://d.hatena.ne.jp/keyword/%CA%AA%CD%FD%A5%A2%A5%C9%A5%EC%A5%B9"&gt;物理アドレス&lt;/a&gt;のサイズ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回はSSEに対応しているか調べたいのでEAXには、1を入れてCPUID命令を呼び出します。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.sandpile.org/ia32/cpuid.htm"&gt;http://www.sandpile.org/ia32/cpuid …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。&lt;/p&gt;
+&lt;h2&gt;CPUID命令&lt;/h2&gt;
+&lt;p&gt;EAXレジスタに値を入れてCPUID命令を呼び出すと、&lt;br&gt;
+各レジスタにCPUの情報が格納されます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EAX=0 ベンダIDの取得&lt;/li&gt;
+&lt;li&gt;EAX=1 プロセッサ情報とプロセッサの機能&lt;/li&gt;
+&lt;li&gt;EAX=2
+    キャッシュとTLB&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%B9%A5%AF%A5%EA%A5%D7%A5%BF"&gt;ディスクリプタ&lt;/a&gt;情報&lt;/li&gt;
+&lt;li&gt;EAX=3 プロッセッサ・シリアル・ナンバ&lt;/li&gt;
+&lt;li&gt;EAX=80000000h
+    サポートする最大&lt;a href="http://d.hatena.ne.jp/keyword/%B3%C8%C4%A5%B5%A1%C7%BD"&gt;拡張機能&lt;/a&gt;番号の取得&lt;/li&gt;
+&lt;li&gt;EAX=80000001h 拡張プロセッサ情報とプロセッサの機能&lt;/li&gt;
+&lt;li&gt;EAX=80000002h,80000003h,80000004h プロセッサブランド文字列&lt;/li&gt;
+&lt;li&gt;EAX=80000006h 拡張L2キャッシュ情報&lt;/li&gt;
+&lt;li&gt;EAX=80000008h
+    仮想アドレスと&lt;a href="http://d.hatena.ne.jp/keyword/%CA%AA%CD%FD%A5%A2%A5%C9%A5%EC%A5%B9"&gt;物理アドレス&lt;/a&gt;のサイズ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回はSSEに対応しているか調べたいのでEAXには、1を入れてCPUID命令を呼び出します。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.sandpile.org/ia32/cpuid.htm"&gt;http://www.sandpile.org/ia32/cpuid.htm&lt;/a&gt;&lt;br&gt;
+↑のページによると,&lt;br&gt;
+先頭をbit0として、以下のように対応情報が格納され、&lt;br&gt;
+対応している場合は1が格納される。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EDX bit23 &lt;a href="http://d.hatena.ne.jp/keyword/MMX"&gt;MMX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;EDX bit25 SSE&lt;/li&gt;
+&lt;li&gt;EDX bit26 &lt;a href="http://d.hatena.ne.jp/keyword/SSE2"&gt;SSE2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ECX bit0 &lt;a href="http://d.hatena.ne.jp/keyword/SSE3"&gt;SSE3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ECX bit19 SSE4.1&lt;/li&gt;
+&lt;li&gt;ECX bit20 SSE4.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;コード&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;output_ecx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;output_edx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;__asm&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;mov&lt;/span&gt;     &lt;span class="n"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;cpuid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;mov&lt;/span&gt;     &lt;span class="n"&gt;output_ecx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ecx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;mov&lt;/span&gt;     &lt;span class="n"&gt;output_edx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;edx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_edx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00800000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support MMX&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_edx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x02000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_edx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x04000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE2&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_ecx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00000001&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE3&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_ecx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00080000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE4.1&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;output_ecx&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x00100000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;support SSE4.2&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;実行結果&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Core2%20Duo"&gt;Core2 Duo&lt;/a&gt;
+E8400での実行結果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;support MMX
+support SSE
+support SSE2
+support SSE3
+support SSE4.1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;(SSE4.2に対応してるのは&lt;a href="http://d.hatena.ne.jp/keyword/Core%20i7"&gt;Core
+i7&lt;/a&gt;かららしいです。)&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Atom"&gt;Atom&lt;/a&gt; N280での実行結果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;support MMX
+support SSE
+support SSE2
+support SSE3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Atom"&gt;Atom&lt;/a&gt;は&lt;a href="http://d.hatena.ne.jp/keyword/SSE3"&gt;SSE3&lt;/a&gt;まで対応らしいです。&lt;/p&gt;
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://ja.wikipedia.org/wiki/CPUID"&gt;http://ja.wikipedia.org/wiki/CPUID&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://www.sandpile.org/ia32/cpuid.htm"&gt;http://www.sandpile.org/ia32/cpuid.htm&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://w-farm.cocolog-nifty.com/blog/2009/02/sse42_-4a0a.html"&gt;http://w-farm.cocolog-nifty.com/blog/2009/02/sse42_-4a0a.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>ファイル検索関数サンプル</title><link href="/200909011251772858.html" rel="alternate"></link><published>2009-09-01T11:40:00+09:00</published><updated>2009-09-01T11:40:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-09-01:/200909011251772858.html</id><summary type="html">&lt;p&gt;ディレクトリを指定してファイルを検索するWinAPIサンプル&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;HANDLE&lt;/span&gt; &lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;WIN32_FIND_DATA&lt;/span&gt; &lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;_MAX_PATH&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="n"&gt;wsprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hogehoge&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;*.txt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//txtファイルを検索&lt;/span&gt;
+&lt;span class="n"&gt;hFind&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindFirstFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;INVALID_HANDLE_VALUE&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="c1"&gt;//検索失敗&lt;/span&gt;
+  &lt;span class="p"&gt;....&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="c1"&gt;//ここでfd.cFileNameに検索結果のファイル名が入る。&lt;/span&gt;
+  &lt;span class="c1"&gt;//ファイル名だけなので注意する。&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindNextFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindClose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;ディレクトリを指定してファイルを検索するWinAPIサンプル&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;HANDLE&lt;/span&gt; &lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;WIN32_FIND_DATA&lt;/span&gt; &lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;_MAX_PATH&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="n"&gt;wsprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hogehoge&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;*.txt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;//txtファイルを検索&lt;/span&gt;
+&lt;span class="n"&gt;hFind&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindFirstFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fpath&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;INVALID_HANDLE_VALUE&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="c1"&gt;//検索失敗&lt;/span&gt;
+  &lt;span class="p"&gt;....&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="c1"&gt;//ここでfd.cFileNameに検索結果のファイル名が入る。&lt;/span&gt;
+  &lt;span class="c1"&gt;//ファイル名だけなので注意する。&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindNextFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FindClose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hFind&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>CBitmapButtonを継承してマウスオーバー時に画像を変化させるようにする。</title><link href="/200908301251628999.html" rel="alternate"></link><published>2009-08-30T19:43:00+09:00</published><updated>2009-08-30T19:43:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-08-30:/200908301251628999.html</id><summary type="html">&lt;p&gt;デフォルトのCBitmapButtonだとマウスオーバー時の画像を読み込んで&lt;br&gt;
+表示させてくれないので、CBitmapButtonを継承して機能を付け足しました。&lt;/p&gt;
+&lt;p&gt;Create()で作成して、LoadBitmapsで画像を読み込みます。&lt;br&gt;
+その他のAutoLoadなどには対応していません。&lt;/p&gt;
+&lt;h2&gt;ヘッダー&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#pragma once&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CHoverBitmapButton&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;m_isHover&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+    &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="p"&gt;(){};&lt;/span&gt;
+    &lt;span class="n"&gt;BOOL&lt;/span&gt; &lt;span class="nf"&gt;LoadBitmaps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceHov&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceSel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceFocus&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceDisabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;DrawItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDRAWITEMSTRUCT&lt;/span&gt; &lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;protected&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;afx_msg&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;OnMouseMove&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nFlags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CPoint&lt;/span&gt; &lt;span class="n"&gt;point&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;OnMouseHover&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wp …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;デフォルトのCBitmapButtonだとマウスオーバー時の画像を読み込んで&lt;br&gt;
+表示させてくれないので、CBitmapButtonを継承して機能を付け足しました。&lt;/p&gt;
+&lt;p&gt;Create()で作成して、LoadBitmapsで画像を読み込みます。&lt;br&gt;
+その他のAutoLoadなどには対応していません。&lt;/p&gt;
+&lt;h2&gt;ヘッダー&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#pragma once&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CHoverBitmapButton&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;m_isHover&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+    &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="p"&gt;(){};&lt;/span&gt;
+    &lt;span class="n"&gt;BOOL&lt;/span&gt; &lt;span class="nf"&gt;LoadBitmaps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceHov&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceSel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceFocus&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceDisabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;DrawItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDRAWITEMSTRUCT&lt;/span&gt; &lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;protected&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;afx_msg&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;OnMouseMove&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nFlags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CPoint&lt;/span&gt; &lt;span class="n"&gt;point&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;OnMouseHover&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;OnMouseLeave&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;DECLARE_MESSAGE_MAP&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;m_isHover&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;CBitmap&lt;/span&gt; &lt;span class="n"&gt;m_bitmapHov&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;ソース&lt;/h2&gt;
+&lt;p&gt;LoadBitmapsは、読み込み時に呼ばれる関数です。&lt;br&gt;
+一つリソースIDを受け取る引数を増やして、画像をリソースから読み込んでいます。&lt;/p&gt;
+&lt;p&gt;OnMouseMove()が呼び出されたときに、&lt;br&gt;
+WM_MOUSEHOVERとWM_MOUSELEAVEメッセージが来るように、&lt;br&gt;
+TrackMouseEvent()を呼び出しています。&lt;/p&gt;
+&lt;p&gt;DrawItem()は、描画時に呼ばれる関数です。&lt;br&gt;
+DrawItem()内では、マウスオーバー時、ボタンが押されていなければ、&lt;br&gt;
+読み込んだ画像を表示させています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;HoverBitmapButton.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+
+&lt;span class="n"&gt;BOOL&lt;/span&gt; &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;LoadBitmaps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceHov&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceSel&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceFocus&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIDBitmapResourceDisabled&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;m_bitmapHov&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DeleteObject&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;m_bitmapHov&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LoadBitmap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nIDBitmapResourceHov&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;LoadBitmaps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;nIDBitmapResource&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;nIDBitmapResourceSel&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;nIDBitmapResourceFocus&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;DrawItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDRAWITEMSTRUCT&lt;/span&gt; &lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_isHover&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;itemState&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;ODS_SELECTED&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+    &lt;span class="n"&gt;CDC&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pDC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;CDC&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;FromHandle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hDC&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;CDC&lt;/span&gt; &lt;span class="n"&gt;memDC&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;memDC&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CreateCompatibleDC&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pDC&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;CBitmap&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pOld&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;memDC&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SelectObject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;m_bitmapHov&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pOld&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//destructors will clean up&lt;/span&gt;
+    &lt;span class="n"&gt;CRect&lt;/span&gt; &lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CopyRect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;rcItem&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;pDC&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;BitBlt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;left&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;memDC&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SRCCOPY&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;memDC&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SelectObject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pOld&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;DrawItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpDis&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;BEGIN_MESSAGE_MAP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ON_WM_MOUSEMOVE&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;ON_MESSAGE&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WM_MOUSEHOVER&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;OnMouseHover&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ON_MESSAGE&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WM_MOUSELEAVE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;OnMouseLeave&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;END_MESSAGE_MAP&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OnMouseMove&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nFlags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CPoint&lt;/span&gt; &lt;span class="n"&gt;point&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;TRACKMOUSEEVENT&lt;/span&gt; &lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cbSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dwFlags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TME_HOVER&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;TME_LEAVE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hwndTrack&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;GetSafeHwnd&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dwHoverTime&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;TrackMouseEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;tme&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;CBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OnMouseMove&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nFlags&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;point&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OnMouseHover&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;m_isHover&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Invalidate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="n"&gt;CHoverBitmapButton&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OnMouseLeave&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;m_isHover&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Invalidate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;参考URL&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/xyuyux/20090211/1234346399"&gt;http://d.hatena.ne.jp/xyuyux/20090211/1234346399&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>TreeViewコントロール 選択されたアイテムの文字列を取得するには</title><link href="/200908281251430033.html" rel="alternate"></link><published>2009-08-28T12:27:00+09:00</published><updated>2009-08-28T12:27:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-08-28:/200908281251430033.html</id><summary type="html">&lt;p&gt;まず、親ウィンドウでWM_NOTIFYを捕まえる。&lt;br&gt;
+WM_NOTIFYでTreeViewのイベントが送られてくるのでこれを処理する。&lt;br&gt;
+このときLPARAMにはNMTREEVIEW構造体のアドレスが入っている。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; &lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt; &lt;span class="n"&gt;lpnmtview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;idFrom&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;IDC_CONFIG_TREE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;switch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+  &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nl"&gt;NM_CLICK&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;//ツリーアイテムクリック時&lt;/span&gt;
+    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nl"&gt;TVN_SELCHANGED&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;//ツリーアイテム選択変更時&lt;/span&gt;
+    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;このように&lt;br&gt;
+lpnmtview-&amp;gt;hdr.idFromにツリービューのIDが、&lt;br&gt;
+lpnmtview-&amp;gt;hdr.codeのイベントのIDが入っている。&lt;/p&gt;
+&lt;p&gt;クリックイベント時にはまだ、アイテムは選択されていないので、&lt;br&gt;
+NM_CLICKを捕まえて、選択アイテムを取得するというやり方では上手くいかない。&lt;/p&gt;
+&lt;p&gt;なので、TVN_SELCHANGED時に、選択アイテムを取得するという方法で行います。&lt;br&gt;
+このとき、送られてくる、NMTREEVIEW構造体に選択されているTVITEMが入ってるが、&lt;br&gt;
+このTVITEMのラベル名は正しく格納されていないので自分で取得する必要がある。&lt;/p&gt;
+&lt;p&gt;コード例は以下のようになる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; &lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt; &lt;span class="n"&gt;lpnmtview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;if …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;まず、親ウィンドウでWM_NOTIFYを捕まえる。&lt;br&gt;
+WM_NOTIFYでTreeViewのイベントが送られてくるのでこれを処理する。&lt;br&gt;
+このときLPARAMにはNMTREEVIEW構造体のアドレスが入っている。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; &lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt; &lt;span class="n"&gt;lpnmtview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;idFrom&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;IDC_CONFIG_TREE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;switch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+  &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nl"&gt;NM_CLICK&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;//ツリーアイテムクリック時&lt;/span&gt;
+    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nl"&gt;TVN_SELCHANGED&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;//ツリーアイテム選択変更時&lt;/span&gt;
+    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;このように&lt;br&gt;
+lpnmtview-&amp;gt;hdr.idFromにツリービューのIDが、&lt;br&gt;
+lpnmtview-&amp;gt;hdr.codeのイベントのIDが入っている。&lt;/p&gt;
+&lt;p&gt;クリックイベント時にはまだ、アイテムは選択されていないので、&lt;br&gt;
+NM_CLICKを捕まえて、選択アイテムを取得するというやり方では上手くいかない。&lt;/p&gt;
+&lt;p&gt;なので、TVN_SELCHANGED時に、選択アイテムを取得するという方法で行います。&lt;br&gt;
+このとき、送られてくる、NMTREEVIEW構造体に選択されているTVITEMが入ってるが、&lt;br&gt;
+このTVITEMのラベル名は正しく格納されていないので自分で取得する必要がある。&lt;/p&gt;
+&lt;p&gt;コード例は以下のようになる。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; &lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt; &lt;span class="n"&gt;lpnmtview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPNMTREEVIEW&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;lp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;idFrom&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;IDC_CONFIG_TREE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;switch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;hdr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+  &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nl"&gt;TVN_SELCHANGED&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c1"&gt;//ツリーアイテム選択変更時&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;HTREEITEM&lt;/span&gt; &lt;span class="n"&gt;hItem&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lpnmtview&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;itemNew&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hItem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;pszText&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="n"&gt;TVITEM&lt;/span&gt; &lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mask&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TVIF_TEXT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hItem&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;hItem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pszText&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pszText&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cchTextMax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TreeView_GetItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hTree&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+      &lt;span class="c1"&gt;//ここで、pszTextに選択アイテムのラベルが入っている。&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Windows"></category></entry><entry><title>ファイルを開くダイアログを開いたときは、カレントディレクトリが変わってる</title><link href="/200901151232037934.html" rel="alternate"></link><published>2009-01-15T01:45:00+09:00</published><updated>2009-01-15T01:45:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-01-15:/200901151232037934.html</id><summary type="html">&lt;p&gt;題名の通りです。&lt;/p&gt;
+&lt;p&gt;GetOpenFileNameなどでダイアログを開くとカレントディレクトリが変わってしまうようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%C1%EA%C2%D0%A5%D1%A5%B9"&gt;相対パス&lt;/a&gt;で指定したファイルが開けない場合があったので調べてみると、上の通りでした。&lt;br&gt;
+何時間無駄にしたことやら･･･&lt;/p&gt;</summary><content type="html">&lt;p&gt;題名の通りです。&lt;/p&gt;
+&lt;p&gt;GetOpenFileNameなどでダイアログを開くとカレントディレクトリが変わってしまうようです。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%C1%EA%C2%D0%A5%D1%A5%B9"&gt;相対パス&lt;/a&gt;で指定したファイルが開けない場合があったので調べてみると、上の通りでした。&lt;br&gt;
+何時間無駄にしたことやら･･･&lt;/p&gt;</content></entry><entry><title>自動的にメニュー項目が非活性(グレーアウト)されるのを防ぎたい時は</title><link href="/200901071231340723.html" rel="alternate"></link><published>2009-01-07T00:05:00+09:00</published><updated>2009-01-07T00:05:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-01-07:/200901071231340723.html</id><summary type="html">&lt;p&gt;自動的にメニュー項目が非活性(グレーアウト)されるのを防ぎたい時は&lt;br&gt;
+CWnd::m_bAutoMenuEnable = FALSE;&lt;br&gt;
+を行っておく。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/MSDN"&gt;MSDN&lt;/a&gt;:&lt;br&gt;
+&lt;a href="http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx"&gt;http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;自動的にメニュー項目が非活性(グレーアウト)されるのを防ぎたい時は&lt;br&gt;
+CWnd::m_bAutoMenuEnable = FALSE;&lt;br&gt;
+を行っておく。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/MSDN"&gt;MSDN&lt;/a&gt;:&lt;br&gt;
+&lt;a href="http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx"&gt;http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>CViewのアクティブイベント</title><link href="/200812231230038929.html" rel="alternate"></link><published>2008-12-23T22:28:00+09:00</published><updated>2008-12-23T22:28:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-12-23:/200812231230038929.html</id><summary type="html">&lt;p&gt;CViewのアクティブイベントは、CView::OnActivateView()で拾える。&lt;/p&gt;
+&lt;p&gt;OnActivate()とかOnMDIActivate()とかOnNcActivate()だとだめだった。&lt;br&gt;
+調べてみたが結局OnActivateView()が正解みたいだ。&lt;/p&gt;</summary><content type="html">&lt;p&gt;CViewのアクティブイベントは、CView::OnActivateView()で拾える。&lt;/p&gt;
+&lt;p&gt;OnActivate()とかOnMDIActivate()とかOnNcActivate()だとだめだった。&lt;br&gt;
+調べてみたが結局OnActivateView()が正解みたいだ。&lt;/p&gt;</content></entry><entry><title>CMultiDocTemplateの子ウィンドウのメニュー変更</title><link href="/200812221230038929.html" rel="alternate"></link><published>2008-12-22T22:28:00+09:00</published><updated>2008-12-22T22:28:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-12-22:/200812221230038929.html</id><summary type="html">&lt;p&gt;CDocument::GetDefaultMenu()をオーバーライドし、&lt;br&gt;
+自分で作成したHMENUを返せばよい。&lt;/p&gt;</summary><content type="html">&lt;p&gt;CDocument::GetDefaultMenu()をオーバーライドし、&lt;br&gt;
+自分で作成したHMENUを返せばよい。&lt;/p&gt;</content></entry><entry><title>DLLにおけるSTLの利用</title><link href="/200811281227899513.html" rel="alternate"></link><published>2008-11-28T04:11:00+09:00</published><updated>2008-11-28T04:11:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-11-28:/200811281227899513.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20081109/1226244221"&gt;http://d.hatena.ne.jp/hiroki0/20081109/1226244221&lt;/a&gt;&lt;br&gt;
+↑のヒープのエラーがでる問題だが、DLLとEXE間で&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/vector"&gt;vector&lt;/a&gt;のやり取りをしてたのが原因らしい。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt;は、inline展開されるので、DLL側とEXE側と２つ&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4%A5%CA%A5%EA%A5%B3%A1%BC%A5%C9"&gt;バイナリコード&lt;/a&gt;が生成され、&lt;br&gt;
+これが実行時に食い違うと判定されて、ヒープのエラーが出ていたようだ。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt; DLL
+で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B0%A5%B0%A4%EB"&gt;ググる&lt;/a&gt;とたくさんページが出てきた。&lt;/p&gt;
+&lt;p&gt;参考リンク&lt;br&gt;
+&lt;a href="http://support.microsoft.com/kb/172396/ja"&gt;http://support.microsoft.com/kb/172396/ja&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://lamoo.s53.xrea.com/develop/tips/dlltips.html"&gt;http://lamoo.s53.xrea.com/develop/tips/dlltips.html&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20081109/1226244221"&gt;http://d.hatena.ne.jp/hiroki0/20081109/1226244221&lt;/a&gt;&lt;br&gt;
+↑のヒープのエラーがでる問題だが、DLLとEXE間で&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/vector"&gt;vector&lt;/a&gt;のやり取りをしてたのが原因らしい。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt;は、inline展開されるので、DLL側とEXE側と２つ&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%A4%A5%CA%A5%EA%A5%B3%A1%BC%A5%C9"&gt;バイナリコード&lt;/a&gt;が生成され、&lt;br&gt;
+これが実行時に食い違うと判定されて、ヒープのエラーが出ていたようだ。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/STL"&gt;STL&lt;/a&gt; DLL
+で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B0%A5%B0%A4%EB"&gt;ググる&lt;/a&gt;とたくさんページが出てきた。&lt;/p&gt;
+&lt;p&gt;参考リンク&lt;br&gt;
+&lt;a href="http://support.microsoft.com/kb/172396/ja"&gt;http://support.microsoft.com/kb/172396/ja&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://lamoo.s53.xrea.com/develop/tips/dlltips.html"&gt;http://lamoo.s53.xrea.com/develop/tips/dlltips.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>インポートライブラリが出力されない</title><link href="/200811221227385060.html" rel="alternate"></link><published>2008-11-22T05:17:00+09:00</published><updated>2008-11-22T05:17:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-11-22:/200811221227385060.html</id><summary type="html">&lt;p&gt;__declspec(dllexport)
+をひとつもつけないでdllを&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;すると&lt;br&gt;
+インポートライブラリ(*.lib)を吐かない。&lt;/p&gt;</summary><content type="html">&lt;p&gt;__declspec(dllexport)
+をひとつもつけないでdllを&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;すると&lt;br&gt;
+インポートライブラリ(*.lib)を吐かない。&lt;/p&gt;</content></entry><entry><title>C++クラスのDLL化</title><link href="/200809101221052880.html" rel="alternate"></link><published>2008-09-10T22:21:00+09:00</published><updated>2008-09-10T22:21:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-09-10:/200809101221052880.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/C%2B%2B"&gt;C++&lt;/a&gt;のクラスのDLL化の参考リンク&lt;br&gt;
+&lt;a href="http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx"&gt;http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;amp;SiteID=7"&gt;http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;amp;SiteID=7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm"&gt;http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm&lt;/a&gt;&lt;br&gt;
+↑は、DLLとEXE側で、クラスのサイズが違ってたりすることがあるので、&lt;br&gt;
+DLL側でメモリの確保、開放をしたほうがいいよということらしい。&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/C%2B%2B"&gt;C++&lt;/a&gt;のクラスのDLL化の参考リンク&lt;br&gt;
+&lt;a href="http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx"&gt;http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;amp;SiteID=7"&gt;http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;amp;SiteID=7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm"&gt;http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm&lt;/a&gt;&lt;br&gt;
+↑は、DLLとEXE側で、クラスのサイズが違ってたりすることがあるので、&lt;br&gt;
+DLL側でメモリの確保、開放をしたほうがいいよということらしい。&lt;/p&gt;</content></entry><entry><title>プリコンパイル済みヘッダー</title><link href="/200809081220891447.html" rel="alternate"></link><published>2008-09-08T01:30:00+09:00</published><updated>2008-09-08T01:30:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-09-08:/200809081220891447.html</id><summary type="html">&lt;p&gt;コンパイル時間の短縮のためにプリコンパイル済みヘッダーを導入したが、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;c80.pdbは、このプリコンパイル済みヘッダーが作成されたときに使用されたpdbファイルではありません。プリコンパイル済みヘッダーを再作成してください。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;の様なエラーが出た。&lt;/p&gt;
+&lt;p&gt;これは、後から、StdAfx.cppを追加すると、デフォルトで「プリコンパイル済ヘッダの使用」になっているので起こるようだ。&lt;br&gt;
+ソリューションエクスプローラからStdAfx.cppを右クリック→プロパティーで「プリコンパイル済ヘッダの作成」に変更する。&lt;/p&gt;
+&lt;p&gt;StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。&lt;/p&gt;</summary><content type="html">&lt;p&gt;コンパイル時間の短縮のためにプリコンパイル済みヘッダーを導入したが、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;c80.pdbは、このプリコンパイル済みヘッダーが作成されたときに使用されたpdbファイルではありません。プリコンパイル済みヘッダーを再作成してください。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;の様なエラーが出た。&lt;/p&gt;
+&lt;p&gt;これは、後から、StdAfx.cppを追加すると、デフォルトで「プリコンパイル済ヘッダの使用」になっているので起こるようだ。&lt;br&gt;
+ソリューションエクスプローラからStdAfx.cppを右クリック→プロパティーで「プリコンパイル済ヘッダの作成」に変更する。&lt;/p&gt;
+&lt;p&gt;StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。&lt;/p&gt;</content></entry><entry><title>ソースからショートカットメニューを表示する場合の注意</title><link href="/200808131218617651.html" rel="alternate"></link><published>2008-08-13T17:54:00+09:00</published><updated>2008-08-13T17:54:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-08-13:/200808131218617651.html</id><summary type="html">&lt;p&gt;TrackPopupMenu()でショートカットメニューを表示する場合、CreateMenu()ではなく、&lt;br&gt;
+CreatePopupMenu()で作成したメニューを使用しないと上手く表示されない。&lt;/p&gt;</summary><content type="html">&lt;p&gt;TrackPopupMenu()でショートカットメニューを表示する場合、CreateMenu()ではなく、&lt;br&gt;
+CreatePopupMenu()で作成したメニューを使用しないと上手く表示されない。&lt;/p&gt;</content></entry><entry><title>ダイアログのオーナーウィンドウ</title><link href="/200806301214832557.html" rel="alternate"></link><published>2008-06-30T22:29:00+09:00</published><updated>2008-06-30T22:29:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-06-30:/200806301214832557.html</id><summary type="html">&lt;p&gt;ダイアログのオーナーウィンドウのハンドルは、&lt;br&gt;
+GetWindow()でGW_OWNERを指定することで得られるが、&lt;br&gt;
+DialogBox()の第3引数で指定したものが得られるとは限らない。&lt;/p&gt;
+&lt;p&gt;DialogBox()の第3引数で指定したウィンドウが子ウィンドウの場合、&lt;br&gt;
+子ウィンドウはオーナーウィンドウになれないので、子ウィンドウの親を調べて子ウィンドウでなければ、そのウィンドウがオーナーウィンドウになる。&lt;br&gt;
+子ウィンドウの親も子ウィンドウだった場合さらにその親を調べる。&lt;/p&gt;</summary><content type="html">&lt;p&gt;ダイアログのオーナーウィンドウのハンドルは、&lt;br&gt;
+GetWindow()でGW_OWNERを指定することで得られるが、&lt;br&gt;
+DialogBox()の第3引数で指定したものが得られるとは限らない。&lt;/p&gt;
+&lt;p&gt;DialogBox()の第3引数で指定したウィンドウが子ウィンドウの場合、&lt;br&gt;
+子ウィンドウはオーナーウィンドウになれないので、子ウィンドウの親を調べて子ウィンドウでなければ、そのウィンドウがオーナーウィンドウになる。&lt;br&gt;
+子ウィンドウの親も子ウィンドウだった場合さらにその親を調べる。&lt;/p&gt;</content></entry><entry><title>WinAPIでのWindowのクラス化</title><link href="/200806021212424580.html" rel="alternate"></link><published>2008-06-02T01:36:00+09:00</published><updated>2008-06-02T01:36:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-06-02:/200806021212424580.html</id><summary type="html">&lt;p&gt;プロシージャーは、staticな&lt;a href="http://d.hatena.ne.jp/keyword/%A5%E1%A5%F3%A5%D0%B4%D8%BF%F4"&gt;メンバ関数&lt;/a&gt;を使用するとして&lt;br&gt;
+プロシージャーから、SetProp(), GetProp(), RemoveProp()&lt;br&gt;
+をしようして、ウィンドウハンドルから、自身のオブジェクトの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%DD%A5%A4%A5%F3%A5%BF%A1%BC"&gt;ポインター&lt;/a&gt;を
+得れば何とかいけそう。&lt;/p&gt;</summary><content type="html">&lt;p&gt;プロシージャーは、staticな&lt;a href="http://d.hatena.ne.jp/keyword/%A5%E1%A5%F3%A5%D0%B4%D8%BF%F4"&gt;メンバ関数&lt;/a&gt;を使用するとして&lt;br&gt;
+プロシージャーから、SetProp(), GetProp(), RemoveProp()&lt;br&gt;
+をしようして、ウィンドウハンドルから、自身のオブジェクトの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%DD%A5%A4%A5%F3%A5%BF%A1%BC"&gt;ポインター&lt;/a&gt;を
+得れば何とかいけそう。&lt;/p&gt;</content></entry><entry><title>マルチバイト文字列処理 isleadbyte()</title><link href="/20080421.html" rel="alternate"></link><published>2008-04-21T00:00:00+09:00</published><updated>2008-04-21T00:00:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-04-21:/20080421.html</id><summary type="html">&lt;h2&gt;マルチバイト文字列処理 isleadbyte()&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;setlocale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LC_ALL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Japanese&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;isleadbyte&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ってかかないと正しく動かないんだね･･･&lt;/p&gt;</summary><content type="html">&lt;h2&gt;マルチバイト文字列処理 isleadbyte()&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;setlocale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LC_ALL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Japanese&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;isleadbyte&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ってかかないと正しく動かないんだね･･･&lt;/p&gt;</content></entry><entry><title>追記1</title><link href="/200802071202826993.html" rel="alternate"></link><published>2008-02-07T23:36:00+09:00</published><updated>2008-02-07T23:36:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-02-07:/200802071202826993.html</id><summary type="html">&lt;p&gt;標準でインストールされるPlatformSDKで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみたがダメ。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;も問題なさそうだし・・・&lt;/p&gt;
+&lt;p&gt;もうちょっと調べてみないとだめみたい。&lt;/p&gt;</summary><content type="html">&lt;p&gt;標準でインストールされるPlatformSDKで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみたがダメ。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;も問題なさそうだし・・・&lt;/p&gt;
+&lt;p&gt;もうちょっと調べてみないとだめみたい。&lt;/p&gt;</content></entry><entry><title>追記3</title><link href="/200802071202938274.html" rel="alternate"></link><published>2008-02-07T06:31:00+09:00</published><updated>2008-02-07T06:31:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-02-07:/200802071202938274.html</id><summary type="html">&lt;p&gt;XPの方のVisualStudioのインストール場所にあるVCフォルダを&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;の方に持っていて置き換えて&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみた。&lt;br&gt;
+結果は正常に動作した。(当たり前といえば当たり前というような気もするけど･･･&lt;br&gt;
+とりあえず、問題がでるまでこれで行ってみようかと思う。&lt;/p&gt;</summary><content type="html">&lt;p&gt;XPの方のVisualStudioのインストール場所にあるVCフォルダを&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;の方に持っていて置き換えて&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみた。&lt;br&gt;
+結果は正常に動作した。(当たり前といえば当たり前というような気もするけど･･･&lt;br&gt;
+とりあえず、問題がでるまでこれで行ってみようかと思う。&lt;/p&gt;</content></entry><entry><title>追記2</title><link href="/200802071202932163.html" rel="alternate"></link><published>2008-02-07T04:49:00+09:00</published><updated>2008-02-07T04:49:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-02-07:/200802071202932163.html</id><summary type="html">&lt;p&gt;不具合とは直接関係ないが、&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;でdshow.hやらが無いと言われて&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;できなかったDirectShowが&lt;br&gt;
+XPの方で普通に&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;できていたのは古いDirectSDKへのリンクがはってあったからみたいだ。&lt;/p&gt;
+&lt;p&gt;不具合のほうは一回XPの方のファイルを&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;に突っ込んで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;させてみようと思う。&lt;br&gt;
+これで上手くいかなかったら、.NetFrameworkが原因だったりするのかな･･･&lt;/p&gt;</summary><content type="html">&lt;p&gt;不具合とは直接関係ないが、&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;でdshow.hやらが無いと言われて&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;できなかったDirectShowが&lt;br&gt;
+XPの方で普通に&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;できていたのは古いDirectSDKへのリンクがはってあったからみたいだ。&lt;/p&gt;
+&lt;p&gt;不具合のほうは一回XPの方のファイルを&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;に突っ込んで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;させてみようと思う。&lt;br&gt;
+これで上手くいかなかったら、.NetFrameworkが原因だったりするのかな･･･&lt;/p&gt;</content></entry><entry><title>Vista開発環境での不具合</title><link href="/200802071202404779.html" rel="alternate"></link><published>2008-02-07T02:19:00+09:00</published><updated>2008-02-07T02:19:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-02-07:/200802071202404779.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;したものを、XPに持っていって実行してみると正常に動作しない・・・&lt;br&gt;
+おそらくDirectXSDKかWindowsSDKが原因だと思われるのだが・・・・&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;したものを、XPに持っていって実行してみると正常に動作しない・・・&lt;br&gt;
+おそらくDirectXSDKかWindowsSDKが原因だと思われるのだが・・・・&lt;/p&gt;</content></entry><entry><title>新PCの開発環境構築</title><link href="/200802031202053013.html" rel="alternate"></link><published>2008-02-03T00:36:00+09:00</published><updated>2008-02-03T00:36:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-02-03:/200802031202053013.html</id><summary type="html">&lt;p&gt;新PCのOSには、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;を入れたので、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;上でVisual
+Studio2005の開発環境を構築するときのメモ。&lt;/p&gt;
+&lt;p&gt;まずは、Visual Studio2005のインストール。&lt;/p&gt;
+&lt;p&gt;[&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005 SP1&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005 SP1 Update for &lt;a href="http://d.hatena.ne.jp/keyword/Windows%20Vista"&gt;Windows
+Vista&lt;/a&gt;]{style="font-weight:bold;"}&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にVisual
+Studio2005を入れるにはこれらをインストールする必要があるようだ。&lt;br&gt;
+参考ページ&lt;br&gt;
+&lt;a href="http://support.microsoft.com/kb/936453/ja"&gt;http://support.microsoft.com/kb/936453/ja&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;次に、&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;のインストールを行った。&lt;br&gt;
+November2007は、dMusic.hがなくなったりと面倒だったので、August2007をインストール。&lt;br&gt;
+ここは、特に問題なくいけた。&lt;/p&gt;
+&lt;p&gt;ここで、XPで作成していたプロジェクトを …&lt;/p&gt;</summary><content type="html">&lt;p&gt;新PCのOSには、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;を入れたので、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;上でVisual
+Studio2005の開発環境を構築するときのメモ。&lt;/p&gt;
+&lt;p&gt;まずは、Visual Studio2005のインストール。&lt;/p&gt;
+&lt;p&gt;[&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005 SP1&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005 SP1 Update for &lt;a href="http://d.hatena.ne.jp/keyword/Windows%20Vista"&gt;Windows
+Vista&lt;/a&gt;]{style="font-weight:bold;"}&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にVisual
+Studio2005を入れるにはこれらをインストールする必要があるようだ。&lt;br&gt;
+参考ページ&lt;br&gt;
+&lt;a href="http://support.microsoft.com/kb/936453/ja"&gt;http://support.microsoft.com/kb/936453/ja&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;次に、&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;のインストールを行った。&lt;br&gt;
+November2007は、dMusic.hがなくなったりと面倒だったので、August2007をインストール。&lt;br&gt;
+ここは、特に問題なくいけた。&lt;/p&gt;
+&lt;p&gt;ここで、XPで作成していたプロジェクトを&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみる。&lt;br&gt;
+dShow.hやstrmiids.libが無いといわれる。&lt;br&gt;
+これらは、Platform
+&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;に含まれており、Platform
+&lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;は&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+Studio&lt;/a&gt;をインストールしたときに同時にインストールされているはず・・・&lt;br&gt;
+リンクが張られていないのかと思ったが、ちゃんと張られていた。&lt;br&gt;
+IncludやLibフォルダを覗いてみる。無い・・・&lt;/p&gt;
+&lt;p&gt;とりあえず、新しいPlatformSDKをインストールしてみることにする。&lt;br&gt;
+いまはPlatformSDK
+と&lt;a href="http://d.hatena.ne.jp/keyword/%20.NET"&gt;.NET&lt;/a&gt;
+FrameworkSDKが一緒になりWindowsSDKとなっているようだった。&lt;/p&gt;
+&lt;p&gt;WindowsSDKのダウンロードページ&lt;br&gt;
+&lt;a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=7614fe22-8a64-4dfb-aa0c-db53035f40a0&amp;amp;DisplayLang=ja"&gt;http://www.microsoft.com/downloads/details.aspx?FamilyID=7614fe22-8a64-4dfb-aa0c-db53035f40a0&amp;amp;DisplayLang=ja&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;これをインストールし、VS2005からリンクを張って、&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;しなおしてみると、&lt;br&gt;
+ようやく&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;が正常にできたようだ。&lt;/p&gt;</content></entry><entry><title>新PC</title><link href="/200801271201444962.html" rel="alternate"></link><published>2008-01-27T23:42:00+09:00</published><updated>2008-01-27T23:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-01-27:/200801271201444962.html</id><summary type="html">&lt;p&gt;新PCを組んでみた。&lt;br&gt;
+構成は、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: E8400&lt;/li&gt;
+&lt;li&gt;MEM: 4G&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VGA"&gt;VGA&lt;/a&gt;: Geforce8600 GT&lt;/li&gt;
+&lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt; 32bit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にしたが、XPの旧マシンよりもかなり動作が早くなった。&lt;/p&gt;
+&lt;p&gt;旧PCベンチ&lt;br&gt;
+[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233644"&gt;&lt;img alt="f:id:hiroki0:20080127233644p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233644.png" title="f:id:hiroki0:20080127233644p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;br&gt;
+新PCベンチ&lt;br&gt;
+[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233655"&gt;&lt;img alt="f:id:hiroki0:20080127233655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233655.png" title="f:id:hiroki0:20080127233655p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;p&gt;旧PCのスペック&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: PentiumM1.8GHz(ぐらいだったかな・・&lt;/li&gt;
+&lt;li&gt;MEM: 1G&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VGA"&gt;VGA&lt;/a&gt;:
+    &lt;a href="http://d.hatena.ne.jp/keyword/Radeon"&gt;Radeon&lt;/a&gt; x700&lt;/li&gt;
+&lt;li&gt;OS: XP 32bit&lt;/li&gt;
+&lt;/ul&gt;</summary><content type="html">&lt;p&gt;新PCを組んでみた。&lt;br&gt;
+構成は、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: E8400&lt;/li&gt;
+&lt;li&gt;MEM: 4G&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VGA"&gt;VGA&lt;/a&gt;: Geforce8600 GT&lt;/li&gt;
+&lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt; 32bit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にしたが、XPの旧マシンよりもかなり動作が早くなった。&lt;/p&gt;
+&lt;p&gt;旧PCベンチ&lt;br&gt;
+[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233644"&gt;&lt;img alt="f:id:hiroki0:20080127233644p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233644.png" title="f:id:hiroki0:20080127233644p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;br&gt;
+新PCベンチ&lt;br&gt;
+[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233655"&gt;&lt;img alt="f:id:hiroki0:20080127233655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233655.png" title="f:id:hiroki0:20080127233655p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;p&gt;旧PCのスペック&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU: PentiumM1.8GHz(ぐらいだったかな・・&lt;/li&gt;
+&lt;li&gt;MEM: 1G&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VGA"&gt;VGA&lt;/a&gt;:
+    &lt;a href="http://d.hatena.ne.jp/keyword/Radeon"&gt;Radeon&lt;/a&gt; x700&lt;/li&gt;
+&lt;li&gt;OS: XP 32bit&lt;/li&gt;
+&lt;/ul&gt;</content></entry><entry><title>文字コードのメモ</title><link href="/200712031196697167.html" rel="alternate"></link><published>2007-12-03T00:52:00+09:00</published><updated>2007-12-03T00:52:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-12-03:/200712031196697167.html</id><summary type="html">&lt;p&gt;ASCII文字以外の知識があいまいなのでメモ&lt;/p&gt;
+&lt;p&gt;ASCII
+0x00-0x7fの値で表される&lt;a href="http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9"&gt;文字コード&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;マルチバイト文字　1ビットと2ビットが混じっている形式&lt;br&gt;
+Shift-JIS&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/EUC"&gt;EUC&lt;/a&gt;-JP&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/ISO-2022-JP"&gt;ISO-2022-JP&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/UTF-8"&gt;UTF-8&lt;/a&gt;&lt;br&gt;
+一バイト目が0x80-0xffで始まる。&lt;br&gt;
+int isleadbyte(int c) マルチバイトの一文字目を判定する。&lt;br&gt;
+これが0以外の値を返すとき後ろの値も一緒に扱うとうまくいくようだ。&lt;/p&gt;
+&lt;p&gt;ワイド文字　すべて2ビット(&lt;a href="http://d.hatena.ne.jp/keyword/Windows"&gt;Windows&lt;/a&gt;では)の形式　wchar_tであらわす。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/UTF-16"&gt;UTF-16&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;TCHAR 状況にあわせてマルチバイト・ワイドに切り替わってくれる型&lt;/p&gt;</summary><content type="html">&lt;p&gt;ASCII文字以外の知識があいまいなのでメモ&lt;/p&gt;
+&lt;p&gt;ASCII
+0x00-0x7fの値で表される&lt;a href="http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9"&gt;文字コード&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;マルチバイト文字　1ビットと2ビットが混じっている形式&lt;br&gt;
+Shift-JIS&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/EUC"&gt;EUC&lt;/a&gt;-JP&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/ISO-2022-JP"&gt;ISO-2022-JP&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/UTF-8"&gt;UTF-8&lt;/a&gt;&lt;br&gt;
+一バイト目が0x80-0xffで始まる。&lt;br&gt;
+int isleadbyte(int c) マルチバイトの一文字目を判定する。&lt;br&gt;
+これが0以外の値を返すとき後ろの値も一緒に扱うとうまくいくようだ。&lt;/p&gt;
+&lt;p&gt;ワイド文字　すべて2ビット(&lt;a href="http://d.hatena.ne.jp/keyword/Windows"&gt;Windows&lt;/a&gt;では)の形式　wchar_tであらわす。&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/UTF-16"&gt;UTF-16&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;TCHAR 状況にあわせてマルチバイト・ワイドに切り替わってくれる型&lt;/p&gt;</content></entry><entry><title>デバッグ用のウィンドウ</title><link href="/200710311193846067.html" rel="alternate"></link><published>2007-10-31T00:54:00+09:00</published><updated>2007-10-31T00:54:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-10-31:/200710311193846067.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;情報の表示用にウィンドウをもう1つ作ろうと思って&lt;br&gt;
+もう1つCreateWindowでつくってみたが･･･&lt;/p&gt;
+&lt;p&gt;タスクバーに表示はされるが、肝心のウィンドウが出てこない・・・&lt;br&gt;
+同一プロセスではだめなのか。。。と考えてしまったが&lt;/p&gt;
+&lt;p&gt;CW_USEDEFAULT + 600&lt;br&gt;
+とかやってたのがまずかったみたい、ウィンドウがどっかに行ってたみたいだ････&lt;/p&gt;
+&lt;p&gt;CW_USEDEFAULT&lt;br&gt;
+にしたら出てきた。&lt;/p&gt;
+&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20071101005339"&gt;&lt;img alt="f:id:hiroki0:20071101005339p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;情報の表示用にウィンドウをもう1つ作ろうと思って&lt;br&gt;
+もう1つCreateWindowでつくってみたが･･･&lt;/p&gt;
+&lt;p&gt;タスクバーに表示はされるが、肝心のウィンドウが出てこない・・・&lt;br&gt;
+同一プロセスではだめなのか。。。と考えてしまったが&lt;/p&gt;
+&lt;p&gt;CW_USEDEFAULT + 600&lt;br&gt;
+とかやってたのがまずかったみたい、ウィンドウがどっかに行ってたみたいだ････&lt;/p&gt;
+&lt;p&gt;CW_USEDEFAULT&lt;br&gt;
+にしたら出てきた。&lt;/p&gt;
+&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20071101005339"&gt;&lt;img alt="f:id:hiroki0:20071101005339p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"&gt;&lt;/a&gt;]{itemscope=""
+itemtype="http://schema.org/Photograph"}&lt;/p&gt;</content></entry><entry><title>Vista用のアイコン</title><link href="/200706161182012117.html" rel="alternate"></link><published>2007-06-16T01:41:00+09:00</published><updated>2007-06-16T01:41:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-06-16:/200706161182012117.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Windows%20Vista"&gt;Windows
+Vista&lt;/a&gt;では、256x256までの&lt;a href="http://d.hatena.ne.jp/keyword/PNG"&gt;PNG&lt;/a&gt;圧縮の、アイコンを扱える。&lt;br&gt;
+これは、普通に&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;しようとすると&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/error"&gt;error&lt;/a&gt; RC2176 : old DIB
+in･･･&lt;br&gt;
+というエラーになるので、別の方法をとる必要があります。&lt;br&gt;
+下の2つの方法があります。&lt;/p&gt;
+&lt;p&gt;・VisualStadioのパッチを当てる&lt;br&gt;
+・ダミーのアイコンで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;しておき、後に入れ替える&lt;/p&gt;
+&lt;p&gt;2番目のダミーのアイコンを使用する方法を、解説します。&lt;/p&gt;
+&lt;p&gt;まず、IcoFXなどで&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;用のアイコンの作製を行います。&lt;br&gt;
+『IcoFX』&lt;a href="http://icofx.xhost.ro/"&gt;http://icofx.xhost.ro/&lt;/a&gt;&lt;br&gt;
+自分は、このとき256x256と46x46,32x32,16x16のサイズも一緒に作っておきました。&lt;br&gt;
+こうするとXPでもアイコンが表示されるようです。&lt;/p&gt;
+&lt;p&gt;次に、ReplaceVistaIcon.exeをつかってアイコンを入れ替えました。&lt;br&gt;
+『ReplaceVistaIcon.exe』&lt;a href="http://www.rw-designer.com/compile-vista-icon"&gt;http://www.rw-designer.com/compile-vista-icon …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Windows%20Vista"&gt;Windows
+Vista&lt;/a&gt;では、256x256までの&lt;a href="http://d.hatena.ne.jp/keyword/PNG"&gt;PNG&lt;/a&gt;圧縮の、アイコンを扱える。&lt;br&gt;
+これは、普通に&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;しようとすると&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/error"&gt;error&lt;/a&gt; RC2176 : old DIB
+in･･･&lt;br&gt;
+というエラーになるので、別の方法をとる必要があります。&lt;br&gt;
+下の2つの方法があります。&lt;/p&gt;
+&lt;p&gt;・VisualStadioのパッチを当てる&lt;br&gt;
+・ダミーのアイコンで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;しておき、後に入れ替える&lt;/p&gt;
+&lt;p&gt;2番目のダミーのアイコンを使用する方法を、解説します。&lt;/p&gt;
+&lt;p&gt;まず、IcoFXなどで&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;用のアイコンの作製を行います。&lt;br&gt;
+『IcoFX』&lt;a href="http://icofx.xhost.ro/"&gt;http://icofx.xhost.ro/&lt;/a&gt;&lt;br&gt;
+自分は、このとき256x256と46x46,32x32,16x16のサイズも一緒に作っておきました。&lt;br&gt;
+こうするとXPでもアイコンが表示されるようです。&lt;/p&gt;
+&lt;p&gt;次に、ReplaceVistaIcon.exeをつかってアイコンを入れ替えました。&lt;br&gt;
+『ReplaceVistaIcon.exe』&lt;a href="http://www.rw-designer.com/compile-vista-icon"&gt;http://www.rw-designer.com/compile-vista-icon&lt;/a&gt;&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%DE%A5%F3%A5%C9%A5%D7%A5%ED%A5%F3%A5%D7%A5%C8"&gt;コマンドプロンプト&lt;/a&gt;上で、&lt;br&gt;
+ReplaceVistaIcon.exe executable.dll
+icon.&lt;a href="http://d.hatena.ne.jp/keyword/ico"&gt;ico&lt;/a&gt;
+[アイコンのID]　または、&lt;br&gt;
+ReplaceVistaIcon.exe executable.dll
+icon.&lt;a href="http://d.hatena.ne.jp/keyword/ico"&gt;ico&lt;/a&gt;&lt;br&gt;
+と、するとアイコンを入れ替えることができます。このときファイルへのパスもちゃんと書くように&lt;/p&gt;
+&lt;p&gt;VisualC++のプロジェクトの「プロパティー」→「ビルドイベント」→「ビルド後のイベント」で&lt;br&gt;
+上のコマンドを入力しておくと、自動でアイコンを入れ替えることができます。&lt;/p&gt;</content></entry><entry><title>IEコンポーネント</title><link href="/200706141181830810.html" rel="alternate"></link><published>2007-06-14T23:20:00+09:00</published><updated>2007-06-14T23:20:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-06-14:/200706141181830810.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/IE%A5%B3%A5%F3%A5%DD%A1%BC%A5%CD%A5%F3%A5%C8"&gt;IEコンポーネント&lt;/a&gt;を使う場合の注意&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2005の場合&lt;br&gt;
+CreateWindow( \"AtlAxWin80\", \"Shell.Explorer.2\", ････&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2003.netの場合&lt;br&gt;
+CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/IE%A5%B3%A5%F3%A5%DD%A1%BC%A5%CD%A5%F3%A5%C8"&gt;IEコンポーネント&lt;/a&gt;を使う場合の注意&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2005の場合&lt;br&gt;
+CreateWindow( \"AtlAxWin80\", \"Shell.Explorer.2\", ････&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2003.netの場合&lt;br&gt;
+CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････&lt;/p&gt;</content></entry><entry><title>WinAPIによる非矩形ウィンドウの実現</title><link href="/200705311180621839.html" rel="alternate"></link><published>2007-05-31T23:30:00+09:00</published><updated>2007-05-31T23:30:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-05-31:/200705311180621839.html</id><summary type="html">&lt;p&gt;基本的な流れは、以下の通り。
+1. リージョンを作る。&lt;br&gt;
+2. SetWindowRgnでリージョンの形に添ったウィンドウの生成。  &lt;/p&gt;
+&lt;p&gt;SetWindowRgnの第一引数は、ウィンドウハンドル、&lt;br&gt;
+第二引数は、リージョン、&lt;br&gt;
+第三引数は、再描画するかどうか
+これだけでoｋ&lt;/p&gt;
+&lt;p&gt;・ビットマップからリージョンを作る&lt;br&gt;
+&lt;a href="http://techtips.belution.com/ja/vc/0010/"&gt;http://techtips.belution.com/ja/vc/0010/&lt;/a&gt;&lt;br&gt;
+↑で、画像からリージョンを作る方法を説明している。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DDB"&gt;DDB&lt;/a&gt;は、デバイスに依存するビットマップ&lt;br&gt;
+・直接加工できない&lt;br&gt;
+・ハードウェア処理に適している&lt;br&gt;
+・そのため、ハードウェアごとに形式が異なることがある&lt;/p&gt;
+&lt;p&gt;DIBは、デバイスに依存しないビットマップ&lt;br&gt;
+・1ドットにアクセスできる&lt;br&gt;
+・&lt;a href="http://d.hatena.ne.jp/keyword/BMP"&gt;BMP&lt;/a&gt;ファイルからの変換またはその逆も簡単&lt;/p&gt;</summary><content type="html">&lt;p&gt;基本的な流れは、以下の通り。
+1. リージョンを作る。&lt;br&gt;
+2. SetWindowRgnでリージョンの形に添ったウィンドウの生成。  &lt;/p&gt;
+&lt;p&gt;SetWindowRgnの第一引数は、ウィンドウハンドル、&lt;br&gt;
+第二引数は、リージョン、&lt;br&gt;
+第三引数は、再描画するかどうか
+これだけでoｋ&lt;/p&gt;
+&lt;p&gt;・ビットマップからリージョンを作る&lt;br&gt;
+&lt;a href="http://techtips.belution.com/ja/vc/0010/"&gt;http://techtips.belution.com/ja/vc/0010/&lt;/a&gt;&lt;br&gt;
+↑で、画像からリージョンを作る方法を説明している。&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DDB"&gt;DDB&lt;/a&gt;は、デバイスに依存するビットマップ&lt;br&gt;
+・直接加工できない&lt;br&gt;
+・ハードウェア処理に適している&lt;br&gt;
+・そのため、ハードウェアごとに形式が異なることがある&lt;/p&gt;
+&lt;p&gt;DIBは、デバイスに依存しないビットマップ&lt;br&gt;
+・1ドットにアクセスできる&lt;br&gt;
+・&lt;a href="http://d.hatena.ne.jp/keyword/BMP"&gt;BMP&lt;/a&gt;ファイルからの変換またはその逆も簡単&lt;/p&gt;</content></entry></feed>

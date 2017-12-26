@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - PC</title><link href="/" rel="alternate"></link><link href="/feeds/pc.atom.xml" rel="self"></link><id>/</id><updated>2009-08-27T10:52:00+09:00</updated><entry><title>Ubuntu9.04 netbook remixのインストール</title><link href="/200908271251337964.html" rel="alternate"></link><published>2009-08-27T10:52:00+09:00</published><updated>2009-08-27T10:52:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-08-27:/200908271251337964.html</id><summary type="html">&lt;p&gt;Ubuntu9.04 &lt;a href="http://d.hatena.ne.jp/keyword/netbook"&gt;netbook&lt;/a&gt;
+remixを&lt;a href="http://d.hatena.ne.jp/keyword/EeePC"&gt;EeePC&lt;/a&gt;
+1002HAEにインストールした。&lt;br&gt;
+インストール直後の&lt;a href="http://d.hatena.ne.jp/keyword/Windows"&gt;Windows&lt;/a&gt;ではCドライブ80GBとDドライブ60GBに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3"&gt;パーティション&lt;/a&gt;が分かれており、(他に4GBほどのリカバリー用の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3"&gt;パーティション&lt;/a&gt;がついている。)&lt;br&gt;
+このDドライブにインストールすることにした。&lt;/p&gt;
+&lt;p&gt;1GBのSDカードにインストールイメージを書き込み、&lt;br&gt;
+誘導にしたがってインストールを行った。&lt;/p&gt;
+&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20090826210238"&gt;&lt;img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;起動も結構早くていい感じ。&lt;/p&gt;
+&lt;h4&gt;参考URL&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html"&gt;http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ubuntu9.04 &lt;a href="http://d.hatena.ne.jp/keyword/netbook"&gt;netbook&lt;/a&gt;
+remixを&lt;a href="http://d.hatena.ne.jp/keyword/EeePC"&gt;EeePC&lt;/a&gt;
+1002HAEにインストールした。&lt;br&gt;
+インストール直後の&lt;a href="http://d.hatena.ne.jp/keyword/Windows"&gt;Windows&lt;/a&gt;ではCドライブ80GBとDドライブ60GBに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3"&gt;パーティション&lt;/a&gt;が分かれており、(他に4GBほどのリカバリー用の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3"&gt;パーティション&lt;/a&gt;がついている。)&lt;br&gt;
+このDドライブにインストールすることにした。&lt;/p&gt;
+&lt;p&gt;1GBのSDカードにインストールイメージを書き込み、&lt;br&gt;
+誘導にしたがってインストールを行った。&lt;/p&gt;
+&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20090826210238"&gt;&lt;img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;起動も結構早くていい感じ。&lt;/p&gt;
+&lt;h4&gt;参考URL&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html"&gt;http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html&lt;/a&gt;&lt;/p&gt;</content></entry></feed>

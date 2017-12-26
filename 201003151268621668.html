@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    waura's blog
+&ndash; 64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
+          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
+      
+      </p>
+    </header>
+    
+<article>
+  <div class="article__title">
+    <h1><a href="/201003151268621668.html">64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 15 3月 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h4>CMakeを用いて<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual Studio</a>のプロジェクトを作る</h4>
+<p>ここを参考に<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のソースから<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+Studio</a>のプロジェクトを作成する。<br>
+<a href="http://d.hatena.ne.jp/Guernsey/20091002/1254459730">http://d.hatena.ne.jp/Guernsey/20091002/1254459730</a></p>
+<p>「アプリケーションを正しく初期化できませんでした
+(0xc0150002)」というエラーダイアログがでないようにするためにCMakeのConfigure時にでENABLE_OPENMPを外す。<br>
+<a href="http://d.hatena.ne.jp/Guernsey/20091120/1258734848">http://d.hatena.ne.jp/Guernsey/20091120/1258734848</a></p>
+<h4>スタティックリンクライブラリをビルドするために</h4>
+<ul>
+<li>「構成プロパティ」→「全般」で「構成の種類」をダイナミックライブラリからスタティックライブラリに変更する</li>
+<li>DllMain()を<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a></li>
+<li><a href="http://d.hatena.ne.jp/keyword/opencv">opencv</a>-1.1preからvideoInput.libをリンクさせる</li>
+<li>atlthunk.libが見つからないとリンクエラーが出たらatlthunk.libを無視</li>
+</ul>
+<h4>64bit対応にするために</h4>
+<ul>
+<li>すべてのプロジェクトのプロパティの「構成プロパティ」→「<a href="http://d.hatena.ne.jp/keyword/C/C%2B%2B">C/C++</a>」→「<a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%EA%A5%D7%A5%ED%A5%BB%A5%C3%A5%B5">プリプロセッサ</a>」で<a href="http://d.hatena.ne.jp/keyword/WIN32">WIN32</a>を<a href="http://d.hatena.ne.jp/keyword/WIN64">WIN64</a>,<a href="http://d.hatena.ne.jp/keyword/EM64T">EM64T</a>に変更</li>
+</ul>
+  </div>
+
+</article>
+    
+          
+  </main>
+    <footer>
+      <!--
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      -->
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fa fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fa fa-rss"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>          
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>
