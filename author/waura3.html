@@ -55,16 +55,17 @@
 <p>WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。</p>
 <div class="highlight"><pre><span></span><span class="n">LRESULT</span> <span class="nf">KeyboardHookProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
-<span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
-<span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
-<span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="c1">//check keyup shift</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keyup …</span></pre></div>
+  <span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+  <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
+    <span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//check keyup shift</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keyup …</span></pre></div>
   </div>
 </article>
 <hr />
@@ -84,7 +85,7 @@
 <li>レイヤー合成高速化</li>
 </ul>
 <p><a href="http://key0note.ath.cx/hp/frayer_wiki/">http://key0note.ath.cx/hp/frayer_wiki/</a></p>
-<p>[<a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
 ブラシのテスト。<br>
 黒い線がハード円ブラシ、赤い線がハードエアーブラシ、青い線がソフト円ブラシ、緑の線がソフトエアーブラシ。</p>
   </div>
@@ -132,11 +133,9 @@ Studio</a>
   </div>
   <div class="article__text">
     <p>円描画時の<a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%A8%A5%A4%A5%EA%A5%A2%A5%B9">アンチエイリアス</a>のかけ方のテスト<br>
-[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a>]{itemscope=""
-itemtype="http://schema.org/Photograph"}</p>
+<a href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a></p>
 <p>ついでにブラシ描画のテスト<br>
-[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a>]{itemscope=""
-itemtype="http://schema.org/Photograph"}</p>
+<a href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a></p>
   </div>
 </article>
 <hr />
@@ -213,11 +212,12 @@ si.dwNumberOfProcessors; //プロセッサ数
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 日 27 9月 2009</p>
-    </p>
+ Tags:
+      <a href="/tag/peintotsuru.html">#ペイントツール</a>    </p>
   </div>
   <div class="article__text">
     <p>3次スプラインを利用して<a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6">トーンカーブ</a>を実装してみた。<br>
-[<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
+<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
   </div>
 </article>
 <hr />

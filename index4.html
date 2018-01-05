@@ -51,8 +51,7 @@
     </p>
   </div>
   <div class="article__text">
-    <p>[2010/03/10 書きなおしました。]{style="color:#FF0000;"}</p>
-<h2>計測するアルファブレンド処理</h2>
+    <h2>計測するアルファブレンド処理</h2>
 <ul>
 <li>SSEを使わない処理</li>
 <li>16バイトアライメントなし、SSEを使って1pixelごとに処理</li>
@@ -69,7 +68,12 @@
 <h2>計測に使用した環境</h2>
 <ul>
 <li>CPU: <a href="http://d.hatena.ne.jp/keyword/core2duo">core2duo</a>
-    E8400 …</li></ul>
+    E8400</li>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/windows%207">windows 7</a>
+    64bit</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio …</a></li></ul>
   </div>
 </article>
 <hr />
@@ -268,7 +272,7 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 このDドライブにインストールすることにした。</p>
 <p>1GBのSDカードにインストールイメージを書き込み、<br>
 誘導にしたがってインストールを行った。</p>
-<p>[<a href="http://f.hatena.ne.jp/hiroki0/20090826210238"><img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"></a></p>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20090826210238"><img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"></a></p>
 <p>起動も結構早くていい感じ。</p>
 <h4>参考URL</h4>
 <p><a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html">http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html</a></p>
@@ -292,23 +296,26 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 <span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
 <span class="k">class</span> <span class="nc">GetWebFile</span>
-<span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
-<span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
-<span class="k">end</span>
-<span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">begin</span>
-<span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-<span class="k">begin</span>
-<span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
-<span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-<span class="p">}</span>
-<span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
-<span class="nb">warn</span> <span class="n">to</span>
-<span class="k">return</span>
-<span class="k">end</span>
-<span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
-<span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+    <span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">begin</span>
+      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+      <span class="k">begin</span>
+        <span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+          <span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="p">}</span>
+        <span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
+          <span class="nb">warn</span> <span class="n">to</span>
+        <span class="k">return</span>
+      <span class="k">end</span>
+
+      <span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
   </div>
 </article>
 <hr />
@@ -321,7 +328,7 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
     </p>
   </div>
   <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/xyzzy">xyzzy</a>は編集ファイルと同じディレクトリに<a href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.1\~みたいなバックアップファイルを作ります。<br>
+    <p><a href="http://d.hatena.ne.jp/keyword/xyzzy">xyzzy</a>は編集ファイルと同じディレクトリに<a href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.1~みたいなバックアップファイルを作ります。<br>
 この設定のままだと作業ディレクトリにバックアップファイルがたくさんできて困るので、以下の方法で別のディレクトリにバックアップファイルを作ります。</p>
 <div class="highlight"><pre><span></span>(require &quot;backup&quot;)
 (setq *backup-directory* &quot;D:/backup/&quot;)

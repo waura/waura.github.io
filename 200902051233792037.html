@@ -52,20 +52,20 @@
     </p>
   </div>
   <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/hiroki0/20070324">http://d.hatena.ne.jp/hiroki0/20070324</a><br>
-<a href="http://d.hatena.ne.jp/hiroki0/20070325">http://d.hatena.ne.jp/hiroki0/20070325</a><br>
-<a href="http://d.hatena.ne.jp/hiroki0/20090204">http://d.hatena.ne.jp/hiroki0/20090204</a></p>
+    <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
+<a href="200703251174775823.html">Xファイルのフォーマット(2)</a>
+<a href="200902041233704553.html">Xファイルのフォーマット(3)</a></p>
 <p>今回は、アニメーションのまとめ。<br>
 アニメーションは以下のように表されます。</p>
 <div class="highlight"><pre><span></span>AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 </pre></div>
 
@@ -82,47 +82,47 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 <!-- -->
 
 <div class="highlight"><pre><span></span>Frame  frame1{
-FrameTransformMatrix { //単位行列なので変換は行わない
-1.0, 0.0, 0.0, 0.0,
-0.0, 1.0, 0.0, 0.0,
-0.0, 0.0, 1.0, 0.0,
-0.0, 0.0, 0.0, 1.0,
-}
-Mesh {
-頂点の数;
-頂点の座標達;
-面の数;
-面のを表す頂点のインデックス;
-MeshMaterialList {
-使用するマテリアルの数;
-面の数;
-それぞれの面の使用する引数;//繰り返し
-使用するマテリアルへの参照;//繰り返し
-TextureFilename{
-&quot;ファイルへのパス&quot;;
-}
-}
-MeshNormals {
-法線の数;
-法線の座標達;
-面法線インデックスの数;
-インデックス達;
-}
-MeshTextureCoords {
-頂点の数;
-テクスチャ座標u;テクスチャ座標v;//繰り返し
-}
-}
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        0.0, 0.0, 0.0, 1.0,
+    }
+    Mesh {
+        頂点の数;
+        頂点の座標達;
+        面の数;
+        面のを表す頂点のインデックス;
+        MeshMaterialList {
+            使用するマテリアルの数;
+            面の数;
+            それぞれの面の使用する引数;//繰り返し
+            使用するマテリアルへの参照;//繰り返し
+            TextureFilename{
+                &quot;ファイルへのパス&quot;;
+            }
+        }
+        MeshNormals {
+            法線の数;
+            法線の座標達;
+            面法線インデックスの数;
+            インデックス達;
+        }
+        MeshTextureCoords {
+            頂点の数;
+            テクスチャ座標u;テクスチャ座標v;//繰り返し
+        }
+    }
 }
 AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 </pre></div>
   </div>

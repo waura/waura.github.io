@@ -56,48 +56,49 @@
 <p>WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。</p>
 <div class="highlight"><pre><span></span><span class="n">LRESULT</span> <span class="nf">KeyboardHookProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
-<span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
-<span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
-<span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="c1">//check keyup shift</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keyup ctrl</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_CONTROL</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;ctrl &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keydup alt</span>
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mi">20000000</span><span class="p">)){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;alt &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="n">UINT</span> <span class="n">code</span> <span class="o">=</span> <span class="n">wParam</span><span class="p">;</span>
-<span class="kt">char</span> <span class="n">log</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<span class="n">wsprintf</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s">&quot;%d up</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">code</span><span class="p">);</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="n">log</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="k">else</span> <span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00000000</span><span class="p">){</span>
-<span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="c1">//check keydown shift</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keydown ctrl</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_CONTROL</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;ctrl &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keydown alt</span>
-<span class="k">if</span><span class="p">(</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0x20000000</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;alt &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="n">UINT</span> <span class="n">code</span> <span class="o">=</span> <span class="n">wParam</span><span class="p">;</span>
-<span class="kt">char</span> <span class="n">log</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<span class="n">wsprintf</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s">&quot;%d down</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="n">log</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+  <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
+    <span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//check keyup shift</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keyup ctrl</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_CONTROL</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;ctrl &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keydup alt</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mi">20000000</span><span class="p">)){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;alt &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">UINT</span> <span class="n">code</span> <span class="o">=</span> <span class="n">wParam</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">log</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+    <span class="n">wsprintf</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s">&quot;%d up</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">code</span><span class="p">);</span>
+    <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="n">log</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00000000</span><span class="p">){</span>
+    <span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//check keydown shift</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keydown ctrl</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_CONTROL</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;ctrl &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keydown alt</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0x20000000</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;alt &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">UINT</span> <span class="n">code</span> <span class="o">=</span> <span class="n">wParam</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">log</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+    <span class="n">wsprintf</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s">&quot;%d down</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+    <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="n">log</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
   </div>

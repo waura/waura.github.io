@@ -109,20 +109,20 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
     </p>
   </div>
   <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/hiroki0/20070324">http://d.hatena.ne.jp/hiroki0/20070324</a><br>
-<a href="http://d.hatena.ne.jp/hiroki0/20070325">http://d.hatena.ne.jp/hiroki0/20070325</a><br>
-<a href="http://d.hatena.ne.jp/hiroki0/20090204">http://d.hatena.ne.jp/hiroki0/20090204</a></p>
+    <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
+<a href="200703251174775823.html">Xファイルのフォーマット(2)</a>
+<a href="200902041233704553.html">Xファイルのフォーマット(3)</a></p>
 <p>今回は、アニメーションのまとめ。<br>
 アニメーションは以下のように表されます。</p>
 <div class="highlight"><pre><span></span>AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 </pre></div>
 
@@ -131,7 +131,10 @@ AnimationKey {
 Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。<br>
 AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。</p>
 <ul>
-<li>回転の場合は、w …</li></ul>
+<li>回転の場合は、w,x,y,zの順で<a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3">クォータニオン</a>データが格納されています</li>
+<li>スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています</li>
+<li>平行移動の場合は、x,y,zの順で平行移動値データが格納されています</li>
+<li>変換行列の場合は、4x4の回転 …</li></ul>
   </div>
 </article>
 <hr />
@@ -144,8 +147,8 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
     </p>
   </div>
   <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/hiroki0/20070324">http://d.hatena.ne.jp/hiroki0/20070324</a><br>
-<a href="http://d.hatena.ne.jp/hiroki0/20070325">http://d.hatena.ne.jp/hiroki0/20070325</a></p>
+    <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
+<a href="200703251174775823.html">Xファイルのフォーマット(2)</a></p>
 <p>学校の課題で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のアニメーションを<a href="http://d.hatena.ne.jp/keyword/OpenGL">OpenGL</a>で再生することになりそうなので、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のフォーマットの続きをまとめてみる。</p>
 <p>今回はフレームについて、<br>
 フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。<br>
@@ -162,7 +165,9 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 <p>[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。<br>
 行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。</p>
 <p>最小のフレームを持つXファイルの形式は以下のようになります。</p>
-<div class="highlight"><pre><span></span>Frame …</pre></div>
+<div class="highlight"><pre><span></span>Frame {
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0 …</pre></div>
   </div>
 </article>
 <hr />
@@ -250,22 +255,21 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
 \"0064\"は64ビット<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点をあらわす。<br>
 代わりに、\"0032\"を選ぶとができる。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>はテンプレート形式で書かれている。  </p>
-<div class="highlight"><pre><span></span>template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+<div class="highlight"><pre><span></span>template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 </pre></div>
 
 
 <div class="highlight"><pre><span></span>template Vector {  
-&lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT …</pre></div>
+  &lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT …</pre></div>
   </div>
 </article>
     

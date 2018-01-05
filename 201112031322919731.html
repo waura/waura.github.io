@@ -53,9 +53,9 @@
   </div>
   <div class="article__text">
     <p>↓の続き  </p>
-<p><a href="../200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
-<a href="../http://localhost:8000/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
-<a href="../201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<p><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
+<a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
+<a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
 <p>今回はアライメントをずらした場合での計測をします。</p>
 <p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
@@ -113,76 +113,228 @@
 </ul>
 <h5>32bit向け実行ファイル</h5>
 <ul>
-<li>
-<p>入出力画像ともにずらさない</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   675.374 msec   203.678 msec                               166 msec                                 166.106 msec
-  2回目   591.512 msec   181.441 msec                               175.978 msec                             207.662 msec
-  3回目   563.755 msec   170.575 msec                               179.13 msec                              165.016 msec</p>
-</li>
-<li>
-<p>入出力画像とも2ピクセルずつずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   584.079 msec   184.901 msec                               163.356 msec                             197.957 msec
-  2回目   601.959 msec   229.62 msec                                169.618 msec                             179.718 msec
-  3回目   576.596 msec   172.858 msec                               172.926 msec                             238.996 msec</p>
-</li>
-<li>
-<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   581.447 msec   215.271 msec                               194.737 msec                             183.298 msec
-  2回目   583.466 msec   168.634 msec                               175.305 msec                             204.374 msec
-  3回目   585.919 msec   170.421 msec                               179.532 msec                             177.077 msec</p>
-</li>
+<li>入出力画像ともにずらさない</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">675.374 msec</td>
+<td align="right">203.678 msec</td>
+<td align="right">166.000 msec</td>
+<td align="right">166.106 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">591.512 msec</td>
+<td align="right">181.441 msec</td>
+<td align="right">175.978 msec</td>
+<td align="right">207.662 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">563.755 msec</td>
+<td align="right">170.575 msec</td>
+<td align="right">179.130 msec</td>
+<td align="right">165.016 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入出力画像とも2ピクセルずつずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">584.079 msec</td>
+<td align="right">184.901 msec</td>
+<td align="right">163.356 msec</td>
+<td align="right">197.957 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">601.959 msec</td>
+<td align="right">229.62 msec</td>
+<td align="right">169.618 msec</td>
+<td align="right">179.718 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">576.596 msec</td>
+<td align="right">172.858 msec</td>
+<td align="right">172.926 msec</td>
+<td align="right">238.996 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入力画像を2ピクセル、出力画像を1ピクセルずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">581.447 msec</td>
+<td align="right">215.271 msec</td>
+<td align="right">194.737 msec</td>
+<td align="right">183.298 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">583.466 msec</td>
+<td align="right">168.634 msec</td>
+<td align="right">175.305 msec</td>
+<td align="right">204.374 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">585.919 msec</td>
+<td align="right">170.421 msec</td>
+<td align="right">179.532 msec</td>
+<td align="right">177.077 msec</td>
+</tr>
+</tbody>
+</table>
 <h5>64bit向け実行ファイル</h5>
 <ul>
-<li>
-<p>入出力画像ともにずらさない</p>
-<div class="highlight"><pre><span></span>  非SSE                                                         _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   <a href="http://d.hatena.ne.jp/keyword/321">321</a>.546 msec   178.499 msec                               181.309 msec                             192.388 msec
-  2回目   370.826 msec                                                  170.399 msec                               159.175 msec                             185.213 msec
-  3回目   311.765 msec                                                  162.117 msec                               166.067 msec                             167.506 msec</p>
-</li>
-<li>
-<p>入出力画像とも2ピクセルずつずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   316.697 msec   172.909 msec                               162.31 msec                              167.428 msec
-  2回目   308.39 msec    169.355 msec                               163.629 msec                             159.495 msec
-  3回目   312.266 msec   165.965 msec                               158.519 msec                             173.99 msec</p>
-</li>
-<li>
-<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   303.656 msec   175.868 msec                               172.008 msec                             163.839 msec
-  2回目   329.698 msec   157.363 msec                               171.484 msec                             166.765 msec
-  3回目   297.241 msec   159.257 msec                               164.473 msec                             163.332 msec</p>
-</li>
+<li>入出力画像ともにずらさない</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">321.546 msec</td>
+<td align="right">178.499 msec</td>
+<td align="right">181.309 msec</td>
+<td align="right">192.388 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">370.826 msec</td>
+<td align="right">170.399 msec</td>
+<td align="right">159.175 msec</td>
+<td align="right">185.213 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">311.765 msec</td>
+<td align="right">162.117 msec</td>
+<td align="right">166.067 msec</td>
+<td align="right">167.506 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入出力画像とも2ピクセルずつずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">316.697 msec</td>
+<td align="right">172.909 msec</td>
+<td align="right">162.310 msec</td>
+<td align="right">167.428 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">308.390 msec</td>
+<td align="right">169.355 msec</td>
+<td align="right">163.629 msec</td>
+<td align="right">159.495 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">312.266 msec</td>
+<td align="right">165.965 msec</td>
+<td align="right">158.519 msec</td>
+<td align="right">173.990 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入力画像を2ピクセル、出力画像を1ピクセルずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">303.656 msec</td>
+<td align="right">175.868 msec</td>
+<td align="right">172.008 msec</td>
+<td align="right">163.839 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">329.698 msec</td>
+<td align="right">157.363 msec</td>
+<td align="right">171.484 msec</td>
+<td align="right">166.765 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">297.241 msec</td>
+<td align="right">159.257 msec</td>
+<td align="right">164.473 msec</td>
+<td align="right">163.332 msec</td>
+</tr>
+</tbody>
+</table>
 <h4>計測2</h4>
 <h5>環境</h5>
 <ul>
@@ -195,40 +347,116 @@
 <!-- -->
 
 <ul>
-<li>
-<p>入出力画像ともにずらさない</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   1098.98 msec   217.239 msec                               191.035 msec                             197.02 msec
-  2回目   1103 msec      218.563 msec                               190.894 msec                             193.745 msec
-  3回目   1104.15 msec   218.304 msec                               190.167 msec                             196.236 msec</p>
-</li>
-<li>
-<p>入出力画像とも2ピクセルずつずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   1106.91 msec   218.914 msec                               194.721 msec                             199.865 msec
-  2回目   1109.58 msec   223.114 msec                               196.515 msec                             199.412 msec
-  3回目   1127.07 msec   216.637 msec                               190.159 msec                             196.093 msec</p>
-</li>
-<li>
-<p>入力画像を2ピクセル、出力画像を1ピクセルずらす</p>
-<div class="highlight"><pre><span></span>  非SSE          _mm_loadu_si128 + _mm_storeu_si128   _mm_load_si128 + _mm_store_si128   _mm_load_si128 + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   1119.89 msec   255.483 msec                               245.189 msec                             243.91 msec
-  2回目   1086.53 msec   221.121 msec                               210.191 msec                             211.133 msec
-  3回目   1086.65 msec   221.38 msec                                209.693 msec                             221.721 msec</p>
-</li>
+<li>入出力画像ともにずらさない</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">1098.980 msec</td>
+<td align="right">217.239 msec</td>
+<td align="right">191.035 msec</td>
+<td align="right">197.020 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">1103.000 msec</td>
+<td align="right">218.563 msec</td>
+<td align="right">190.894 msec</td>
+<td align="right">193.745 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">1104.150 msec</td>
+<td align="right">218.304 msec</td>
+<td align="right">190.167 msec</td>
+<td align="right">196.236 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入出力画像とも2ピクセルずつずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">1106.910 msec</td>
+<td align="right">218.914 msec</td>
+<td align="right">194.721 msec</td>
+<td align="right">199.865 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">1109.580 msec</td>
+<td align="right">223.114 msec</td>
+<td align="right">196.515 msec</td>
+<td align="right">199.412 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">1127.070 msec</td>
+<td align="right">216.637 msec</td>
+<td align="right">190.159 msec</td>
+<td align="right">196.093 msec</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>入力画像を2ピクセル、出力画像を1ピクセルずらす</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_si128 + _mm_storeu_si128</th>
+<th align="right">_mm_load_si128 + _mm_store_si128</th>
+<th align="right">_mm_load_si128 + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1回目</td>
+<td align="right">1119.890 msec</td>
+<td align="right">255.483 msec</td>
+<td align="right">245.189 msec</td>
+<td align="right">243.910 msec</td>
+</tr>
+<tr>
+<td align="center">2回目</td>
+<td align="right">1086.530 msec</td>
+<td align="right">221.121 msec</td>
+<td align="right">210.191 msec</td>
+<td align="right">211.133 msec</td>
+</tr>
+<tr>
+<td align="center">3回目</td>
+<td align="right">1086.650 msec</td>
+<td align="right">221.380 msec</td>
+<td align="right">209.693 msec</td>
+<td align="right">221.721 msec</td>
+</tr>
+</tbody>
+</table>
 <h4>まとめ</h4>
 <p><a href="http://d.hatena.ne.jp/keyword/Core%20i7">Core i7</a>
 2600では、_mm_loadu_si128を使っても_mm_load_si128とバラツキがあるが同程度という結果だった。</p>

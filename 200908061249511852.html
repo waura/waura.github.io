@@ -60,71 +60,77 @@
 <span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
 <span class="k">class</span> <span class="nc">GetWebFile</span>
-<span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
-<span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+    <span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">begin</span>
+      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+      <span class="k">begin</span>
+        <span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+          <span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="p">}</span>
+        <span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
+          <span class="nb">warn</span> <span class="n">to</span>
+        <span class="k">return</span>
+      <span class="k">end</span>
+
+      <span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">empty?</span> <span class="k">then</span>
+          <span class="k">next</span>
+        <span class="k">elsif</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="k">then</span>
+          <span class="k">next</span>
+        <span class="k">end</span>
+        <span class="n">file_url</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="sr">/http:\/\//</span> <span class="o">=~</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="k">then</span>
+          <span class="n">file_url</span> <span class="o">=</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span>
+        <span class="k">else</span>
+          <span class="n">root_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">dirname</span><span class="p">(</span><span class="n">root_uri</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+          <span class="n">file_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">host</span><span class="si">}#{</span><span class="n">root_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">end</span>
+
+        <span class="k">begin</span>
+          <span class="n">link_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+          <span class="k">rescue</span> <span class="no">URI</span><span class="o">::</span><span class="no">InvalidURIError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+          <span class="k">next</span>
+        <span class="k">end</span>
+        <span class="c1">#同じホストのもののみ処理</span>
+        <span class="k">if</span> <span class="n">root_uri</span><span class="o">.</span><span class="n">host</span> <span class="o">!=</span> <span class="n">link_uri</span><span class="o">.</span><span class="n">host</span> <span class="k">then</span>
+          <span class="k">next</span>
+        <span class="k">end</span>
+        <span class="c1">#処理したものは飛ばす</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="vi">@file_ary</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span> <span class="k">then</span>
+          <span class="k">next</span>
+        <span class="k">end</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">extname</span><span class="p">(</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="p">)</span>
+        <span class="c1">#ファイル配列へ追加</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ext</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="sr">/\?/</span> <span class="o">=~</span> <span class="n">ext</span><span class="p">))</span> <span class="k">then</span>
+          <span class="vi">@file_ary</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+        <span class="k">end</span>
+        <span class="c1">#リンクをたどる</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span> <span class="k">then</span>
+          <span class="n">parse_url</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="k">rescue</span> <span class="no">OpenURI</span><span class="o">::</span><span class="no">HTTPError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+      <span class="nb">warn</span> <span class="n">ex</span><span class="o">.</span><span class="n">message</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">print_files</span><span class="p">()</span>
+    <span class="vi">@file_ary</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+      <span class="nb">puts</span> <span class="n">file</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 <span class="k">end</span>
-<span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">begin</span>
-<span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-<span class="k">begin</span>
-<span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
-<span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-<span class="p">}</span>
-<span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
-<span class="nb">warn</span> <span class="n">to</span>
-<span class="k">return</span>
-<span class="k">end</span>
-<span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
-<span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">empty?</span> <span class="k">then</span>
-<span class="k">next</span>
-<span class="k">elsif</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="k">then</span>
-<span class="k">next</span>
-<span class="k">end</span>
-<span class="n">file_url</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-<span class="k">if</span> <span class="sr">/http:\/\//</span> <span class="o">=~</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span> <span class="k">then</span>
-<span class="n">file_url</span> <span class="o">=</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span>
-<span class="k">else</span>
-<span class="n">root_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">dirname</span><span class="p">(</span><span class="n">root_uri</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-<span class="n">file_url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">#{</span><span class="n">root_uri</span><span class="o">.</span><span class="n">host</span><span class="si">}#{</span><span class="n">root_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">end</span>
-<span class="k">begin</span>
-<span class="n">link_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
-<span class="k">rescue</span> <span class="no">URI</span><span class="o">::</span><span class="no">InvalidURIError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
-<span class="k">next</span>
-<span class="k">end</span>
-<span class="c1">#同じホストのもののみ処理</span>
-<span class="k">if</span> <span class="n">root_uri</span><span class="o">.</span><span class="n">host</span> <span class="o">!=</span> <span class="n">link_uri</span><span class="o">.</span><span class="n">host</span> <span class="k">then</span>
-<span class="k">next</span>
-<span class="k">end</span>
-<span class="c1">#処理したものは飛ばす</span>
-<span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="vi">@file_ary</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">next</span>
-<span class="k">end</span>
-<span class="n">ext</span> <span class="o">=</span> <span class="no">File</span><span class="o">::</span><span class="n">extname</span><span class="p">(</span><span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">]</span><span class="p">)</span>
-<span class="c1">#ファイル配列へ追加</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">ext</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="sr">/\?/</span> <span class="o">=~</span> <span class="n">ext</span><span class="p">))</span> <span class="k">then</span>
-<span class="vi">@file_ary</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
-<span class="k">end</span>
-<span class="c1">#リンクをたどる</span>
-<span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span> <span class="k">then</span>
-<span class="n">parse_url</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
-<span class="k">end</span>
-<span class="k">end</span>
-<span class="k">rescue</span> <span class="no">OpenURI</span><span class="o">::</span><span class="no">HTTPError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
-<span class="nb">warn</span> <span class="n">ex</span><span class="o">.</span><span class="n">message</span>
-<span class="k">end</span>
-<span class="k">end</span>
-<span class="k">def</span> <span class="nf">print_files</span><span class="p">()</span>
-<span class="vi">@file_ary</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
-<span class="nb">puts</span> <span class="n">file</span>
-<span class="k">end</span>
-<span class="k">end</span>
-<span class="k">end</span>
+
 <span class="k">if</span> <span class="vg">$0</span> <span class="o">==</span> <span class="bp">__FILE__</span> <span class="k">then</span>
-<span class="n">get_web_file</span> <span class="o">=</span> <span class="no">GetWebFile</span><span class="o">.</span><span class="n">new</span>
-<span class="n">get_web_file</span><span class="o">.</span><span class="n">parse_url</span><span class="p">(</span><span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
-<span class="n">get_web_file</span><span class="o">.</span><span class="n">print_files</span><span class="p">()</span>
+  <span class="n">get_web_file</span> <span class="o">=</span> <span class="no">GetWebFile</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">get_web_file</span><span class="o">.</span><span class="n">parse_url</span><span class="p">(</span><span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+  <span class="n">get_web_file</span><span class="o">.</span><span class="n">print_files</span><span class="p">()</span>
 <span class="k">end</span>
 </pre></div>
   </div>

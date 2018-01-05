@@ -63,19 +63,57 @@
     Duo</a> E8400</li>
 </ul>
 <p>32bit環境と64bit環境向けに<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>したものを実行して、sizeofでサイズを調べた。</p>
-<div class="highlight"><pre><span></span>            32bit   64bit
-</pre></div>
-
-
-<hr>
-<p>char          1       1
-  short         2       2
-  int           4       4
-  long          4       4
-  long long     8       8
-  float         8       8
-  double        8       8
-  long double   8       8</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">32bit</th>
+<th align="right">64bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>short</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>int</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long long</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>float</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>long double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
 <p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
   </div>
 

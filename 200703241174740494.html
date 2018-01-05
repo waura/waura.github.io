@@ -62,31 +62,30 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
 \"0064\"は64ビット<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点をあらわす。<br>
 代わりに、\"0032\"を選ぶとができる。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>はテンプレート形式で書かれている。  </p>
-<div class="highlight"><pre><span></span>template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+<div class="highlight"><pre><span></span>template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 </pre></div>
 
 
 <div class="highlight"><pre><span></span>template Vector {  
-&lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT z;  
+  &lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT z;  
 }
 </pre></div>
 
 
 <p><a href="http://d.hatena.ne.jp/keyword/Vector">Vector</a>は、ベクトルを定義する。</p>
 <div class="highlight"><pre><span></span>template MeshFace {  
-&lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&gt;  
-DWORD nFaceVertexIndices;  
-array DWORD faceVertexIndices[nFaceVertexIndices\];  
+  &lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&gt;  
+  DWORD nFaceVertexIndices;  
+  array DWORD faceVertexIndices[nFaceVertexIndices\];  
 } 
 </pre></div>
 
@@ -97,13 +96,13 @@ array faceVertexIndicesは。インデックスの配列。<br>
 インデックスは、頂点を設定する順番を決める。</p>
 <p>Meshは、単純なメッシュの情報を記述する。  </p>
 <div class="highlight"><pre><span></span>template Mesh {  
-&lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&gt;  
-DWORD nVertices;  
-array Vector
-vertices[nVertices];  
-DWORD nFaces;  
-array MeshFace faces[nFaces];  
-[...]  
+  &lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&gt;  
+  DWORD nVertices;  
+  array Vector
+  vertices[nVertices];  
+  DWORD nFaces;  
+  array MeshFace faces[nFaces];  
+  [...]  
 }
 </pre></div>
 

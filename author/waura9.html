@@ -88,7 +88,7 @@ max-lease-time 72000;
 </pre></div>
 
 
-<p>[<a href="http://f.hatena.ne.jp/hiroki0/20070828082205"><img alt="f:id:hiroki0:20070828082205j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"></a></p>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20070828082205"><img alt="f:id:hiroki0:20070828082205j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"></a></p>
   </div>
 </article>
 <hr />
@@ -167,9 +167,11 @@ CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････</p>
     </p>
   </div>
   <div class="article__text">
-    <p>基本的な流れは、以下の通り。
-1. リージョンを作る。<br>
-2. SetWindowRgnでリージョンの形に添ったウィンドウの生成。  </p>
+    <p>基本的な流れは、以下の通り。</p>
+<ol>
+<li>リージョンを作る。  </li>
+<li>SetWindowRgnでリージョンの形に添ったウィンドウの生成。  </li>
+</ol>
 <p>SetWindowRgnの第一引数は、ウィンドウハンドル、<br>
 第二引数は、リージョン、<br>
 第三引数は、再描画するかどうか
@@ -291,22 +293,21 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
 \"0064\"は64ビット<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点をあらわす。<br>
 代わりに、\"0032\"を選ぶとができる。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>はテンプレート形式で書かれている。  </p>
-<div class="highlight"><pre><span></span>template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+<div class="highlight"><pre><span></span>template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 </pre></div>
 
 
 <div class="highlight"><pre><span></span>template Vector {  
-&lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT …</pre></div>
+  &lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT …</pre></div>
   </div>
 </article>
     

@@ -53,9 +53,9 @@
   </div>
   <div class="article__text">
     <p>↓の続き  </p>
-<p><a href="../200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
-<a href="../http://localhost:8000/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
-<a href="../201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<p><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
+<a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
+<a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
 <p>今回はアライメントをずらした場合での計測をします。</p>
 <p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
@@ -130,7 +130,7 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3
     </p>
   </div>
   <div class="article__text">
-    <p>[<a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
+    <p><a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
 Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
 Altitudeがペンとタブレット平面がなす角です。<br>
 ペンが逆さまのときAltitudeは負の値になります。<br>
@@ -146,8 +146,10 @@ Altitudeがペンとタブレット平面がなす角です。<br>
 <p>タブレットからのデータを正規化するために、<br>
 WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
+
 <span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
 <span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
+
 <span class="kt">double …</span></pre></div>
   </div>
 </article>
@@ -163,16 +165,54 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
   <div class="article__text">
     <h2>ロード・ストアに使用するSSE命令</h2>
 <h3>ロード</h3>
-<p>イントリンシック命令   対応するSSE命令   </p>
-<hr>
-<p>_mm_loadu_ps        MOVUPS            アライメントを合わせる必要がない
-  _mm_load_ps         MOVAPS            アライメントを合わせなければならない</p>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_loadu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_load_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+</tbody>
+</table>
 <h3>ストア</h3>
-<p>イントリンシック命令   対応するSSE命令   </p>
-<hr>
-<p>_mm_storeu_ps       MOVUPS            アライメントを合わせる必要がない
-  _mm_store_ps        MOVAPS            アライメントを合わせなければならない
-  _mm_stream_si128    MOVNTPD           アライメントを合わせなければならない、キャッシュを介さずにストアする</p>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_storeu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_store_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+<tr>
+<td>_mm_stream_si128</td>
+<td>MOVNTPD</td>
+<td>アライメントを合わせなければならない、キャッシュを介さずにストアする</td>
+</tr>
+</tbody>
+</table>
 <h2>計測するアルファブレンド処理</h2>
 <p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
 <ul>
@@ -208,7 +248,7 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
 
 <p>wintab32.dllという名前なのでこのDLLは32bit用で、64bitのexeから呼び出すには64bit用のDLLを読み込まないとダメだと思い、それらしいものを探してみるがどこにも見当たらない。</p>
 <p>この記事によると、OSが同じ名前のDLLを32bit用と64bit用で切り替えてくれるようだ。<br>
-[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;sa=838339906]{data-unlink=""}</p>
+[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;sa=838339906]</p>
 <p>なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。</p>
   </div>
 </article>
@@ -229,7 +269,7 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
 <li>レイヤー合成高速化</li>
 </ul>
 <p><a href="http://key0note.ath.cx/hp/frayer_wiki/">http://key0note.ath.cx/hp/frayer_wiki/</a></p>
-<p>[<a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
 ブラシのテスト。<br>
 黒い線がハード円ブラシ、赤い線がハードエアーブラシ、青い線がソフト円ブラシ、緑の線がソフトエアーブラシ。</p>
   </div>
@@ -245,11 +285,9 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
   </div>
   <div class="article__text">
     <p>円描画時の<a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%A8%A5%A4%A5%EA%A5%A2%A5%B9">アンチエイリアス</a>のかけ方のテスト<br>
-[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a>]{itemscope=""
-itemtype="http://schema.org/Photograph"}</p>
+<a href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a></p>
 <p>ついでにブラシ描画のテスト<br>
-[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a>]{itemscope=""
-itemtype="http://schema.org/Photograph"}</p>
+<a href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a></p>
   </div>
 </article>
 <hr />
@@ -259,11 +297,47 @@ itemtype="http://schema.org/Photograph"}</p>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 日 27 9月 2009</p>
-    </p>
+ Tags:
+      <a href="/tag/peintotsuru.html">#ペイントツール</a>    </p>
   </div>
   <div class="article__text">
     <p>3次スプラインを利用して<a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6">トーンカーブ</a>を実装してみた。<br>
-[<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
+<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200909141252931917.html">SSE用いたアルファブレンドの高速化</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 月 14 9月 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <h2>計測するアルファブレンド処理</h2>
+<ul>
+<li>SSEを使わない処理</li>
+<li>16バイトアライメントなし、SSEを使って1pixelごとに処理</li>
+<li>16バイトアライメントなし、SSEを使って2pixelごとに処理</li>
+</ul>
+<h2>計測方法</h2>
+<ul>
+<li>1920x1200BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>を用いた。</li>
+<li>アルファブレンド部分の処理のみ処理時間を計測した。</li>
+<li>処理時間の計測は以下のページにあるコードを使用した。</li>
+</ul>
+<p><a href="http://74.125.155.132/search?q=cache:lBJiOP0zi6MJ:clippingcutting.blogspot.com/2007_10_01_archive.html+QPCTimer+QueryPerformanceFrequency&amp;cd=1&amp;hl=ja&amp;ct=clnk&amp;gl=jp">http://74.125.155.132/search?q=cache:lBJiOP0zi6MJ:clippingcutting.blogspot.com/2007_10_01_archive.html+QPCTimer+QueryPerformanceFrequency&amp;cd=1&amp;hl=ja&amp;ct=clnk&amp;gl=jp</a></p>
+<h2>計測に使用した環境</h2>
+<ul>
+<li>CPU: <a href="http://d.hatena.ne.jp/keyword/core2duo">core2duo</a>
+    E8400</li>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/windows%207">windows 7</a>
+    64bit</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio …</a></li></ul>
   </div>
 </article>
 <hr />
@@ -299,36 +373,6 @@ itemtype="http://schema.org/Photograph"}</p>
 <ul>
 <li>カラーモード<ul>
 <li>0 Bitmap …</li></ul></li></ul>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/200811071226064350.html">ファイル読み込みモジュール作成</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 07 11月 2008</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のcvLoadImage()だとアルファ値を読んでくれないので、<br>
-libpngとzlibをつかって<a href="http://d.hatena.ne.jp/keyword/png">png</a>読み込みモジュールを作った</p>
-<p>[<a href="http://f.hatena.ne.jp/hiroki0/20081107221654"><img alt="f:id:hiroki0:20081107221654p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221654.png" title="f:id:hiroki0:20081107221654p:image"></a>
-↑cvLoadImage()で読み込み、わかりづらいが、アルファ値が読まれていない。<br>
-[<a href="http://f.hatena.ne.jp/hiroki0/20081107221655"><img alt="f:id:hiroki0:20081107221655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221655.png" title="f:id:hiroki0:20081107221655p:image"></a>
-↑libpngで読み込みアルファ値が読まれている。</p>
-<p>ついでにThe Independent
-<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a> Group\'s
-<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-softwareの<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ライブラリを使って、<br>
-ファイル読み込みモジュールを作成。</p>
-<p>cvLoadImage()だと読めない、<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ファイルがあるのだが、このモジュールを使えば読み込めるようになった。</p>
-<p>[The Independent <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-Group\'s <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-software]{style="font-weight:bold;"}<br>
-<a href="http://www.ijg.org/">http://www.ijg.org/</a><br>
-[libpng]{style="font-weight:bold;"}<br>
-<a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png …</a></p>
   </div>
 </article>
     

@@ -172,50 +172,17 @@ Studio&lt;/a&gt;のプロジェクトを作成する。&lt;br&gt;
 マウスの座標をこの&lt;a href="http://d.hatena.ne.jp/keyword/%B5%D5%B9%D4%CE%F3"&gt;逆行列&lt;/a&gt;をかけることによって画像上の座標に変換しようとしたが、&lt;br&gt;
 どうも上手くいかない。&lt;/p&gt;
 &lt;p&gt;cvMul()で行列の掛け算をしてるとこで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B5%A1%BC%A5%B7%A5%E7%A5%F3"&gt;アサーション&lt;/a&gt;が起こる。&lt;/p&gt;
-&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/DOSEI/20060508/p1"&gt;http://d.hatena.ne.jp/DOSEI/20060508/p1&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;↑によるとcvMul()は要素同士の積なので、エラーが出たようだ。&lt;br&gt;
-cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;&lt;img alt="OpenCV
-プログラミングブック" class="hatena-asin-detail-image" src="http://ecx.images-amazon.com/images/I/416qhEJCUGL._SL160_.jpg" title="OpenCV プログラミングブック"&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;OpenCV
-プログラミングブック&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;[作者:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%C6%E0%CE%C9%C0%E8%C3%BC%B2%CA%B3%D8%B5%BB%BD%D1%C2%E7%B3%D8%B1%A1%C2%E7%B3%D8"&gt;奈良先端科学技術大学院大学&lt;/a&gt;
-    &lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;プログラミングブック制作チーム&lt;/li&gt;
-&lt;li&gt;[出版社/メーカー:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%CB%E8%C6%FC%A5%B3%A5%DF%A5%E5%A5%CB%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%BA"&gt;毎日コミュニケーションズ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[発売日:]{.hatena-asin-detail-label} 2007/09/22&lt;/li&gt;
-&lt;li&gt;[メディア:]{.hatena-asin-detail-label} 単行本（ソフトカバー …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;画像の拡大縮小で、↓の様な行列を使って変形させ、&lt;br&gt;
+cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;</summary><content type="html">&lt;p&gt;画像の拡大縮小で、↓の様な行列を使って変形させ、&lt;br&gt;
 マウスの座標をこの&lt;a href="http://d.hatena.ne.jp/keyword/%B5%D5%B9%D4%CE%F3"&gt;逆行列&lt;/a&gt;をかけることによって画像上の座標に変換しようとしたが、&lt;br&gt;
 どうも上手くいかない。&lt;/p&gt;
 &lt;p&gt;cvMul()で行列の掛け算をしてるとこで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B5%A1%BC%A5%B7%A5%E7%A5%F3"&gt;アサーション&lt;/a&gt;が起こる。&lt;/p&gt;
-&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/DOSEI/20060508/p1"&gt;http://d.hatena.ne.jp/DOSEI/20060508/p1&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;↑によるとcvMul()は要素同士の積なので、エラーが出たようだ。&lt;br&gt;
-cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;&lt;img alt="OpenCV
-プログラミングブック" class="hatena-asin-detail-image" src="http://ecx.images-amazon.com/images/I/416qhEJCUGL._SL160_.jpg" title="OpenCV プログラミングブック"&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;OpenCV
-プログラミングブック&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;[作者:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%C6%E0%CE%C9%C0%E8%C3%BC%B2%CA%B3%D8%B5%BB%BD%D1%C2%E7%B3%D8%B1%A1%C2%E7%B3%D8"&gt;奈良先端科学技術大学院大学&lt;/a&gt;
-    &lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;プログラミングブック制作チーム&lt;/li&gt;
-&lt;li&gt;[出版社/メーカー:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%CB%E8%C6%FC%A5%B3%A5%DF%A5%E5%A5%CB%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%BA"&gt;毎日コミュニケーションズ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[発売日:]{.hatena-asin-detail-label} 2007/09/22&lt;/li&gt;
-&lt;li&gt;[メディア:]{.hatena-asin-detail-label} 単行本（ソフトカバー）&lt;/li&gt;
-&lt;li&gt;[購入]{.hatena-asin-detail-label}: 10人
-    [クリック]{.hatena-asin-detail-label}: 1,006回&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/asin/483992354X/hatena-blog-22"&gt;この商品を含むブログ (35件)
-    を見る&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;は3x3と3x1の行列の掛け算をcvMul()でやってるんだが･･･&lt;br&gt;
-バージョン違ったかな？･･･&lt;/p&gt;</content></entry><entry><title>OpenCVで処理した画像をDirectXで表示する。</title><link href="/200805221211471166.html" rel="alternate"></link><published>2008-05-22T00:46:00+09:00</published><updated>2008-05-22T00:46:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-05-22:/200805221211471166.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;ではIplImage型に画像データが格納され、&lt;br&gt;
+cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;</content></entry><entry><title>OpenCVで処理した画像をDirectXで表示する。</title><link href="/200805221211471166.html" rel="alternate"></link><published>2008-05-22T00:46:00+09:00</published><updated>2008-05-22T00:46:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-05-22:/200805221211471166.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;ではIplImage型に画像データが格納され、&lt;br&gt;
 IplImageのimageDataから画像データにアクセスできる。&lt;br&gt;
 データの格納順はBGRAとなっている。&lt;br&gt;
 これを&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;のテクスチャに変換できないかと思って実行した。&lt;/p&gt;
@@ -223,14 +190,15 @@ IplImageのimageDataから画像データにアクセスできる。&lt;br&gt;
 ・IDirect3DTexture9::CreateTextureでテクスチャを作成&lt;br&gt;
 ・IDirect3DTexture9::LockRectを行ってデータを転送&lt;/p&gt;
 &lt;p&gt;カメラに写っている内容を&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;で表示&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;コードはこんな感じでいけると思う。（&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;側のデータが符号なし8ビット整数のときだけだが･･･）&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;HRESULT&lt;/span&gt; &lt;span class="nf"&gt;CreateTextureIPLImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDIRECT3DDEVICE9&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IplImage&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;iplImage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPDIRECT3DTEXTURE9&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;ppTexture&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="n"&gt;HRESULT&lt;/span&gt; &lt;span class="n"&gt;hr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
   &lt;span class="c1"&gt;//テクスチャ作成&lt;/span&gt;
-  &lt;span class="n"&gt;hr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;CreateTexture&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DFMT_A8R8G8B8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DPOOL_MANAGED …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;ではIplImage型に画像データが格納され、&lt;br&gt;
+  &lt;span class="n"&gt;hr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;CreateTexture&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DFMT_A8R8G8B8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DPOOL_MANAGED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ppTexture&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FAILED&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hr&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+    &lt;span class="k"&gt;return …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;ではIplImage型に画像データが格納され、&lt;br&gt;
 IplImageのimageDataから画像データにアクセスできる。&lt;br&gt;
 データの格納順はBGRAとなっている。&lt;br&gt;
 これを&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;のテクスチャに変換できないかと思って実行した。&lt;/p&gt;
@@ -238,8 +206,7 @@ IplImageのimageDataから画像データにアクセスできる。&lt;br&gt;
 ・IDirect3DTexture9::CreateTextureでテクスチャを作成&lt;br&gt;
 ・IDirect3DTexture9::LockRectを行ってデータを転送&lt;/p&gt;
 &lt;p&gt;カメラに写っている内容を&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;で表示&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;コードはこんな感じでいけると思う。（&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;側のデータが符号なし8ビット整数のときだけだが･･･）&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;HRESULT&lt;/span&gt; &lt;span class="nf"&gt;CreateTextureIPLImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDIRECT3DDEVICE9&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IplImage&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;iplImage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPDIRECT3DTEXTURE9&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;ppTexture&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;
@@ -271,6 +238,7 @@ itemtype="http://schema.org/Photograph"}&lt;/p&gt;
         &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;long&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;long&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;pLockedRect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pBits&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
           &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+            &lt;span class="c1"&gt;// OpenCVのBGRA順のデータを32bit変数にARGB順につめなおす&lt;/span&gt;
             &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
             &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;iplImage&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;imageData&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;iplImage&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;widthStep&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;))[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;      &lt;span class="c1"&gt;//B&lt;/span&gt;
             &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -305,20 +273,20 @@ itemtype="http://schema.org/Photograph"}&lt;/p&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>OpenCVはじめました。</title><link href="/200805211211319214.html" rel="alternate"></link><published>2008-05-21T06:33:00+09:00</published><updated>2008-05-21T06:33:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-05-21:/200805211211319214.html</id><summary type="html">&lt;p&gt;安いUSBカメラかったので&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;に手を出してみました。&lt;/p&gt;
 &lt;p&gt;背景差分法のプログラムです。&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;安いUSBカメラかったので&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;に手を出してみました。&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;安いUSBカメラかったので&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;に手を出してみました。&lt;/p&gt;
 &lt;p&gt;背景差分法のプログラムです。&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>■</title><link href="/200805211211387379.html" rel="alternate"></link><published>2008-05-21T01:29:00+09:00</published><updated>2008-05-21T01:29:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-05-21:/200805211211387379.html</id><summary type="html">&lt;p&gt;肌色部分抽出&lt;br&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>■</title><link href="/200805211211387379.html" rel="alternate"></link><published>2008-05-21T01:29:00+09:00</published><updated>2008-05-21T01:29:00+09:00</updated><author><name>waura</name></author><id>tag:None,2008-05-21:/200805211211387379.html</id><summary type="html">&lt;p&gt;肌色部分抽出&lt;br&gt;
 ・&lt;a href="http://d.hatena.ne.jp/keyword/RGB"&gt;RGB&lt;/a&gt;から&lt;a href="http://d.hatena.ne.jp/keyword/HSV"&gt;HSV&lt;/a&gt;へ変換&lt;br&gt;
 ・H（色相）だけを取り出して、肌色っぽい部分を取り出す&lt;br&gt;
 ・取り出したものと背景差分のANDをとって表示&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;顔追跡&lt;br&gt;
 ・肌色領域の重心をもとめてそこを中心に円を描く&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;肌色部分抽出&lt;br&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;肌色部分抽出&lt;br&gt;
 ・&lt;a href="http://d.hatena.ne.jp/keyword/RGB"&gt;RGB&lt;/a&gt;から&lt;a href="http://d.hatena.ne.jp/keyword/HSV"&gt;HSV&lt;/a&gt;へ変換&lt;br&gt;
 ・H（色相）だけを取り出して、肌色っぽい部分を取り出す&lt;br&gt;
 ・取り出したものと背景差分のANDをとって表示&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;顔追跡&lt;br&gt;
 ・肌色領域の重心をもとめてそこを中心に円を描く&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</content></entry></feed>
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</content><category term="OpenCV"></category></entry></feed>

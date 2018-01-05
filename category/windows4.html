@@ -86,8 +86,7 @@ int isleadbyte(int c) マルチバイトの一文字目を判定する。<br>
 とかやってたのがまずかったみたい、ウィンドウがどっかに行ってたみたいだ････</p>
 <p>CW_USEDEFAULT<br>
 にしたら出てきた。</p>
-<p>[<a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20071101005339"><img alt="f:id:hiroki0:20071101005339p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"></a>]{itemscope=""
-itemtype="http://schema.org/Photograph"}</p>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20071101005339"><img alt="f:id:hiroki0:20071101005339p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"></a></p>
   </div>
 </article>
 <hr />
@@ -145,9 +144,11 @@ CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････</p>
     </p>
   </div>
   <div class="article__text">
-    <p>基本的な流れは、以下の通り。
-1. リージョンを作る。<br>
-2. SetWindowRgnでリージョンの形に添ったウィンドウの生成。  </p>
+    <p>基本的な流れは、以下の通り。</p>
+<ol>
+<li>リージョンを作る。  </li>
+<li>SetWindowRgnでリージョンの形に添ったウィンドウの生成。  </li>
+</ol>
 <p>SetWindowRgnの第一引数は、ウィンドウハンドル、<br>
 第二引数は、リージョン、<br>
 第三引数は、再描画するかどうか

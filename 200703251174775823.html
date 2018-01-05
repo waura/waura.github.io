@@ -78,8 +78,8 @@ Mesh (ここにメッシュの名前をつけることもできる。){
 である。</p>
 <div class="highlight"><pre><span></span>/////////////////////////////////////////////////////////////  
 //MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
-template MeshTextureCoords  
-{&lt; F6F23F40-7686-11cf-8F52-0040333594A3 &gt;  
+template MeshTextureCoords {
+    &lt; F6F23F40-7686-11cf-8F52-0040333594A3 &gt;  
     DWORD nTextureCoords;  
     array coords2d textureCoords[nTextureCoords];  
 }
@@ -92,8 +92,8 @@ textureCoords-要<a href="http://d.hatena.ne.jp/keyword/%C1%C7%BF%F4">素数</a>
 Coords2dは、テクスチャのUV座標を設定するためのテンプレート。</p>
 <div class="highlight"><pre><span></span>////////////////////////////////////////////////////  
 //MeshNormalsは、メッシュの法線を定義する。  
-template MeshNormals  
-{&lt; F6F23F43-7686-11cf-8F52-0040333594A3 &gt;  
+template MeshNormals {
+    &lt; F6F23F43-7686-11cf-8F52-0040333594A3 &gt;  
     DWORD nNormals;  
     array Vector;
     normals[nNormals];  
@@ -111,8 +111,8 @@ array
 meshFaces-要素数nFaceNormalsのMeshFaceの配列、面法線をあらわす。</p>
 <div class="highlight"><pre><span></span>//////////////////////////////////////////////////////  
 //MeshVertexColorsは、面またはメッシュごとに頂点色を設定する。  
-template MeshVertexColors  
-{\&lt;1630B821-7842-11cf-8F52-0040333594A3\&gt;  
+template MeshVertexColors {
+    &lt;1630B821-7842-11cf-8F52-0040333594A3&gt;  
     DWORD nVertexColors;  
     array IndexColor vertexColors[nVertexColors\];  
 }
@@ -125,8 +125,8 @@ vertexColors-要素数nVertexColorsのIndexColorの配列。<br>
 IndexColorは、インデックス引数とRGBA色で構成される。</p>
 <div class="highlight"><pre><span></span>/////////////////////////////////////////////////////////  
 //MeshMaterialListは、どのマテリアルをどの面に適用するのかを指定する。  
-template MeshMaterialList  
-{&lt; F6F23F42-7686-11cf-8F52-0040333594A3 &gt;  
+template MeshMaterialList {
+    &lt; F6F23F42-7686-11cf-8F52-0040333594A3 &gt;  
     DWORD nMaterials;  
     DWORD nFaceIndexes;  
     DWORD FaceIndexes;  
@@ -141,8 +141,8 @@ FaceIndexe-インデックス番号。<br>
 Materialテンプレートをオプションとしてつけることができる。</p>
 <div class="highlight"><pre><span></span>//////////////////////////////////////////////////////////  
 //Materialは、メッシュ全体またはそれぞれの面に適用できる。マテリアル色を定義す。template
-Material  
-{&lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &gt;  
+Material {
+    &lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &gt;  
     ColorRGBA faceColor;  
     float power;  
     DWORD specularColor;  

@@ -12,7 +12,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;xml形式のスクリプトを処理するエンジンを作ってみる。
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;xml形式のスクリプトを処理するエンジンを作ってみる。
 パーサーにはxercecをつかって、デバッガでさぐりさぐり組んでみた。&lt;br&gt;
 とりあえず、文字列と画像の表示が出来るようになった。。。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;Shift_JIS&amp;quot;?&amp;gt;&lt;/span&gt;
@@ -25,4 +25,4 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</content></entry></feed>
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</content></entry></feed>

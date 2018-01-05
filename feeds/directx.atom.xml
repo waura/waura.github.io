@@ -61,20 +61,20 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
 
 &lt;p&gt;SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。&lt;br&gt;
 AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって&lt;br&gt;
-スキンメッシュを実装します。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(4)</title><link href="/200902051233792037.html" rel="alternate"></link><published>2009-02-05T09:00:00+09:00</published><updated>2009-02-05T09:00:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-05:/200902051233792037.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20090204"&gt;http://d.hatena.ne.jp/hiroki0/20090204&lt;/a&gt;&lt;/p&gt;
+スキンメッシュを実装します。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(4)</title><link href="/200902051233792037.html" rel="alternate"></link><published>2009-02-05T09:00:00+09:00</published><updated>2009-02-05T09:00:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-05:/200902051233792037.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;
+&lt;a href="200902041233704553.html"&gt;Xファイルのフォーマット(3)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
 アニメーションは以下のように表されます。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -83,20 +83,23 @@ AnimationKey {
 Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。&lt;br&gt;
 AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;回転の場合は、w …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20090204"&gt;http://d.hatena.ne.jp/hiroki0/20090204&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;回転の場合は、w,x,y,zの順で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3"&gt;クォータニオン&lt;/a&gt;データが格納されています&lt;/li&gt;
+&lt;li&gt;スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています&lt;/li&gt;
+&lt;li&gt;平行移動の場合は、x,y,zの順で平行移動値データが格納されています&lt;/li&gt;
+&lt;li&gt;変換行列の場合は、4x4の回転 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;
+&lt;a href="200902041233704553.html"&gt;Xファイルのフォーマット(3)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
 アニメーションは以下のように表されます。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -113,50 +116,50 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 &lt;!-- --&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame  frame1{
-FrameTransformMatrix { //単位行列なので変換は行わない
-1.0, 0.0, 0.0, 0.0,
-0.0, 1.0, 0.0, 0.0,
-0.0, 0.0, 1.0, 0.0,
-0.0, 0.0, 0.0, 1.0,
-}
-Mesh {
-頂点の数;
-頂点の座標達;
-面の数;
-面のを表す頂点のインデックス;
-MeshMaterialList {
-使用するマテリアルの数;
-面の数;
-それぞれの面の使用する引数;//繰り返し
-使用するマテリアルへの参照;//繰り返し
-TextureFilename{
-&amp;quot;ファイルへのパス&amp;quot;;
-}
-}
-MeshNormals {
-法線の数;
-法線の座標達;
-面法線インデックスの数;
-インデックス達;
-}
-MeshTextureCoords {
-頂点の数;
-テクスチャ座標u;テクスチャ座標v;//繰り返し
-}
-}
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        0.0, 0.0, 0.0, 1.0,
+    }
+    Mesh {
+        頂点の数;
+        頂点の座標達;
+        面の数;
+        面のを表す頂点のインデックス;
+        MeshMaterialList {
+            使用するマテリアルの数;
+            面の数;
+            それぞれの面の使用する引数;//繰り返し
+            使用するマテリアルへの参照;//繰り返し
+            TextureFilename{
+                &amp;quot;ファイルへのパス&amp;quot;;
+            }
+        }
+        MeshNormals {
+            法線の数;
+            法線の座標達;
+            面法線インデックスの数;
+            インデックス達;
+        }
+        MeshTextureCoords {
+            頂点の数;
+            テクスチャ座標u;テクスチャ座標v;//繰り返し
+        }
+    }
 }
 AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
-}
-}
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(3)</title><link href="/200902041233704553.html" rel="alternate"></link><published>2009-02-04T08:42:00+09:00</published><updated>2009-02-04T08:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-04:/200902041233704553.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(3)</title><link href="/200902041233704553.html" rel="alternate"></link><published>2009-02-04T08:42:00+09:00</published><updated>2009-02-04T08:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-04:/200902041233704553.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
 フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。&lt;br&gt;
@@ -173,8 +176,10 @@ AnimationKey {
 &lt;p&gt;[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。&lt;br&gt;
 行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。&lt;/p&gt;
 &lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame {
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
 フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。&lt;br&gt;
@@ -302,8 +307,8 @@ Mesh (ここにメッシュの名前をつけることもできる。){
 である。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/////////////////////////////////////////////////////////////  
 //MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
-template MeshTextureCoords  
-{&amp;lt; F6F23F40-7686-11cf-8F52-0040333594A3 &amp;gt;  
+template MeshTextureCoords {
+    &amp;lt; F6F23F40-7686-11cf-8F52-0040333594A3 &amp;gt;  
     DWORD nTextureCoords;  
     array coords2d textureCoords[nTextureCoords];  
 }
@@ -316,8 +321,8 @@ textureCoords-要&lt;a href="http://d.hatena.ne.jp/keyword/%C1%C7%BF%F4"&gt;素�
 Coords2dは、テクスチャのUV座標を設定するためのテンプレート。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;////////////////////////////////////////////////////  
 //MeshNormalsは、メッシュの法線を定義する。  
-template MeshNormals  
-{&amp;lt; F6F23F43-7686-11cf-8F52-0040333594A3 &amp;gt;  
+template MeshNormals {
+    &amp;lt; F6F23F43-7686-11cf-8F52-0040333594A3 &amp;gt;  
     DWORD nNormals;  
     array Vector;
     normals[nNormals];  
@@ -335,8 +340,8 @@ array
 meshFaces-要素数nFaceNormalsのMeshFaceの配列、面法線をあらわす。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//////////////////////////////////////////////////////  
 //MeshVertexColorsは、面またはメッシュごとに頂点色を設定する。  
-template MeshVertexColors  
-{\&amp;lt;1630B821-7842-11cf-8F52-0040333594A3\&amp;gt;  
+template MeshVertexColors {
+    &amp;lt;1630B821-7842-11cf-8F52-0040333594A3&amp;gt;  
     DWORD nVertexColors;  
     array IndexColor vertexColors[nVertexColors\];  
 }
@@ -349,8 +354,8 @@ vertexColors-要素数nVertexColorsのIndexColorの配列。&lt;br&gt;
 IndexColorは、インデックス引数とRGBA色で構成される。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/////////////////////////////////////////////////////////  
 //MeshMaterialListは、どのマテリアルをどの面に適用するのかを指定する。  
-template MeshMaterialList  
-{&amp;lt; F6F23F42-7686-11cf-8F52-0040333594A3 &amp;gt;  
+template MeshMaterialList {
+    &amp;lt; F6F23F42-7686-11cf-8F52-0040333594A3 &amp;gt;  
     DWORD nMaterials;  
     DWORD nFaceIndexes;  
     DWORD FaceIndexes;  
@@ -365,8 +370,8 @@ FaceIndexe-インデックス番号。&lt;br&gt;
 Materialテンプレートをオプションとしてつけることができる。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//////////////////////////////////////////////////////////  
 //Materialは、メッシュ全体またはそれぞれの面に適用できる。マテリアル色を定義す。template
-Material  
-{&amp;lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &amp;gt;  
+Material {
+    &amp;lt; 3D82AB4D-62DA-11cf-AB39-0020AF71E433 &amp;gt;  
     ColorRGBA faceColor;  
     float power;  
     DWORD specularColor;  
@@ -418,22 +423,21 @@ xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
 \"0064\"は64ビット&lt;a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4"&gt;浮動小数&lt;/a&gt;点をあらわす。&lt;br&gt;
 代わりに、\"0032\"を選ぶとができる。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;はテンプレート形式で書かれている。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Vector {  
-&amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
+  &amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
 xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
 \"xof\"は、マジック番号と呼ばれる。&lt;br&gt;
 \"03\"は、メジャーバージョン3をあらわす。&lt;br&gt;
@@ -443,31 +447,30 @@ xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
 \"0064\"は64ビット&lt;a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4"&gt;浮動小数&lt;/a&gt;点をあらわす。&lt;br&gt;
 代わりに、\"0032\"を選ぶとができる。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;はテンプレート形式で書かれている。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Vector {  
-&amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT z;  
+  &amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT z;  
 }
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vector"&gt;Vector&lt;/a&gt;は、ベクトルを定義する。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template MeshFace {  
-&amp;lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&amp;gt;  
-DWORD nFaceVertexIndices;  
-array DWORD faceVertexIndices[nFaceVertexIndices\];  
+  &amp;lt;3D82AB5F-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+  DWORD nFaceVertexIndices;  
+  array DWORD faceVertexIndices[nFaceVertexIndices\];  
 } 
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -478,13 +481,13 @@ array faceVertexIndicesは。インデックスの配列。&lt;br&gt;
 インデックスは、頂点を設定する順番を決める。&lt;/p&gt;
 &lt;p&gt;Meshは、単純なメッシュの情報を記述する。  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Mesh {  
-&amp;lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&amp;gt;  
-DWORD nVertices;  
-array Vector
-vertices[nVertices];  
-DWORD nFaces;  
-array MeshFace faces[nFaces];  
-[...]  
+  &amp;lt;3D82AB44-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+  DWORD nVertices;  
+  array Vector
+  vertices[nVertices];  
+  DWORD nFaces;  
+  array MeshFace faces[nFaces];  
+  [...]  
 }
 &lt;/pre&gt;&lt;/div&gt;
 

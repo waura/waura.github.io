@@ -975,13 +975,11 @@ ServerからCentOSに入れ替えようと思うので、OSを入れる用のHDD
 &lt;p&gt;以上が今回選んだパーツの構成です。&lt;/p&gt;
 &lt;p&gt;サーバーのベンチマーク等は、今後の記事で載せていこうと思います。&lt;/p&gt;
 &lt;p&gt;↓届いたパーツ&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_201837.jpg"&gt;&lt;img alt="IMG_20150408_201837" src="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_201837-300x225.jpg"&gt;{.alignnone
-.size-medium .wp-image-264 width="300"
-height="225"}&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="./images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_201837" src="./images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;/a&gt;
+ 
+ &lt;/p&gt;
 &lt;p&gt;↓セットアップ中のサーバー&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_210434.jpg"&gt;&lt;img alt="IMG_20150408_210434" src="http://octworks.orz.hm/wordpress/wp-content/uploads/2015/04/IMG_20150408_210434-300x225.jpg"&gt;{.alignnone
-.size-medium .wp-image-265 width="300"
-height="225"}&lt;/a&gt;&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>まるごと吸い出したHDDイメージをマウントする</title><link href="/201004091270823038.html" rel="alternate"></link><published>2010-04-09T23:23:00+09:00</published><updated>2010-04-09T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-09:/201004091270823038.html</id><summary type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+&lt;p&gt;&lt;a href="./images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_210434" src="./images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;/a&gt;&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>まるごと吸い出したHDDイメージをマウントする</title><link href="/201004091270823038.html" rel="alternate"></link><published>2010-04-09T23:23:00+09:00</published><updated>2010-04-09T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-09:/201004091270823038.html</id><summary type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウントすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
 &lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
 &lt;/pre&gt;&lt;/div&gt;
@@ -993,7 +991,7 @@ Disk /dev/loop0: &lt;span class="m"&gt;4034&lt;/span&gt; MB, &lt;span class="m"&
 &lt;span class="m"&gt;128&lt;/span&gt; heads, &lt;span class="m"&gt;63&lt;/span&gt; sectors/track, &lt;span class="m"&gt;977&lt;/span&gt; cylinders, total &lt;span class="m"&gt;7880544&lt;/span&gt; sectors
 &lt;span class="nv"&gt;Units&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
 Disk identifier: 0x001c2022
-Device Boot      Start         End      Blocks   Id …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+Device Boot      Start         End      Blocks   Id …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウントすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
 &lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
 &lt;/pre&gt;&lt;/div&gt;
@@ -1196,10 +1194,9 @@ Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;s
 &lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;で作業&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ソースを変更したらCommitダイアログを開く&lt;/li&gt;
-&lt;li&gt;~~[Add many files]→[add
-    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる~~&lt;/li&gt;
+&lt;li&gt;[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;これだと.gitgnoreで弾いたものまでcommitされてしまう&lt;/p&gt;
 &lt;h2&gt;サーバにpush&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;pushダイアログを開いてRemote
@@ -1216,10 +1213,9 @@ Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;s
 &lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;で作業&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ソースを変更したらCommitダイアログを開く&lt;/li&gt;
-&lt;li&gt;~~[Add many files]→[add
-    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる~~&lt;/li&gt;
+&lt;li&gt;[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;これだと.gitgnoreで弾いたものまでcommitされてしまう&lt;/p&gt;
 &lt;h2&gt;サーバにpush&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;pushダイアログを開いてRemote

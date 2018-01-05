@@ -168,9 +168,9 @@ Invoke …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/eleme
 
 &lt;h4&gt;参考リンク&lt;/h4&gt;
 &lt;p&gt;&lt;a href="http://tmpla.info/archives/1211"&gt;http://tmpla.info/archives/1211&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 01 Oct 2012 22:28:00 +0900</pubDate><guid isPermaLink="false">tag:None,2012-10-01:/201210011349098138.html</guid></item><item><title>SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</title><link>/201112031322919731.html</link><description>&lt;p&gt;↓の続き  &lt;/p&gt;
-&lt;p&gt;&lt;a href="../200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
-&lt;a href="../http://localhost:8000/201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
-&lt;a href="../201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
+&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
+&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今回はアライメントをずらした場合での計測をします。&lt;/p&gt;
 &lt;p&gt;_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、&lt;br&gt;
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。&lt;/p&gt;
@@ -225,7 +225,7 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;amp;chl=d_%7Bdst%7D%
 
 &lt;p&gt;とエラーがでる場合は次のようにして、expectパッケージをインストールする。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install expect
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 06 Jun 2011 20:51:00 +0900</pubDate><guid isPermaLink="false">tag:None,2011-06-06:/201106061307361103.html</guid></item><item><title>wintabから傾きを取得するコード</title><link>/201012241293217750.html</link><description>&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20101225035447"&gt;&lt;img alt="f:id:hiroki0:20101225035447j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"&gt;&lt;/a&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 06 Jun 2011 20:51:00 +0900</pubDate><guid isPermaLink="false">tag:None,2011-06-06:/201106061307361103.html</guid></item><item><title>wintabから傾きを取得するコード</title><link>/201012241293217750.html</link><description>&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20101225035447"&gt;&lt;img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"&gt;&lt;/a&gt;
 Azimuthがペンとタブレットの前後方向の軸がなす角、&lt;br&gt;
 Altitudeがペンとタブレット平面がなす角です。&lt;br&gt;
 ペンが逆さまのときAltitudeは負の値になります。&lt;br&gt;
@@ -241,8 +241,10 @@ Altitudeがペンとタブレット平面がなす角です。&lt;br&gt;
 &lt;p&gt;タブレットからのデータを正規化するために、&lt;br&gt;
 WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="nf"&gt;UINT&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;API&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;WTInfo_&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;wCategory&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;nIndex&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPVOID&lt;/span&gt; &lt;span class="n"&gt;lpOutput&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
 &lt;span class="n"&gt;HMODULE&lt;/span&gt; &lt;span class="n"&gt;dll&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;LoadLibrary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wintab32.dll&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;WTInfo_&lt;/span&gt; &lt;span class="n"&gt;wtInfo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;WTInfo_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;GetProcAddress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dll&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;WTInfoA&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
 &lt;span class="kt"&gt;double …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Fri, 24 Dec 2010 04:09:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-12-24:/201012241293217750.html</guid></item><item><title>CPUID命令のIntrinsic関数を使用して、SSEに対応しているか調べるコード</title><link>/201011061289036459.html</link><description>&lt;p&gt;↓のコードをIntrinsic関数を使用して書き換えてみます。&lt;/p&gt;
 &lt;p&gt;&lt;a href="../200909121252748821.html"&gt;CPUID命令を使用して、SSEに対応しているか調べるコード&lt;/a&gt;&lt;/p&gt;
 &lt;h4&gt;__cpuid()&lt;/h4&gt;
@@ -284,7 +286,7 @@ Webデータから抽出された語嚢データは含まれていないよう�
 &lt;a href="http://linux.ikoinoba.net/index.php?UID=1273605455"&gt;Mozc - Google日本語入力のオープンソース版 -
 憩いの場【Linux/ソフト紹介】&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;インストール方法は、すべて↑の通り。&lt;br&gt;
-Anthyは使いにくいなぁ、と思っていたので助かりました。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 06 Jun 2010 23:23:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-06-06:/201006061275834228.html</guid></item><item><title>まるごと吸い出したHDDイメージをマウントする</title><link>/201004091270823038.html</link><description>&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウとすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+Anthyは使いにくいなぁ、と思っていたので助かりました。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 06 Jun 2010 23:23:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-06-06:/201006061275834228.html</guid></item><item><title>まるごと吸い出したHDDイメージをマウントする</title><link>/201004091270823038.html</link><description>&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウントすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
 &lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
 &lt;/pre&gt;&lt;/div&gt;
@@ -324,16 +326,54 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 &lt;p&gt;snmpdデーモンを再起動させます。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; $ sudo /etc/init …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 03 Apr 2010 12:19:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-04-03:/201004031270264748.html</guid></item><item><title>SSE用いたアルファブレンドの高速化2</title><link>/201003201269074009.html</link><description>&lt;h2&gt;ロード・ストアに使用するSSE命令&lt;/h2&gt;
 &lt;h3&gt;ロード&lt;/h3&gt;
-&lt;p&gt;イントリンシック命令   対応するSSE命令   &lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;_mm_loadu_ps        MOVUPS            アライメントを合わせる必要がない
-  _mm_load_ps         MOVAPS            アライメントを合わせなければならない&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;イントリンシック命令&lt;/th&gt;
+&lt;th&gt;対応するSSE命令&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;_mm_loadu_ps&lt;/td&gt;
+&lt;td&gt;MOVUPS&lt;/td&gt;
+&lt;td&gt;アライメントを合わせる必要がない&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_mm_load_ps&lt;/td&gt;
+&lt;td&gt;MOVAPS&lt;/td&gt;
+&lt;td&gt;アライメントを合わせなければならない&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;h3&gt;ストア&lt;/h3&gt;
-&lt;p&gt;イントリンシック命令   対応するSSE命令   &lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;_mm_storeu_ps       MOVUPS            アライメントを合わせる必要がない
-  _mm_store_ps        MOVAPS            アライメントを合わせなければならない
-  _mm_stream_si128    MOVNTPD           アライメントを合わせなければならない、キャッシュを介さずにストアする&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;イントリンシック命令&lt;/th&gt;
+&lt;th&gt;対応するSSE命令&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;_mm_storeu_ps&lt;/td&gt;
+&lt;td&gt;MOVUPS&lt;/td&gt;
+&lt;td&gt;アライメントを合わせる必要がない&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_mm_store_ps&lt;/td&gt;
+&lt;td&gt;MOVAPS&lt;/td&gt;
+&lt;td&gt;アライメントを合わせなければならない&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_mm_stream_si128&lt;/td&gt;
+&lt;td&gt;MOVNTPD&lt;/td&gt;
+&lt;td&gt;アライメントを合わせなければならない、キャッシュを介さずにストアする&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;h2&gt;計測するアルファブレンド処理&lt;/h2&gt;
 &lt;p&gt;32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて&lt;/p&gt;
 &lt;ul&gt;
@@ -353,8 +393,8 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8"&gt;ブレークポイント&lt;/a&gt;は、現在の設定ではヒットしません。&lt;a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9"&gt;ソースコード&lt;/a&gt;
 が元のバージョンと異なります。」&lt;br&gt;
 と表示されるときの対処&lt;/p&gt;
-&lt;p&gt;[「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB"&gt;ツール&lt;/a&gt;」→「オプション」→「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。]{style="font-weight:bold;"}&lt;br&gt;
-&lt;a href="http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14"&gt;http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 17 Mar 2010 15:40:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-17:/201003171268808033.html</guid></item><item><title>64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</title><link>/201003151268621668.html</link><description>&lt;h4&gt;CMakeを用いて&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;のプロジェクトを作る&lt;/h4&gt;
+&lt;p&gt;[「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB"&gt;ツール&lt;/a&gt;」→「オプション」→「&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] &lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14"&gt;http://www.langedge.jp/blog/?&amp;amp;blogid=1&amp;amp;archive=2006-6-14&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 17 Mar 2010 15:40:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-17:/201003171268808033.html</guid><category>Windows</category></item><item><title>64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</title><link>/201003151268621668.html</link><description>&lt;h4&gt;CMakeを用いて&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;のプロジェクトを作る&lt;/h4&gt;
 &lt;p&gt;ここを参考に&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;のソースから&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
 Studio&lt;/a&gt;のプロジェクトを作成する。&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/Guernsey/20091002/1254459730"&gt;http://d.hatena.ne.jp/Guernsey/20091002/1254459730&lt;/a&gt;&lt;/p&gt;
@@ -377,7 +417,7 @@ Studio&lt;/a&gt;のプロジェクトを作成する。&lt;br&gt;
 
 &lt;p&gt;wintab32.dllという名前なのでこのDLLは32bit用で、64bitのexeから呼び出すには64bit用のDLLを読み込まないとダメだと思い、それらしいものを探してみるがどこにも見当たらない。&lt;/p&gt;
 &lt;p&gt;この記事によると、OSが同じ名前のDLLを32bit用と64bit用で切り替えてくれるようだ。&lt;br&gt;
-[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;amp;sa=838339906]{data-unlink=""}&lt;/p&gt;
+[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;amp;sa=838339906]&lt;/p&gt;
 &lt;p&gt;なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 14 Mar 2010 08:56:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-14:/201003141268524584.html</guid></item><item><title>C言語、32bit環境と64bit環境の変数のサイズ</title><link>/201003131268457303.html</link><description>&lt;ul&gt;
 &lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/Windows%207"&gt;Windows 7&lt;/a&gt;
     64bit&lt;/li&gt;
@@ -389,40 +429,79 @@ Studio&lt;/a&gt;のプロジェクトを作成する。&lt;br&gt;
     Duo&lt;/a&gt; E8400&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;32bit環境と64bit環境向けに&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;したものを実行して、sizeofでサイズを調べた。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;            32bit   64bit
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;hr&gt;
-&lt;p&gt;char          1       1
-  short         2       2
-  int           4       4
-  long          4       4
-  long long     8       8
-  float         8       8
-  double        8       8
-  long double   8       8&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th align="right"&gt;32bit&lt;/th&gt;
+&lt;th align="right"&gt;64bit&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;char&lt;/td&gt;
+&lt;td align="right"&gt;1&lt;/td&gt;
+&lt;td align="right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;short&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;td align="right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td align="right"&gt;4&lt;/td&gt;
+&lt;td align="right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;long&lt;/td&gt;
+&lt;td align="right"&gt;4&lt;/td&gt;
+&lt;td align="right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;long long&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;float&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;double&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;long double&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;td align="right"&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 13 Mar 2010 14:15:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-13:/201003131268457303.html</guid></item><item><title>WH_KEYBOARDのフックプロシージャサンプル</title><link>/201003071267910248.html</link><description>&lt;p&gt;キーボードが押されてない状態から押された状態へ遷移した時と、押している状態から、押されていない状態へ遷移した時に、押されたキーの仮想コード、shift、ctrl、altのそれぞれの状態を表示するフックプロシージャのコード&lt;/p&gt;
 &lt;p&gt;WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;LRESULT&lt;/span&gt; &lt;span class="nf"&gt;KeyboardHookProc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;WPARAM&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPARAM&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;HC_NOREMOVE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;CallNextHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_hHook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;keyboard hook! &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-&lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;optChar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="c1"&gt;//check keyup shift&lt;/span&gt;
-&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_SHIFT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;shift &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="c1"&gt;//check keyup …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 07 Mar 2010 06:17:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-07:/201003071267910248.html</guid></item><item><title>開発版更新</title><link>/201003011267393466.html</link><description>&lt;ul&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;HC_NOREMOVE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;CallNextHookEx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_hHook&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nCode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wParam&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lParam&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+  &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;keyboard hook! &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;lParam&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mh"&gt;0xc0000000&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+    &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;optChar&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;//check keyup shift&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetKeyState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VK_SHIFT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+      &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;OutputDebugString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;shift &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="c1"&gt;//check keyup …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 07 Mar 2010 06:17:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-07:/201003071267910248.html</guid></item><item><title>開発版更新</title><link>/201003011267393466.html</link><description>&lt;ul&gt;
 &lt;li&gt;ナビゲーターの画像が何もしてない時でもチカチカしてたのを修正&lt;/li&gt;
 &lt;li&gt;半透明なピクセルに半透明なピクセルを書き込めないバグを修正&lt;/li&gt;
 &lt;li&gt;ソフト円ブラシを追加&lt;/li&gt;
 &lt;li&gt;レイヤー合成高速化&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;a href="http://key0note.ath.cx/hp/frayer_wiki/"&gt;http://key0note.ath.cx/hp/frayer_wiki/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20100301063557"&gt;&lt;img alt="f:id:hiroki0:20100301063557j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20100301063557"&gt;&lt;img alt="f:id:hiroki0:20100301063557j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"&gt;&lt;/a&gt;
 ブラシのテスト。&lt;br&gt;
 黒い線がハード円ブラシ、赤い線がハードエアーブラシ、青い線がソフト円ブラシ、緑の線がソフトエアーブラシ。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 01 Mar 2010 06:44:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-03-01:/201003011267393466.html</guid></item><item><title>OpenCL開発環境のインストール</title><link>/201002231266941596.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;
 64bit、&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
@@ -444,11 +523,9 @@ Studio&lt;/a&gt;
 再起動が求められた場合は、再起動を行います。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/windows7"&gt;windows7&lt;/a&gt;の場合では、インクルードファイルとライブラリファイルはそれぞれ次の箇所にインストールされてました。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C:\Users\(ユーザ)\AppData …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Tue, 23 Feb 2010 01:13:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-02-23:/201002231266941596.html</guid></item><item><title>円描画のアンチエイリアス</title><link>/201002141266161163.html</link><description>&lt;p&gt;円描画時の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%F3%A5%C1%A5%A8%A5%A4%A5%EA%A5%A2%A5%B9"&gt;アンチエイリアス&lt;/a&gt;のかけ方のテスト&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002421"&gt;&lt;img alt="f:id:hiroki0:20100215002421p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20100215002421"&gt;&lt;img alt="f:id:hiroki0:20100215002421p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;ついでにブラシ描画のテスト&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20100215002422"&gt;&lt;img alt="f:id:hiroki0:20100215002422p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 14 Feb 2010 00:26:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-02-14:/201002141266161163.html</guid></item><item><title>ローカルフック使用時にはスレッドIDが必要</title><link>/201002111265869988.html</link><description>&lt;p&gt;ローカルフックを作成するには、&lt;br&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20100215002422"&gt;&lt;img alt="f:id:hiroki0:20100215002422p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 14 Feb 2010 00:26:00 +0900</pubDate><guid isPermaLink="false">tag:None,2010-02-14:/201002141266161163.html</guid></item><item><title>ローカルフック使用時にはスレッドIDが必要</title><link>/201002111265869988.html</link><description>&lt;p&gt;ローカルフックを作成するには、&lt;br&gt;
 第3引数にNULL、第4引数にスレッドIDを指定する。&lt;/p&gt;
 &lt;p&gt;対して、グローバルフックの場合は、&lt;br&gt;
 第3引数にDLLモジュールのハンドル、第4引数に0を指定する。&lt;/p&gt;
@@ -477,7 +554,7 @@ si.dwNumberOfProcessors; //プロセッサ数
 
 &lt;h2&gt;参考URL&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx"&gt;http://msdn.microsoft.com/ja-jp/library/cc429808.aspx&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 14 Nov 2009 02:12:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-11-14:/200911141258218733.html</guid></item><item><title>トーンカーブ</title><link>/200909271254003613.html</link><description>&lt;p&gt;3次スプラインを利用して&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6"&gt;トーンカーブ&lt;/a&gt;を実装してみた。&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20090927071914"&gt;&lt;img alt="f:id:hiroki0:20090927071914j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 27 Sep 2009 07:20:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-27:/200909271254003613.html</guid></item><item><title>画面の大きさを取得するWinAPI メモ</title><link>/200909231253715978.html</link><description>&lt;h2&gt;メイン画面の大きさを取得&lt;/h2&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20090927071914"&gt;&lt;img alt="f:id:hiroki0:20090927071914j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 27 Sep 2009 07:20:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-27:/200909271254003613.html</guid><category>ペイントツール</category></item><item><title>画面の大きさを取得するWinAPI メモ</title><link>/200909231253715978.html</link><description>&lt;h2&gt;メイン画面の大きさを取得&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CXSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;GetSystemMetrics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SM_CYSCREEN&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -502,8 +579,7 @@ si.dwNumberOfProcessors; //プロセッサ数
   &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
   &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
   &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;b …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 21 Sep 2009 00:55:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-21:/200909211253548524.html</guid></item><item><title>SSE用いたアルファブレンドの高速化</title><link>/200909141252931917.html</link><description>&lt;p&gt;[2010/03/10 書きなおしました。]{style="color:#FF0000;"}&lt;/p&gt;
-&lt;h2&gt;計測するアルファブレンド処理&lt;/h2&gt;
+    &lt;span class="n"&gt;b …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 21 Sep 2009 00:55:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-21:/200909211253548524.html</guid></item><item><title>SSE用いたアルファブレンドの高速化</title><link>/200909141252931917.html</link><description>&lt;h2&gt;計測するアルファブレンド処理&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;SSEを使わない処理&lt;/li&gt;
 &lt;li&gt;16バイトアライメントなし、SSEを使って1pixelごとに処理&lt;/li&gt;
@@ -520,7 +596,12 @@ si.dwNumberOfProcessors; //プロセッサ数
 &lt;h2&gt;計測に使用した環境&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;CPU: &lt;a href="http://d.hatena.ne.jp/keyword/core2duo"&gt;core2duo&lt;/a&gt;
-    E8400 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 14 Sep 2009 21:38:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-14:/200909141252931917.html</guid></item><item><title>インラインアセンブラでデバッグ時にレジスタの値を表示させる。</title><link>/200909131252813492.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+    E8400&lt;/li&gt;
+&lt;li&gt;OS: &lt;a href="http://d.hatena.ne.jp/keyword/windows%207"&gt;windows 7&lt;/a&gt;
+    64bit&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9"&gt;コンパイラ&lt;/a&gt;:
+    &lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
+    Studio …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Mon, 14 Sep 2009 21:38:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-09-14:/200909141252931917.html</guid></item><item><title>インラインアセンブラでデバッグ時にレジスタの値を表示させる。</title><link>/200909131252813492.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual
 Studio&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;の値を表示させる。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;中に[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0"&gt;デバッグ&lt;/a&gt;]→[ウィンドウ]→[&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;]で&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF"&gt;レジスタ&lt;/a&gt;ウィンドウを開く。&lt;/p&gt;
@@ -627,7 +708,7 @@ remixを&lt;a href="http://d.hatena.ne.jp/keyword/EeePC"&gt;EeePC&lt;/a&gt;
 このDドライブにインストールすることにした。&lt;/p&gt;
 &lt;p&gt;1GBのSDカードにインストールイメージを書き込み、&lt;br&gt;
 誘導にしたがってインストールを行った。&lt;/p&gt;
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20090826210238"&gt;&lt;img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20090826210238"&gt;&lt;img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;起動も結構早くていい感じ。&lt;/p&gt;
 &lt;h4&gt;参考URL&lt;/h4&gt;
 &lt;p&gt;&lt;a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html"&gt;http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 27 Aug 2009 10:52:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-08-27:/200908271251337964.html</guid></item><item><title>ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</title><link>/200908061249511852.html</link><description>&lt;p&gt;Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。&lt;br&gt;
@@ -638,23 +719,26 @@ remixを&lt;a href="http://d.hatena.ne.jp/keyword/EeePC"&gt;EeePC&lt;/a&gt;
 &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;open-uri&amp;#39;&lt;/span&gt;
 &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;uri&amp;#39;&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GetWebFile&lt;/span&gt;
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="vi"&gt;@file_ary&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;root_uri&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;URI&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;begin&lt;/span&gt;
-&lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;span class="k"&gt;begin&lt;/span&gt;
-&lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-&lt;span class="n"&gt;doc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Hpricot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;TimeoutError&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;
-&lt;span class="nb"&gt;warn&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;
-&lt;span class="k"&gt;return&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;atag&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;atag&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;href&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;nil …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 06 Aug 2009 07:37:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-08-06:/200908061249511852.html</guid></item><item><title>バックアップファイルが作成されるディレクトリの指定</title><link>/200908051249477353.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/xyzzy"&gt;xyzzy&lt;/a&gt;は編集ファイルと同じディレクトリに&lt;a href="http://d.hatena.ne.jp/keyword/hoge"&gt;hoge&lt;/a&gt;.1\~みたいなバックアップファイルを作ります。&lt;br&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="vi"&gt;@file_ary&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;root_uri&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;URI&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;begin&lt;/span&gt;
+      &lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+      &lt;span class="k"&gt;begin&lt;/span&gt;
+        &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+          &lt;span class="n"&gt;doc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Hpricot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;TimeoutError&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;
+          &lt;span class="nb"&gt;warn&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;doc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;atag&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;atag&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;href&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;nil …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 06 Aug 2009 07:37:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-08-06:/200908061249511852.html</guid></item><item><title>バックアップファイルが作成されるディレクトリの指定</title><link>/200908051249477353.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/xyzzy"&gt;xyzzy&lt;/a&gt;は編集ファイルと同じディレクトリに&lt;a href="http://d.hatena.ne.jp/keyword/hoge"&gt;hoge&lt;/a&gt;.1~みたいなバックアップファイルを作ります。&lt;br&gt;
 この設定のままだと作業ディレクトリにバックアップファイルがたくさんできて困るので、以下の方法で別のディレクトリにバックアップファイルを作ります。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(require &amp;quot;backup&amp;quot;)
 (setq *backup-directory* &amp;quot;D:/backup/&amp;quot;)
@@ -697,10 +781,9 @@ Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;s
 &lt;h2&gt;ローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;で作業&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;ソースを変更したらCommitダイアログを開く&lt;/li&gt;
-&lt;li&gt;~~[Add many files]→[add
-    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる~~&lt;/li&gt;
+&lt;li&gt;[Add many files]→[add
+    files]→[commit]で変更したものを全てローカル&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;にcommitできる&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;これだと.gitgnoreで弾いたものまでcommitされてしまう&lt;/p&gt;
 &lt;h2&gt;サーバにpush&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;pushダイアログを開いてRemote
@@ -772,20 +855,20 @@ Exporterというのがあるのだが、、、&lt;br&gt;
 
 &lt;p&gt;SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。&lt;br&gt;
 AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって&lt;br&gt;
-スキンメッシュを実装します。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 07 Feb 2009 10:06:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-07:/200902071233968785.html</guid></item><item><title>Xファイルのフォーマット(4)</title><link>/200902051233792037.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20090204"&gt;http://d.hatena.ne.jp/hiroki0/20090204&lt;/a&gt;&lt;/p&gt;
+スキンメッシュを実装します。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 07 Feb 2009 10:06:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-07:/200902071233968785.html</guid></item><item><title>Xファイルのフォーマット(4)</title><link>/200902051233792037.html</link><description>&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;
+&lt;a href="200902041233704553.html"&gt;Xファイルのフォーマット(3)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
 アニメーションは以下のように表されます。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;AnimationSet AnimationSet_name {
-Animation Animation0 {
-{ frame1 } //フレーム名frame1のアニメーション
-AnimationKey {
-キータイプ;
-キー数;
-キー値;データ個数;データ;, //繰り返し
-}
-}
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
 }
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -794,8 +877,11 @@ AnimationKey {
 Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。&lt;br&gt;
 AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;回転の場合は、w …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 05 Feb 2009 09:00:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-05:/200902051233792037.html</guid></item><item><title>Xファイルのフォーマット(3)</title><link>/200902041233704553.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/hiroki0/20070324"&gt;http://d.hatena.ne.jp/hiroki0/20070324&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/hiroki0/20070325"&gt;http://d.hatena.ne.jp/hiroki0/20070325&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;回転の場合は、w,x,y,zの順で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3"&gt;クォータニオン&lt;/a&gt;データが格納されています&lt;/li&gt;
+&lt;li&gt;スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています&lt;/li&gt;
+&lt;li&gt;平行移動の場合は、x,y,zの順で平行移動値データが格納されています&lt;/li&gt;
+&lt;li&gt;変換行列の場合は、4x4の回転 …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 05 Feb 2009 09:00:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-05:/200902051233792037.html</guid></item><item><title>Xファイルのフォーマット(3)</title><link>/200902041233704553.html</link><description>&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
 フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。&lt;br&gt;
@@ -812,7 +898,9 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 &lt;p&gt;[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。&lt;br&gt;
 行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。&lt;/p&gt;
 &lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 04 Feb 2009 08:42:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-04:/200902041233704553.html</guid></item><item><title>玄箱に組み込んだSeagateのHDDのチェック</title><link>/200901191232360978.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame {
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0.0 …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 04 Feb 2009 08:42:00 +0900</pubDate><guid isPermaLink="false">tag:None,2009-02-04:/200902041233704553.html</guid></item><item><title>玄箱に組み込んだSeagateのHDDのチェック</title><link>/200901191232360978.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
 &lt;a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm"&gt;http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; # apt-get install hdparam
  # hdparm -i /dev/hda
@@ -843,9 +931,9 @@ CWnd::m_bAutoMenuEnable = FALSE;&lt;br&gt;
 をひとつもつけないでdllを&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;すると&lt;br&gt;
 インポートライブラリ(*.lib)を吐かない。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 22 Nov 2008 05:17:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-11-22:/200811221227385060.html</guid></item><item><title>ファイル読み込みモジュール作成</title><link>/200811071226064350.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;のcvLoadImage()だとアルファ値を読んでくれないので、&lt;br&gt;
 libpngとzlibをつかって&lt;a href="http://d.hatena.ne.jp/keyword/png"&gt;png&lt;/a&gt;読み込みモジュールを作った&lt;/p&gt;
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20081107221654"&gt;&lt;img alt="f:id:hiroki0:20081107221654p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221654.png" title="f:id:hiroki0:20081107221654p:image"&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20081107221654"&gt;&lt;img alt="f:id:hiroki0:20081107221654p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221654.png" title="f:id:hiroki0:20081107221654p:image"&gt;&lt;/a&gt;
 ↑cvLoadImage()で読み込み、わかりづらいが、アルファ値が読まれていない。&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20081107221655"&gt;&lt;img alt="f:id:hiroki0:20081107221655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221655.png" title="f:id:hiroki0:20081107221655p:image"&gt;&lt;/a&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20081107221655"&gt;&lt;img alt="f:id:hiroki0:20081107221655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221655.png" title="f:id:hiroki0:20081107221655p:image"&gt;&lt;/a&gt;
 ↑libpngで読み込みアルファ値が読まれている。&lt;/p&gt;
 &lt;p&gt;ついでにThe Independent
 &lt;a href="http://d.hatena.ne.jp/keyword/JPEG"&gt;JPEG&lt;/a&gt; Group\'s
@@ -914,23 +1002,10 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
 マウスの座標をこの&lt;a href="http://d.hatena.ne.jp/keyword/%B5%D5%B9%D4%CE%F3"&gt;逆行列&lt;/a&gt;をかけることによって画像上の座標に変換しようとしたが、&lt;br&gt;
 どうも上手くいかない。&lt;/p&gt;
 &lt;p&gt;cvMul()で行列の掛け算をしてるとこで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%B5%A1%BC%A5%B7%A5%E7%A5%F3"&gt;アサーション&lt;/a&gt;が起こる。&lt;/p&gt;
-&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20080707005724"&gt;&lt;img alt="f:id:hiroki0:20080707005724j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080707/20080707005724.jpg" title="f:id:hiroki0:20080707005724j:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/DOSEI/20060508/p1"&gt;http://d.hatena.ne.jp/DOSEI/20060508/p1&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;↑によるとcvMul()は要素同士の積なので、エラーが出たようだ。&lt;br&gt;
-cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;&lt;img alt="OpenCV
-プログラミングブック" class="hatena-asin-detail-image" src="http://ecx.images-amazon.com/images/I/416qhEJCUGL._SL160_.jpg" title="OpenCV プログラミングブック"&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.amazon.co.jp/exec/obidos/ASIN/483992354X/hatena-blog-22/"&gt;OpenCV
-プログラミングブック&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;[作者:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%C6%E0%CE%C9%C0%E8%C3%BC%B2%CA%B3%D8%B5%BB%BD%D1%C2%E7%B3%D8%B1%A1%C2%E7%B3%D8"&gt;奈良先端科学技術大学院大学&lt;/a&gt;
-    &lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;プログラミングブック制作チーム&lt;/li&gt;
-&lt;li&gt;[出版社/メーカー:]{.hatena-asin-detail-label}
-    &lt;a href="http://d.hatena.ne.jp/keyword/%CB%E8%C6%FC%A5%B3%A5%DF%A5%E5%A5%CB%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3%A5%BA"&gt;毎日コミュニケーションズ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[発売日:]{.hatena-asin-detail-label} 2007/09/22&lt;/li&gt;
-&lt;li&gt;[メディア:]{.hatena-asin-detail-label} 単行本（ソフトカバー …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 06 Jul 2008 01:10:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-07-06:/200807061215360635.html</guid></item><item><title>ダイアログのオーナーウィンドウ</title><link>/200806301214832557.html</link><description>&lt;p&gt;ダイアログのオーナーウィンドウのハンドルは、&lt;br&gt;
+cvMatMul()を使用すると、上手くいけた。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 06 Jul 2008 01:10:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-07-06:/200807061215360635.html</guid></item><item><title>ダイアログのオーナーウィンドウ</title><link>/200806301214832557.html</link><description>&lt;p&gt;ダイアログのオーナーウィンドウのハンドルは、&lt;br&gt;
 GetWindow()でGW_OWNERを指定することで得られるが、&lt;br&gt;
 DialogBox()の第3引数で指定したものが得られるとは限らない。&lt;/p&gt;
 &lt;p&gt;DialogBox()の第3引数で指定したウィンドウが子ウィンドウの場合、&lt;br&gt;
@@ -946,23 +1021,24 @@ IplImageのimageDataから画像データにアクセスできる。&lt;br&gt;
 ・IDirect3DTexture9::CreateTextureでテクスチャを作成&lt;br&gt;
 ・IDirect3DTexture9::LockRectを行ってデータを転送&lt;/p&gt;
 &lt;p&gt;カメラに写っている内容を&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;で表示&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080523003112"&gt;&lt;img alt="f:id:hiroki0:20080523003112p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;コードはこんな感じでいけると思う。（&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;側のデータが符号なし8ビット整数のときだけだが･･･）&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;HRESULT&lt;/span&gt; &lt;span class="nf"&gt;CreateTextureIPLImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LPDIRECT3DDEVICE9&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IplImage&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;iplImage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;UINT&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;LPDIRECT3DTEXTURE9&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;ppTexture&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="n"&gt;HRESULT&lt;/span&gt; &lt;span class="n"&gt;hr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
   &lt;span class="c1"&gt;//テクスチャ作成&lt;/span&gt;
-  &lt;span class="n"&gt;hr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;CreateTexture&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DFMT_A8R8G8B8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DPOOL_MANAGED …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 22 May 2008 00:46:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-22:/200805221211471166.html</guid></item><item><title>OpenCVはじめました。</title><link>/200805211211319214.html</link><description>&lt;p&gt;安いUSBカメラかったので&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;に手を出してみました。&lt;/p&gt;
+  &lt;span class="n"&gt;hr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pDevice&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;CreateTexture&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Levels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DFMT_A8R8G8B8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D3DPOOL_MANAGED&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ppTexture&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FAILED&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hr&lt;/span&gt;&lt;span class="p"&gt;)){&lt;/span&gt;
+    &lt;span class="k"&gt;return …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 22 May 2008 00:46:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-22:/200805221211471166.html</guid></item><item><title>OpenCVはじめました。</title><link>/200805211211319214.html</link><description>&lt;p&gt;安いUSBカメラかったので&lt;a href="http://d.hatena.ne.jp/keyword/OpenCV"&gt;OpenCV&lt;/a&gt;に手を出してみました。&lt;/p&gt;
 &lt;p&gt;背景差分法のプログラムです。&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 21 May 2008 06:33:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-21:/200805211211319214.html</guid></item><item><title>■</title><link>/200805211211387379.html</link><description>&lt;p&gt;肌色部分抽出&lt;br&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080521063155"&gt;&lt;img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 21 May 2008 06:33:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-21:/200805211211319214.html</guid></item><item><title>■</title><link>/200805211211387379.html</link><description>&lt;p&gt;肌色部分抽出&lt;br&gt;
 ・&lt;a href="http://d.hatena.ne.jp/keyword/RGB"&gt;RGB&lt;/a&gt;から&lt;a href="http://d.hatena.ne.jp/keyword/HSV"&gt;HSV&lt;/a&gt;へ変換&lt;br&gt;
 ・H（色相）だけを取り出して、肌色っぽい部分を取り出す&lt;br&gt;
 ・取り出したものと背景差分のANDをとって表示&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011926"&gt;&lt;img alt="f:id:hiroki0:20080522011926p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;顔追跡&lt;br&gt;
 ・肌色領域の重心をもとめてそこを中心に円を描く&lt;br&gt;
-[&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 21 May 2008 01:29:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-21:/200805211211387379.html</guid></item><item><title>マルチバイト文字列処理 isleadbyte()</title><link>/20080421.html</link><description>&lt;h2&gt;マルチバイト文字列処理 isleadbyte()&lt;/h2&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080522011925"&gt;&lt;img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 21 May 2008 01:29:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-05-21:/200805211211387379.html</guid><category>OpenCV</category></item><item><title>マルチバイト文字列処理 isleadbyte()</title><link>/20080421.html</link><description>&lt;h2&gt;マルチバイト文字列処理 isleadbyte()&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;setlocale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LC_ALL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Japanese&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;isleadbyte&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -980,14 +1056,15 @@ XPの方で普通に&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1
 おそらくDirectXSDKかWindowsSDKが原因だと思われるのだが・・・・&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 07 Feb 2008 02:19:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-02-07:/200802071202404779.html</guid></item><item><title>新PCの開発環境構築</title><link>/200802031202053013.html</link><description>&lt;p&gt;新PCのOSには、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;を入れたので、&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;上でVisual
 Studio2005の開発環境を構築するときのメモ。&lt;/p&gt;
 &lt;p&gt;まずは、Visual Studio2005のインストール。&lt;/p&gt;
-&lt;p&gt;[&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
-2005&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
-2005 SP1&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
+2005 SP1  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Visual%20Studio"&gt;Visual Studio&lt;/a&gt;
 2005 SP1 Update for &lt;a href="http://d.hatena.ne.jp/keyword/Windows%20Vista"&gt;Windows
-Vista&lt;/a&gt;]{style="font-weight:bold;"}&lt;/p&gt;
+Vista&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にVisual
 Studio2005を入れるにはこれらをインストールする必要があるようだ。&lt;br&gt;
 参考ページ&lt;br&gt;
@@ -996,7 +1073,8 @@ Studio2005を入れるにはこれらをインストールする必要がある�
 &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;のインストールを行った。&lt;br&gt;
 November2007は、dMusic.hがなくなったりと面倒だったので、August2007をインストール。&lt;br&gt;
 ここは、特に問題なくいけた。&lt;/p&gt;
-&lt;p&gt;ここで、XPで作成していたプロジェクトを …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 03 Feb 2008 00:36:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-02-03:/200802031202053013.html</guid></item><item><title>新PC</title><link>/200801271201444962.html</link><description>&lt;p&gt;新PCを組んでみた。&lt;br&gt;
+&lt;p&gt;ここで、XPで作成していたプロジェクトを&lt;a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB"&gt;コンパイル&lt;/a&gt;してみる。&lt;br&gt;
+dShow …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sun, 03 Feb 2008 00:36:00 +0900</pubDate><guid isPermaLink="false">tag:None,2008-02-03:/200802031202053013.html</guid></item><item><title>新PC</title><link>/200801271201444962.html</link><description>&lt;p&gt;新PCを組んでみた。&lt;br&gt;
 構成は、&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;CPU: E8400&lt;/li&gt;
@@ -1006,11 +1084,9 @@ November2007は、dMusic.hがなくなったりと面倒だったので、August
 &lt;/ul&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Vista"&gt;Vista&lt;/a&gt;にしたが、XPの旧マシンよりもかなり動作が早くなった。&lt;/p&gt;
 &lt;p&gt;旧PCベンチ&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233644"&gt;&lt;img alt="f:id:hiroki0:20080127233644p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233644.png" title="f:id:hiroki0:20080127233644p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;br&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080127233644"&gt;&lt;img alt="f:id:hiroki0:20080127233644p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233644.png" title="f:id:hiroki0:20080127233644p:image"&gt;&lt;/a&gt;
 新PCベンチ&lt;br&gt;
-[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20080127233655"&gt;&lt;img alt="f:id:hiroki0:20080127233655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233655.png" title="f:id:hiroki0:20080127233655p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;
+&lt;a href="http://f.hatena.ne.jp/hiroki0/20080127233655"&gt;&lt;img alt="f:id:hiroki0:20080127233655p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080127/20080127233655.png" title="f:id:hiroki0:20080127233655p:image"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;旧PCのスペック&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;CPU: PentiumM1.8GHz(ぐらいだったかな・・&lt;/li&gt;
@@ -1062,8 +1138,7 @@ WS_CLIPCHILDREN&lt;br&gt;
 とかやってたのがまずかったみたい、ウィンドウがどっかに行ってたみたいだ････&lt;/p&gt;
 &lt;p&gt;CW_USEDEFAULT&lt;br&gt;
 にしたら出てきた。&lt;/p&gt;
-&lt;p&gt;[&lt;a class="hatena-fotolife" href="http://f.hatena.ne.jp/hiroki0/20071101005339"&gt;&lt;img alt="f:id:hiroki0:20071101005339p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"&gt;&lt;/a&gt;]{itemscope=""
-itemtype="http://schema.org/Photograph"}&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 31 Oct 2007 00:54:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-10-31:/200710311193846067.html</guid></item><item><title>DHCPサーバー構築</title><link>/200710291193673267.html</link><description>&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20071101005339"&gt;&lt;img alt="f:id:hiroki0:20071101005339p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20071101/20071101005339.png" title="f:id:hiroki0:20071101005339p:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Wed, 31 Oct 2007 00:54:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-10-31:/200710311193846067.html</guid></item><item><title>DHCPサーバー構築</title><link>/200710291193673267.html</link><description>&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
 nfsboot環境を構築するために、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバーを立ててみた。&lt;/p&gt;
 &lt;p&gt;aptで&lt;a href="http://d.hatena.ne.jp/keyword/dhcp"&gt;dhcp&lt;/a&gt;をインストールしてdhcpd.confをいじる。
 編集後はこんな感じになる。&lt;/p&gt;
@@ -1087,7 +1162,7 @@ max-lease-time 72000;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;[&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Tue, 28 Aug 2007 08:23:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-08-28:/200708281188257009.html</guid></item><item><title>Debian etchへバージョンアップ</title><link>/200708141187191261.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
+&lt;p&gt;&lt;a href="http://f.hatena.ne.jp/hiroki0/20070828082205"&gt;&lt;img alt="f:id:hiroki0:20070828082205j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20070828/20070828082205.jpg" title="f:id:hiroki0:20070828082205j:image"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Tue, 28 Aug 2007 08:23:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-08-28:/200708281188257009.html</guid></item><item><title>Debian etchへバージョンアップ</title><link>/200708141187191261.html</link><description>&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get upgrade  
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1114,9 +1189,11 @@ in･･･&lt;br&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2005の場合&lt;br&gt;
 CreateWindow( \"AtlAxWin80\", \"Shell.Explorer.2\", ････&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/VC%2B%2B"&gt;VC++&lt;/a&gt;2003.netの場合&lt;br&gt;
-CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 14 Jun 2007 23:20:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-06-14:/200706141181830810.html</guid></item><item><title>WinAPIによる非矩形ウィンドウの実現</title><link>/200705311180621839.html</link><description>&lt;p&gt;基本的な流れは、以下の通り。
-1. リージョンを作る。&lt;br&gt;
-2. SetWindowRgnでリージョンの形に添ったウィンドウの生成。  &lt;/p&gt;
+CreateWindow( \"AtlAxWin71\", \"Shell.Explorer.2\", ････&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Thu, 14 Jun 2007 23:20:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-06-14:/200706141181830810.html</guid></item><item><title>WinAPIによる非矩形ウィンドウの実現</title><link>/200705311180621839.html</link><description>&lt;p&gt;基本的な流れは、以下の通り。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;リージョンを作る。  &lt;/li&gt;
+&lt;li&gt;SetWindowRgnでリージョンの形に添ったウィンドウの生成。  &lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;SetWindowRgnの第一引数は、ウィンドウハンドル、&lt;br&gt;
 第二引数は、リージョン、&lt;br&gt;
 第三引数は、再描画するかどうか
@@ -1186,19 +1263,18 @@ xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
 \"0064\"は64ビット&lt;a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4"&gt;浮動小数&lt;/a&gt;点をあらわす。&lt;br&gt;
 代わりに、\"0032\"を選ぶとができる。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;はテンプレート形式で書かれている。  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {  
-
-メンバー1;  
-メンバー2;  
-.  
-.  
-.  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template {    
+  メンバー1;  
+  メンバー2;  
+  .  
+  .  
+  .  
 }
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;template Vector {  
-&amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
-FLOAT x;  
-FLOAT y;  
-FLOAT …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 24 Mar 2007 21:48:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-03-24:/200703241174740494.html</guid></item></channel></rss>
+  &amp;lt;3D82AB5E-62DA-11cf-AB39-0020AF71E433&amp;gt;  
+  FLOAT x;  
+  FLOAT y;  
+  FLOAT …&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">waura</dc:creator><pubDate>Sat, 24 Mar 2007 21:48:00 +0900</pubDate><guid isPermaLink="false">tag:None,2007-03-24:/200703241174740494.html</guid></item></channel></rss>

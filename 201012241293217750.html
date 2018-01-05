@@ -52,7 +52,7 @@
     </p>
   </div>
   <div class="article__text">
-    <p>[<a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
+    <p><a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
 Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
 Altitudeがペンとタブレット平面がなす角です。<br>
 ペンが逆さまのときAltitudeは負の値になります。<br>
@@ -68,24 +68,29 @@ Altitudeがペンとタブレット平面がなす角です。<br>
 <p>タブレットからのデータを正規化するために、<br>
 WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
+
 <span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
 <span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
+
 <span class="kt">double</span> <span class="n">maxAzimuth</span><span class="p">;</span>
-<span class="kt">double</span> <span class="n">maxAltitude</span>
+<span class="kt">double</span> <span class="n">maxAltitude</span><span class="p">;</span>
 <span class="n">AXIS</span> <span class="n">orientationInfo</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+
 <span class="n">UINT</span> <span class="n">res</span> <span class="o">=</span> <span class="n">wtInfo</span><span class="p">(</span><span class="n">WTI_DEVICES</span><span class="p">,</span> <span class="n">DVC_ORIENTATION</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">orientationInfo</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<span class="n">maxAzimuth</span> <span class="o">=</span> <span class="n">orientationInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">axMax</span><span class="p">;</span>
-<span class="n">maxAltitude</span> <span class="o">=</span> <span class="n">orientationInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">axMax</span><span class="p">;</span>
+  <span class="n">maxAzimuth</span> <span class="o">=</span> <span class="n">orientationInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">axMax</span><span class="p">;</span>
+  <span class="n">maxAltitude</span> <span class="o">=</span> <span class="n">orientationInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">axMax</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 
 
 <p>次は、タブレットデータ取得時のコードです。</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">BOOL</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTPacket_</span><span class="p">)(</span> <span class="n">HCTX</span> <span class="n">Ctx</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">wSerial</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpPkt</span> <span class="p">);</span>
+
 <span class="n">WTPacket_</span> <span class="n">wtPacket</span><span class="o">=</span> <span class="p">(</span><span class="n">WTPacket_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">m_dll</span><span class="p">,</span> <span class="s">&quot;WTPacket&quot;</span><span class="p">);</span>
 <span class="n">PACKET</span> <span class="n">packet</span><span class="p">;</span>
 <span class="n">wtPacket</span><span class="p">((</span><span class="n">HCTX</span><span class="p">)</span><span class="n">lp</span><span class="p">,</span> <span class="p">(</span><span class="n">UINT</span><span class="p">)</span><span class="n">wp</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">packet</span><span class="p">);</span>
+
 <span class="kt">double</span> <span class="n">azimuth_rad</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">packet</span><span class="p">.</span><span class="n">pkOrientation</span><span class="p">.</span><span class="n">orAzimuth</span> <span class="o">/</span> <span class="n">maxAzimuth</span><span class="p">);</span>
 <span class="kt">double</span> <span class="n">altitude_rad</span> <span class="o">=</span> <span class="p">(</span><span class="n">M_PI</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">packet</span><span class="p">.</span><span class="n">pkOrientation</span><span class="p">.</span><span class="n">orAzimuth</span><span class="o">/</span> <span class="n">maxAltitude</span><span class="p">);</span>
 </pre></div>

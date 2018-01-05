@@ -302,9 +302,9 @@ Invoke …</p>
   </div>
   <div class="article__text">
     <p>↓の続き  </p>
-<p><a href="../200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
-<a href="../http://localhost:8000/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
-<a href="../201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<p><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
+<a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
+<a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
 <p>今回はアライメントをずらした場合での計測をします。</p>
 <p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
@@ -398,7 +398,7 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3
     </p>
   </div>
   <div class="article__text">
-    <p>[<a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
+    <p><a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
 Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
 Altitudeがペンとタブレット平面がなす角です。<br>
 ペンが逆さまのときAltitudeは負の値になります。<br>
@@ -414,8 +414,10 @@ Altitudeがペンとタブレット平面がなす角です。<br>
 <p>タブレットからのデータを正規化するために、<br>
 WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
 <div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
+
 <span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
 <span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
+
 <span class="kt">double …</span></pre></div>
   </div>
 </article>

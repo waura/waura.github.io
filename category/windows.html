@@ -91,15 +91,16 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 水 17 3月 2010</p>
-    </p>
+ Tags:
+      <a href="/tag/windows.html">#Windows</a>    </p>
   </div>
   <div class="article__text">
     <p>デバック時、リビルドしたソースに<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>を設定しても、<br>
 「<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>は、現在の設定ではヒットしません。<a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>
 が元のバージョンと異なります。」<br>
 と表示されるときの対処</p>
-<p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。]{style="font-weight:bold;"}<br>
-<a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
+<p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] </p>
+<p><a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
   </div>
 </article>
 <hr />
@@ -123,19 +124,57 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
     Duo</a> E8400</li>
 </ul>
 <p>32bit環境と64bit環境向けに<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>したものを実行して、sizeofでサイズを調べた。</p>
-<div class="highlight"><pre><span></span>            32bit   64bit
-</pre></div>
-
-
-<hr>
-<p>char          1       1
-  short         2       2
-  int           4       4
-  long          4       4
-  long long     8       8
-  float         8       8
-  double        8       8
-  long double   8       8</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">32bit</th>
+<th align="right">64bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>short</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>int</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long long</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>float</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>long double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
 <p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
   </div>
 </article>
@@ -153,16 +192,17 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
 <p>WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。</p>
 <div class="highlight"><pre><span></span><span class="n">LRESULT</span> <span class="nf">KeyboardHookProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
-<span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
-<span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
-<span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="c1">//check keyup shift</span>
-<span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="c1">//check keyup …</span></pre></div>
+  <span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nCode</span> <span class="o">==</span> <span class="n">HC_NOREMOVE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">::</span><span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">m_hHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+  <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;keyboard hook! &quot;</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">((</span><span class="n">lParam</span> <span class="o">&amp;</span> <span class="mh">0xc0000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xc0000000</span><span class="p">){</span>
+    <span class="n">UINT</span> <span class="n">optChar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//check keyup shift</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">::</span><span class="n">GetKeyState</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">//check keyup …</span></pre></div>
   </div>
 </article>
 <hr />

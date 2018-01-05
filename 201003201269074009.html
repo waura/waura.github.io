@@ -54,16 +54,54 @@
   <div class="article__text">
     <h2>ロード・ストアに使用するSSE命令</h2>
 <h3>ロード</h3>
-<p>イントリンシック命令   対応するSSE命令   </p>
-<hr>
-<p>_mm_loadu_ps        MOVUPS            アライメントを合わせる必要がない
-  _mm_load_ps         MOVAPS            アライメントを合わせなければならない</p>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_loadu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_load_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+</tbody>
+</table>
 <h3>ストア</h3>
-<p>イントリンシック命令   対応するSSE命令   </p>
-<hr>
-<p>_mm_storeu_ps       MOVUPS            アライメントを合わせる必要がない
-  _mm_store_ps        MOVAPS            アライメントを合わせなければならない
-  _mm_stream_si128    MOVNTPD           アライメントを合わせなければならない、キャッシュを介さずにストアする</p>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_storeu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_store_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+<tr>
+<td>_mm_stream_si128</td>
+<td>MOVNTPD</td>
+<td>アライメントを合わせなければならない、キャッシュを介さずにストアする</td>
+</tr>
+</tbody>
+</table>
 <h2>計測するアルファブレンド処理</h2>
 <p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
 <ul>
@@ -314,23 +352,75 @@
 
 <h2>計測結果</h2>
 <h3>32bit</h3>
-<div class="highlight"><pre><span></span>      非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   158.012 msec   58.2207 msec                         55.8665 msec                       57.3539 msec
-  2回目   148.493 msec   616072 msec                          48.3639 msec                       43.3478 msec
-  3回目   213.018 msec   48.5864 msec                         51.4393 msec                       45.2582 msec</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_ps + _mm_storeu_ps</th>
+<th align="right">_mm_load_ps + _mm_store_ps</th>
+<th align="right">_mm_load_ps + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1回目</td>
+<td align="right">158.012 msec</td>
+<td align="right">58.221 msec</td>
+<td align="right">55.867 msec</td>
+<td align="right">57.354 msec</td>
+</tr>
+<tr>
+<td>2回目</td>
+<td align="right">148.493 msec</td>
+<td align="right">61.607 msec</td>
+<td align="right">48.364 msec</td>
+<td align="right">43.348 msec</td>
+</tr>
+<tr>
+<td>3回目</td>
+<td align="right">213.018 msec</td>
+<td align="right">48.586 msec</td>
+<td align="right">51.439 msec</td>
+<td align="right">45.258 msec</td>
+</tr>
+</tbody>
+</table>
 <h3>64bit</h3>
-<div class="highlight"><pre><span></span>      非SSE          _mm_loadu_ps + _mm_storeu_ps   _mm_load_ps + _mm_store_ps   _mm_load_ps + _mm_stream_si128
-</pre></div>
-
-
-<hr>
-<p>1回目   155.736 msec   55.2899 msec                         65.1353 msec                       58.0954 msec
-  2回目   153.897 msec   52.7778 msec                         57.7893 msec                       60.9943 msec
-  3回目   165.184 msec   54.6214 msec                         51.4324 msec                       47.8053 msec</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">非SSE</th>
+<th align="right">_mm_loadu_ps + _mm_storeu_ps</th>
+<th align="right">_mm_load_ps + _mm_store_ps</th>
+<th align="right">_mm_load_ps + _mm_stream_si128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1回目</td>
+<td align="right">155.736 msec</td>
+<td align="right">55.290 msec</td>
+<td align="right">65.135 msec</td>
+<td align="right">58.095 msec</td>
+</tr>
+<tr>
+<td>2回目</td>
+<td align="right">153.897 msec</td>
+<td align="right">52.778 msec</td>
+<td align="right">57.789 msec</td>
+<td align="right">60.994 msec</td>
+</tr>
+<tr>
+<td>3回目</td>
+<td align="right">165.184 msec</td>
+<td align="right">54.621 msec</td>
+<td align="right">51.432 msec</td>
+<td align="right">47.805 msec</td>
+</tr>
+</tbody>
+</table>
 <h2>まとめ</h2>
 <p>32bit、64bitともにSSEにより3倍程度高速化できた。<br>
 [_mm_loadu_ps + _mm_storeu_ps], [_mm_load_ps +
