@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -36,18 +36,39 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+&gt; Author: waura
       </p>
     </header>
-    
+
+<article>
+  <div class="article__title">
+    <h1><a href="/200901191232360978.html">玄箱に組み込んだSeagateのHDDのチェック</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Mon 19 January 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/Seagate">Seagate</a>の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。<br>
+<a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm">http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm</a></p>
+<div class="highlight"><pre><span></span> # apt-get install hdparam
+ # hdparm -i /dev/hda
+</pre></div>
+
+
+<p>で、HDDの型番とシリアル番号をチェック。</p>
+<p>CCとかLCがシリアル番号に入ってたらセーフ<br>
+<a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957">http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957</a></p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article__title">
     <h1><a href="/200901151232037934.html">ファイルを開くダイアログを開いたときは、カレントディレクトリが変わってる</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 15 1月 2009</p>
+    <p class="article__meta__post-date">Posted on: Thu 15 January 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -63,7 +84,7 @@
     <h1><a href="/200901071231340723.html">自動的にメニュー項目が非活性(グレーアウト)されるのを防ぎたい時は</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 07 1月 2009</p>
+    <p class="article__meta__post-date">Posted on: Wed 07 January 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -80,7 +101,7 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
     <h1><a href="/200812231230038929.html">CViewのアクティブイベント</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 23 12月 2008</p>
+    <p class="article__meta__post-date">Posted on: Tue 23 December 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -95,7 +116,7 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
     <h1><a href="/200812221230038929.html">CMultiDocTemplateの子ウィンドウのメニュー変更</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 22 12月 2008</p>
+    <p class="article__meta__post-date">Posted on: Mon 22 December 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -109,7 +130,7 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
     <h1><a href="/200811281227899513.html">DLLにおけるSTLの利用</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 28 11月 2008</p>
+    <p class="article__meta__post-date">Posted on: Fri 28 November 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -130,7 +151,7 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
     <h1><a href="/200811221227385060.html">インポートライブラリが出力されない</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 22 11月 2008</p>
+    <p class="article__meta__post-date">Posted on: Sat 22 November 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -145,7 +166,7 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
     <h1><a href="/200811071226064350.html">ファイル読み込みモジュール作成</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 07 11月 2008</p>
+    <p class="article__meta__post-date">Posted on: Fri 07 November 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -175,7 +196,7 @@ software]{style="font-weight:bold;"}<br>
     <h1><a href="/200809101221052880.html">C++クラスのDLL化</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 10 9月 2008</p>
+    <p class="article__meta__post-date">Posted on: Wed 10 September 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -193,7 +214,7 @@ DLL側でメモリの確保、開放をしたほうがいいよということ�
     <h1><a href="/200809081220891447.html">プリコンパイル済みヘッダー</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 08 9月 2008</p>
+    <p class="article__meta__post-date">Posted on: Mon 08 September 2008</p>
     </p>
   </div>
   <div class="article__text">
@@ -208,21 +229,7 @@ DLL側でメモリの確保、開放をしたほうがいいよということ�
 <p>StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/200808131218617651.html">ソースからショートカットメニューを表示する場合の注意</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 13 8月 2008</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p>TrackPopupMenu()でショートカットメニューを表示する場合、CreateMenu()ではなく、<br>
-CreatePopupMenu()で作成したメニューを使用しないと上手く表示されない。</p>
-  </div>
-</article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -274,19 +281,22 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
             <a  href="/author/waura9.html">9</a>
           </li>
 
+
+          <li>
+            <a  href="/author/waura10.html">10</a>
+          </li>
+
         <li class="pagination__next">
             <a href="/author/waura7.html">&raquo;</a>
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -296,7 +306,7 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -305,12 +315,12 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

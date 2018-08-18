@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -36,18 +36,49 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
     </header>
-    
+
+<article>
+  <div class="article__title">
+    <h1><a href="/201012241293217750.html">wintabから傾きを取得するコード</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Fri 24 December 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
+Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
+Altitudeがペンとタブレット平面がなす角です。<br>
+ペンが逆さまのときAltitudeは負の値になります。<br>
+矢印が向いてるほうがタブレットの上側を表しています。</p>
+<p>まず、取得するデータ型に傾きを定義するために、PK_ORIENTATIONをPACKETDATAに含めます。</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;wintab.h&gt;</span><span class="cp"></span>
+<span class="cp">#define PACKETDATA (PK_CURSOR | PK_X | PK_Y | PK_Z | PK_BUTTONS | PK_NORMAL_PRESSURE | PK_ORIENTATION)</span>
+<span class="cp">#define PACKETMODE PK_BUTTONS</span>
+<span class="cp">#include</span> <span class="cpf">&lt;pktdef.h&gt;</span><span class="cp"></span>
+</pre></div>
+
+
+<p>タブレットからのデータを正規化するために、<br>
+WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
+
+<span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
+<span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
+
+<span class="kt">double …</span></pre></div>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article__title">
     <h1><a href="/201011061289036459.html">CPUID命令のIntrinsic関数を使用して、SSEに対応しているか調べるコード</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 06 11月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sat 06 November 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -89,7 +120,7 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
     <h1><a href="/201006201277015164.html">CUDA VS Wizardで作ったプロジェクトにインクルードパスを追加する</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 20 6月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sun 20 June 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -107,7 +138,7 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
     <h1><a href="/201006061275834228.html">UbuntuにMozcのインストール</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 06 6月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sun 06 June 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -127,7 +158,7 @@ Anthyは使いにくいなぁ、と思っていたので助かりました。</p
     <h1><a href="/201004091270823038.html">まるごと吸い出したHDDイメージをマウントする</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 09 4月 2010</p>
+    <p class="article__meta__post-date">Posted on: Fri 09 April 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -152,7 +183,7 @@ Device Boot      Start         End      Blocks   Id …</pre></div>
     <h1><a href="/201004031270264748.html">Ubuntuにmrtgをインストールする。</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 03 4月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sat 03 April 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -191,7 +222,7 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
     <h1><a href="/201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 20 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sat 20 March 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -269,7 +300,7 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
     <h1><a href="/201003171268808033.html">ブレークポイントがヒットしない時の対処</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 17 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Wed 17 March 2010</p>
  Tags:
       <a href="/tag/windows.html">#Windows</a>    </p>
   </div>
@@ -288,7 +319,7 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
     <h1><a href="/201003151268621668.html">64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 15 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Mon 15 March 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -317,7 +348,7 @@ Studio</a>のプロジェクトを作成する。<br>
     <h1><a href="/201003141268524584.html">64bit版のWintab DLLのロード</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 14 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sun 14 March 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -332,82 +363,7 @@ Studio</a>のプロジェクトを作成する。<br>
 <p>なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/201003131268457303.html">C言語、32bit環境と64bit環境の変数のサイズ</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 13 3月 2010</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <ul>
-<li>OS: <a href="http://d.hatena.ne.jp/keyword/Windows%207">Windows 7</a>
-    64bit</li>
-<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
-    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
-    Studio</a>
-    2008</li>
-<li>CPU: <a href="http://d.hatena.ne.jp/keyword/Core2%20Duo">Core2
-    Duo</a> E8400</li>
-</ul>
-<p>32bit環境と64bit環境向けに<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>したものを実行して、sizeofでサイズを調べた。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th align="right">32bit</th>
-<th align="right">64bit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>char</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr>
-<td>short</td>
-<td align="right">2</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td>int</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr>
-<td>long</td>
-<td align="right">4</td>
-<td align="right">4</td>
-</tr>
-<tr>
-<td>long long</td>
-<td align="right">8</td>
-<td align="right">8</td>
-</tr>
-<tr>
-<td>float</td>
-<td align="right">8</td>
-<td align="right">8</td>
-</tr>
-<tr>
-<td>double</td>
-<td align="right">8</td>
-<td align="right">8</td>
-</tr>
-<tr>
-<td>long double</td>
-<td align="right">8</td>
-<td align="right">8</td>
-</tr>
-</tbody>
-</table>
-<p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
-  </div>
-</article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -453,8 +409,12 @@ Studio</a>のプロジェクトを作成する。<br>
             </li>
 
 
+                <li>.....</li>
+            </li>
+
+
           <li>
-            <a  href="/index9.html">9</a>
+            <a  href="/index10.html">10</a>
           </li>
 
         <li class="pagination__next">
@@ -462,14 +422,12 @@ Studio</a>のプロジェクトを作成する。<br>
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -479,7 +437,7 @@ Studio</a>のプロジェクトを作成する。<br>
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -488,12 +446,12 @@ Studio</a>のプロジェクトを作成する。<br>
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

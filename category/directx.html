@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -37,18 +37,18 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+&gt; Category: DirectX
+&brvbar; <a href="/feeds/directx.atom.xml">Atom</a>
       </p>
     </header>
-    
+
 <article>
   <div class="article__title">
     <h1><a href="/200902111234333888.html">LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 11 2月 2009</p>
+    <p class="article__meta__post-date">Posted on: Wed 11 February 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -74,7 +74,7 @@ Exporterというのがあるのだが、、、<br>
     <h1><a href="/200902071233968785.html">Xファイルのフォーマット(5)</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 07 2月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sat 07 February 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -89,7 +89,7 @@ Exporterというのがあるのだが、、、<br>
         <span class="err">重みの数</span><span class="p">;</span>
         <span class="err">重みを与える頂点</span><span class="p">;</span> <span class="c1">//繰り返し</span>
         <span class="mi">0</span><span class="o">~</span><span class="mi">1</span><span class="err">の値の頂点に対する重み</span><span class="p">;</span> <span class="c1">//繰り返し</span>
-        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4行列</span><span class="p">;</span>
+        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4</span><span class="err">行列</span><span class="p">;</span>
     <span class="p">}</span>
 </pre></div>
 
@@ -105,7 +105,7 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
     <h1><a href="/200902051233792037.html">Xファイルのフォーマット(4)</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 05 2月 2009</p>
+    <p class="article__meta__post-date">Posted on: Thu 05 February 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -143,7 +143,7 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
     <h1><a href="/200902041233704553.html">Xファイルのフォーマット(3)</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 04 2月 2009</p>
+    <p class="article__meta__post-date">Posted on: Wed 04 February 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -155,7 +155,7 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 フレームの形式はは、このようになっている。</p>
 <div class="highlight"><pre><span></span><span class="n">Frame</span> <span class="n">Aframe</span> <span class="p">{</span> <span class="c1">// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。</span>
     <span class="n">FrameTransformMatrix</span> <span class="p">{</span>
-        <span class="mi">4</span><span class="n">x4行列</span>
+        <span class="mi">4</span><span class="n">x4</span><span class="err">行列</span>
     <span class="p">}</span>
     <span class="p">[</span> <span class="n">Meshes</span> <span class="p">]</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="p">[</span> <span class="n">More</span> <span class="n">frames</span><span class="p">]</span>
 <span class="p">}</span>
@@ -167,7 +167,7 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 <p>最小のフレームを持つXファイルの形式は以下のようになります。</p>
 <div class="highlight"><pre><span></span>Frame {
     FrameTransformMatrix { //単位行列なので変換は行わない
-        1.0, 0.0, 0.0, 0.0 …</pre></div>
+        1.0, 0.0, 0.0, 0 …</pre></div>
   </div>
 </article>
 <hr />
@@ -176,7 +176,7 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
     <h1><a href="/200711091194621506.html">DirectShowムービー表示</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 09 11月 2007</p>
+    <p class="article__meta__post-date">Posted on: Fri 09 November 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -202,7 +202,7 @@ WS_CLIPCHILDREN<br>
     <h1><a href="/200703251174775823.html">Xファイルのフォーマット(2)</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 25 3月 2007</p>
+    <p class="article__meta__post-date">Posted on: Sun 25 March 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -241,7 +241,7 @@ template MeshTextureCoords …</pre></div>
     <h1><a href="/200703241174740494.html">Xファイルのフォーマット(1)</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 24 3月 2007</p>
+    <p class="article__meta__post-date">Posted on: Sat 24 March 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -272,7 +272,7 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
   FLOAT …</pre></div>
   </div>
 </article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -290,14 +290,12 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -307,7 +305,7 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -316,12 +314,12 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

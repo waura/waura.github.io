@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -37,137 +37,18 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+&gt; Category: サーバー管理
+&brvbar; <a href="/feeds/sabaguan-li.atom.xml">Atom</a>
       </p>
     </header>
-    
-<article>
-  <div class="article__title">
-    <h1><a href="/atom330_vs_athlon5350_benchmark.html">2008年と2015年に組んだ省電力サーバーのベンチマーク比較</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 25 5月 2015</p>
- Tags:
-      <a href="/tag/unixbench.html">#unixbench</a>,      <a href="/tag/benchimaku.html">#ベンチマーク</a>,      <a href="/tag/sheng-dian-li-saba.html">#省電力サーバー</a>,      <a href="/tag/zi-zhai-saba.html">#自宅サーバー</a>    </p>
-  </div>
-  <div class="article__text">
-    <h2>はじめに</h2>
-<p>サーバーを新しく組んだので、ベンチマークの比較をしてみます。<br>
-比較対象サーバーの構成の比較は下記のとおりです。</p>
-<table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="left">2008年</th>
-<th align="left">2015年</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">CPU</td>
-<td align="left">Intel Atom330</td>
-<td align="left">AMD Athlon5350</td>
-</tr>
-<tr>
-<td align="center">メモリ</td>
-<td align="left">DDR2-800 2GB</td>
-<td align="left">DDR3-1600 16GB</td>
-</tr>
-</tbody>
-</table>
-<p>ベンチマークソフトは<a href="https://code.google.com/p/byte-unixbench/">unixbench</a>を使用します。</p>
-<h2>Atom330とAthlon5350のスペック比較</h2>
-<table>
-<thead>
-<tr>
-<th align="left"></th>
-<th align="right">Atom330</th>
-<th align="right">Athlon5350</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">周波数</td>
-<td align="right">1.6GHz</td>
-<td align="right">2.05GHz</td>
-</tr>
-<tr>
-<td align="left">L1 cache</td>
-<td align="right">64 KB (code) / 48 KB (data)</td>
-<td align="right">128 KB (code) / 128 KB</td>
-</tr>
-<tr>
-<td align="left">(data)</td>
-<td align="right"></td>
-<td align="right"></td>
-</tr>
-<tr>
-<td align="left">L2 cache</td>
-<td align="right">1024KB</td>
-<td align="right">2048KB</td>
-</tr>
-<tr>
-<td align="left">TDP</td>
-<td align="right">8W</td>
-<td align="right">25W</td>
-</tr>
-<tr>
-<td align="left">実Core数</td>
-<td align="right">2 …</td></tr></tbody></table>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/echo_home_server_2015.html">だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 25 4月 2015</p>
- Tags:
-      <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
-  </div>
-  <div class="article__text">
-    <h2>なぜ自宅サーバーか？</h2>
-<p>「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。<br>
-たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。<br>
-しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。</p>
-<h2>どんなサーバーを組むのか？</h2>
-<p>どんなサーバーを組むのかによって、重視するポイントが変わってきます。<br>
-自分は下のような用途でサーバーを使用します。</p>
-<ul>
-<li>Webサーバー</li>
-<li>ビルドサーバー</li>
-<li>ファイルサーバ</li>
-</ul>
-<p>ビルドサーバー用途からなるべくCPU性能がいい方がいいし、メモリーも多い方がいい。<br>
-また、ファイルサーバにも使うのでディスク容量もたくさん欲しい。自宅にサーバーを置くので電気代はあまりかからない方がいい。<br>
-...と、要は性能はなるべく高く、かつ電気代はなるべく安くとないものねだりになってしまいした。<br>
-というわけで今回は、通常のデスクトップPCよりは低消費電力かつ、サーバーの用途に支障をきたさない程度のサーバーの構成を考えてみたいと思います。</p>
-<h2>PCパーツの選択</h2>
-<p>サーバーを建てるには、以下のパーツを用意する必要があります。</p>
-<ul>
-<li>CPU</li>
-<li>マザーボード</li>
-<li>メモリー</li>
-<li>HDDまたはSSD</li>
-<li>電源</li>
-<li>PCケース</li>
-</ul>
-<p>自分は、電源とPCケースは持ってるもの使用するので、ここではCPU、メモリーとHDD(SSD)を選んで行きます。</p>
-<h3>CPU</h3>
-<p>今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
-J1900やPentium …</p>
-  </div>
-</article>
-<hr />
+
 <article>
   <div class="article__title">
     <h1><a href="/201004091270823038.html">まるごと吸い出したHDDイメージをマウントする</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 09 4月 2010</p>
+    <p class="article__meta__post-date">Posted on: Fri 09 April 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -192,7 +73,7 @@ Device Boot      Start         End      Blocks   Id …</pre></div>
     <h1><a href="/201004031270264748.html">Ubuntuにmrtgをインストールする。</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 03 4月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sat 03 April 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -231,7 +112,7 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
     <h1><a href="/200906281246189191.html">ssh経由でgit</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 28 6月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sun 28 June 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -248,7 +129,7 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
     <h1><a href="/200904201240227874.html">gitサーバからソースを取ってきて、編集してサーバに変更を反映する</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 20 4月 2009</p>
+    <p class="article__meta__post-date">Posted on: Mon 20 April 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -280,7 +161,7 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
     <h1><a href="/200904141239716590.html">Debian上にgitサーバーを立てる</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 14 4月 2009</p>
+    <p class="article__meta__post-date">Posted on: Tue 14 April 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -311,7 +192,7 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
     <h1><a href="/200901191232360978.html">玄箱に組み込んだSeagateのHDDのチェック</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 19 1月 2009</p>
+    <p class="article__meta__post-date">Posted on: Mon 19 January 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -333,7 +214,7 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
     <h1><a href="/200711181195406346.html">tftpboot成功</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 18 11月 2007</p>
+    <p class="article__meta__post-date">Posted on: Sun 18 November 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -352,7 +233,7 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
     <h1><a href="/200711031194114825.html">sambaが。。</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 03 11月 2007</p>
+    <p class="article__meta__post-date">Posted on: Sat 03 November 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -363,7 +244,52 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <p>ついでにようやくsargeから<a href="http://d.hatena.ne.jp/keyword/etch">etch</a>へアップグレードした。。</p>
   </div>
 </article>
-    
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200710291193673267.html">DHCPサーバー構築</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Mon 29 October 2007</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>いままで<a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>の<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>サーバー機能を使っていたのだが<br>
+nfsboot環境を構築するために、<a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2">玄箱</a>で<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>サーバーを立ててみた。</p>
+<p>aptで<a href="http://d.hatena.ne.jp/keyword/dhcp">dhcp</a>をインストールしてdhcpd.confをいじる。
+編集後はこんな感じになる。</p>
+<div class="highlight"><pre><span></span>shared-network KURO-DHCP{
+default-lease-time 6000;
+max-lease-time 72000;
+    subnet 192.168.1.0 netmask 255.255.255.0 {
+        range 192.168.1.100 192.168.1.200;
+        option domain-name-servers (ルーターのIP);
+        option routers (ルーターのIP);
+        option broadcast-address 192.168 …</pre></div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article__title">
+    <h1><a href="/200708141187191261.html">Debian etchへバージョンアップ</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Tue 14 August 2007</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/Debian">Debian</a>のバージョンをsargeから<a href="http://d.hatena.ne.jp/keyword/etch">etch</a>へあげたくなったので、  </p>
+<div class="highlight"><pre><span></span>apt-get upgrade  
+</pre></div>
+
+
+<p>してみたけど、エラーが出た。</p>
+<p><a href="http://90h.dip.jp/archives/2007/05/hgetch.html">http://90h.dip.jp/archives/2007/05/hgetch.html</a><br>
+↑の方法でいけるみたいだ。<br>
+<a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>が2.6じゃないとだめなのか？</p>
+  </div>
+</article>
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -386,14 +312,12 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -403,7 +327,7 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -412,12 +336,12 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

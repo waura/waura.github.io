@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -37,63 +37,18 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+&gt; Category: サーバー管理
+&brvbar; <a href="/feeds/sabaguan-li.atom.xml">Atom</a>
       </p>
     </header>
-    
-<article>
-  <div class="article__title">
-    <h1><a href="/200710291193673267.html">DHCPサーバー構築</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 29 10月 2007</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p>いままで<a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC">ルーター</a>の<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>サーバー機能を使っていたのだが<br>
-nfsboot環境を構築するために、<a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2">玄箱</a>で<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>サーバーを立ててみた。</p>
-<p>aptで<a href="http://d.hatena.ne.jp/keyword/dhcp">dhcp</a>をインストールしてdhcpd.confをいじる。
-編集後はこんな感じになる。</p>
-<div class="highlight"><pre><span></span>shared-network KURO-DHCP{
-default-lease-time 6000;
-max-lease-time 72000;
-    subnet 192.168.1.0 netmask 255.255.255.0 {
-        range 192.168.1.100 192.168.1.200;
-        option domain-name-servers (ルーターのIP);
-        option routers (ルーターのIP);
-        option broadcast-address 192.168 …</pre></div>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/200708141187191261.html">Debian etchへバージョンアップ</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 14 8月 2007</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/Debian">Debian</a>のバージョンをsargeから<a href="http://d.hatena.ne.jp/keyword/etch">etch</a>へあげたくなったので、  </p>
-<div class="highlight"><pre><span></span>apt-get upgrade  
-</pre></div>
 
-
-<p>してみたけど、エラーが出た。</p>
-<p><a href="http://90h.dip.jp/archives/2007/05/hgetch.html">http://90h.dip.jp/archives/2007/05/hgetch.html</a><br>
-↑の方法でいけるみたいだ。<br>
-<a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>が2.6じゃないとだめなのか？</p>
-  </div>
-</article>
-<hr />
 <article>
   <div class="article__title">
     <h1><a href="/200705081178633500.html">共有ドライブ完成</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 08 5月 2007</p>
+    <p class="article__meta__post-date">Posted on: Tue 08 May 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -115,7 +70,7 @@ max-lease-time 72000;
     <h1><a href="/200705061178454893.html">Samba起動</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 06 5月 2007</p>
+    <p class="article__meta__post-date">Posted on: Sun 06 May 2007</p>
     </p>
   </div>
   <div class="article__text">
@@ -133,7 +88,7 @@ apt-getでインストールが完了。
 今日は、ここまでで終了。</p>
   </div>
 </article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -156,14 +111,12 @@ apt-getでインストールが完了。
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -173,7 +126,7 @@ apt-getでインストールが完了。
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -182,12 +135,12 @@ apt-getでインストールが完了。
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -36,18 +36,42 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+&gt; Author: waura
       </p>
     </header>
-    
+
+<article>
+  <div class="article__title">
+    <h1><a href="/200909211253548524.html">OpenCVで3次スプライン補間</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Mon 21 September 2009</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>の連立1次方程式を解くcvSolveを利用して3次のスプライン補間を行うコード。</p>
+<h2>コード</h2>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cv.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;highgui.h&gt;</span><span class="cp"></span>
+<span class="kt">void</span> <span class="nf">SetPixelToBGR</span><span class="p">(</span><span class="n">IplImage</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="n">g</span><span class="p">,</span> <span class="kt">int</span> <span class="n">r</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span> <span class="o">==</span> <span class="mi">3</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">image</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">((</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">b …</span></pre></div>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article__title">
     <h1><a href="/200909141252931917.html">SSE用いたアルファブレンドの高速化</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 14 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Mon 14 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -82,7 +106,7 @@
     <h1><a href="/200909131252813492.html">インラインアセンブラでデバッグ時にレジスタの値を表示させる。</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 13 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sun 13 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -102,7 +126,7 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
     <h1><a href="/200909121252748821.html">CPUID命令を使用して、SSEに対応しているか調べるコード</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 12 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sat 12 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -134,7 +158,7 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
     <h1><a href="/200909021251868590.html">Makefileメモ</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 02 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Wed 02 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -162,7 +186,7 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
     <h1><a href="/200909011251772858.html">ファイル検索関数サンプル</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 01 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Tue 01 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -189,7 +213,7 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
     <h1><a href="/200908301251628999.html">CBitmapButtonを継承してマウスオーバー時に画像を変化させるようにする。</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 30 8月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sun 30 August 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -223,7 +247,7 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
     <h1><a href="/200908281251430033.html">TreeViewコントロール 選択されたアイテムの文字列を取得するには</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 28 8月 2009</p>
+    <p class="article__meta__post-date">Posted on: Fri 28 August 2009</p>
  Tags:
       <a href="/tag/windows.html">#Windows</a>    </p>
   </div>
@@ -261,7 +285,7 @@ NM_CLICKを捕まえて、選択アイテムを取得するというやり方で
     <h1><a href="/200908271251337964.html">Ubuntu9.04 netbook remixのインストール</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 27 8月 2009</p>
+    <p class="article__meta__post-date">Posted on: Thu 27 August 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -284,7 +308,7 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
     <h1><a href="/200908061249511852.html">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 06 8月 2009</p>
+    <p class="article__meta__post-date">Posted on: Thu 06 August 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -318,25 +342,7 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
         <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/200908051249477353.html">バックアップファイルが作成されるディレクトリの指定</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 05 8月 2009</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/xyzzy">xyzzy</a>は編集ファイルと同じディレクトリに<a href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>.1~みたいなバックアップファイルを作ります。<br>
-この設定のままだと作業ディレクトリにバックアップファイルがたくさんできて困るので、以下の方法で別のディレクトリにバックアップファイルを作ります。</p>
-<div class="highlight"><pre><span></span>(require &quot;backup&quot;)
-(setq *backup-directory* &quot;D:/backup/&quot;)
-(setq *hierarchic-backup-directory* t)
-</pre></div>
-  </div>
-</article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -384,8 +390,12 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
             </li>
 
 
+                <li>.....</li>
+            </li>
+
+
           <li>
-            <a  href="/author/waura9.html">9</a>
+            <a  href="/author/waura10.html">10</a>
           </li>
 
         <li class="pagination__next">
@@ -393,14 +403,12 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -410,7 +418,7 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -419,12 +427,12 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -36,18 +36,91 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
     </header>
-    
+
+<article>
+  <div class="article__title">
+    <h1><a href="/201003131268457303.html">C言語、32bit環境と64bit環境の変数のサイズ</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Sat 13 March 2010</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <ul>
+<li>OS: <a href="http://d.hatena.ne.jp/keyword/Windows%207">Windows 7</a>
+    64bit</li>
+<li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
+    <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+    Studio</a>
+    2008</li>
+<li>CPU: <a href="http://d.hatena.ne.jp/keyword/Core2%20Duo">Core2
+    Duo</a> E8400</li>
+</ul>
+<p>32bit環境と64bit環境向けに<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>したものを実行して、sizeofでサイズを調べた。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">32bit</th>
+<th align="right">64bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>short</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>int</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>long long</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>float</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>long double</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article__title">
     <h1><a href="/201003071267910248.html">WH_KEYBOARDのフックプロシージャサンプル</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 07 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sun 07 March 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -74,7 +147,7 @@
     <h1><a href="/201003011267393466.html">開発版更新</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 01 3月 2010</p>
+    <p class="article__meta__post-date">Posted on: Mon 01 March 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -96,7 +169,7 @@
     <h1><a href="/201002231266941596.html">OpenCL開発環境のインストール</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 火 23 2月 2010</p>
+    <p class="article__meta__post-date">Posted on: Tue 23 February 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -128,7 +201,7 @@ Studio</a>
     <h1><a href="/201002141266161163.html">円描画のアンチエイリアス</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 14 2月 2010</p>
+    <p class="article__meta__post-date">Posted on: Sun 14 February 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -144,7 +217,7 @@ Studio</a>
     <h1><a href="/201002111265869988.html">ローカルフック使用時にはスレッドIDが必要</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 11 2月 2010</p>
+    <p class="article__meta__post-date">Posted on: Thu 11 February 2010</p>
     </p>
   </div>
   <div class="article__text">
@@ -167,7 +240,7 @@ Studio</a>
     <h1><a href="/200911151258237873.html">安全なSTL listの要素削除ループ</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 15 11月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sun 15 November 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -190,7 +263,7 @@ erase()の返り値で次の要素の<a href="http://d.hatena.ne.jp/keyword/%A5%
     <h1><a href="/200911141258218733.html">プロセッサ数を求めるコード</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 14 11月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sat 14 November 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -211,7 +284,7 @@ si.dwNumberOfProcessors; //プロセッサ数
     <h1><a href="/200909271254003613.html">トーンカーブ</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 日 27 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Sun 27 September 2009</p>
  Tags:
       <a href="/tag/peintotsuru.html">#ペイントツール</a>    </p>
   </div>
@@ -226,7 +299,7 @@ si.dwNumberOfProcessors; //プロセッサ数
     <h1><a href="/200909231253715978.html">画面の大きさを取得するWinAPI メモ</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 23 9月 2009</p>
+    <p class="article__meta__post-date">Posted on: Wed 23 September 2009</p>
     </p>
   </div>
   <div class="article__text">
@@ -246,32 +319,7 @@ si.dwNumberOfProcessors; //プロセッサ数
 <p><a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx">http://msdn.microsoft.com/ja-jp/library/cc429812.aspx</a></p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/200909211253548524.html">OpenCVで3次スプライン補間</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 21 9月 2009</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>の連立1次方程式を解くcvSolveを利用して3次のスプライン補間を行うコード。</p>
-<h2>コード</h2>
-<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;cv.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;highgui.h&gt;</span><span class="cp"></span>
-<span class="kt">void</span> <span class="nf">SetPixelToBGR</span><span class="p">(</span><span class="n">IplImage</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="n">g</span><span class="p">,</span> <span class="kt">int</span> <span class="n">r</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">assert</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">nChannels</span> <span class="o">==</span> <span class="mi">3</span><span class="p">);</span>
-  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">image</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-  <span class="k">if</span><span class="p">((</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
-  <span class="p">{</span>
-    <span class="n">b …</span></pre></div>
-  </div>
-</article>
-    
+
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -318,8 +366,12 @@ si.dwNumberOfProcessors; //プロセッサ数
             </li>
 
 
+                <li>.....</li>
+            </li>
+
+
           <li>
-            <a  href="/index9.html">9</a>
+            <a  href="/index10.html">10</a>
           </li>
 
         <li class="pagination__next">
@@ -327,14 +379,12 @@ si.dwNumberOfProcessors; //プロセッサ数
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -344,7 +394,7 @@ si.dwNumberOfProcessors; //プロセッサ数
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -353,12 +403,12 @@ si.dwNumberOfProcessors; //プロセッサ数
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

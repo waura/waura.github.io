@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
+  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="waura">
+  <meta name="description" content="Posts and writings by waura">
+
+  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+
+<meta name="keywords" content="サーバー管理">
+
+  <title>
+    waura's blog
+&ndash; CentOS7で固定IPアドレスの設定を行う  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="">waura's blog</a>
+      </div>
+      <p>
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html">CentOS7で固定IPアドレスの設定を行う</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Sat 18 August 2018</p>
+ Tags:
+      <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
+  </div>
+  <div class="article__text">
+    <h1>固定IPアドレス設定</h1>
+<p>CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。</p>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+</pre></div>
+
+
+<p>2番目と3番目のオプションは、それぞれ短縮可能です。
+- connection -&gt; c
+- modify -&gt; m</p>
+<p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
+<h3>実行例</h3>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1.65/24 ipv4.gateway 192.168.1.1 ipv4.dns 192.168.1.1 ipv4.method manual connection.autoconnect yes
+</pre></div>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/theme/images/logo.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="/pages/about.html">waura</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul>
+            <li>
+              <a href="https://github.com/waura" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://qiita.com/waura" target="_blank" title="qiita">
+              </a>
+            </li>
+            <li>
+              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
+                <i class="fas fa-rss-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

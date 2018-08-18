@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - waura</title><link href="/" rel="alternate"></link><link href="/feeds/waura.atom.xml" rel="self"></link><id>/</id><updated>2015-11-14T21:46:00+09:00</updated><entry><title>SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</title><link href="/swiperefreshlayout_setrefreshing.html" rel="alternate"></link><published>2015-11-14T21:46:00+09:00</published><updated>2015-11-14T21:46:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-11-14:/swiperefreshlayout_setrefreshing.html</id><summary type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - waura</title><link href="/" rel="alternate"></link><link href="/feeds/waura.atom.xml" rel="self"></link><id>/</id><updated>2018-08-18T12:51:00+09:00</updated><entry><title>CentOS7で固定IPアドレスの設定を行う</title><link href="/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html" rel="alternate"></link><published>2018-08-18T12:51:00+09:00</published><updated>2018-08-18T12:51:00+09:00</updated><author><name>waura</name></author><id>tag:None,2018-08-18:/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html</id><summary type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
+&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。
+- connection -&amp;gt; c
+- modify -&amp;gt; m&lt;/p&gt;
+&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
+&lt;h3&gt;実行例&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
+&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。
+- connection -&amp;gt; c
+- modify -&amp;gt; m&lt;/p&gt;
+&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
+&lt;h3&gt;実行例&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1.65/24 ipv4.gateway 192.168.1.1 ipv4.dns 192.168.1.1 ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</title><link href="/swiperefreshlayout_setrefreshing.html" rel="alternate"></link><published>2015-11-14T21:46:00+09:00</published><updated>2015-11-14T21:46:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-11-14:/swiperefreshlayout_setrefreshing.html</id><summary type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
 &lt;p&gt;参考：&lt;a href="https://code.google.com/p/android/issues/detail?id=77712"&gt;https://code.google.com/p/android/issues/detail?id=77712&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// MySwipeRefreshLayout.java  &lt;/span&gt;
@@ -920,7 +945,7 @@ Copy4096...は、8MByteのファイルを4096Byteごとに処理します。&lt;
 &lt;td align="right"&gt;2035.0&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</content><category term="unixbench"></category><category term="ベンチマーク"></category><category term="省電力サーバー"></category><category term="自宅サーバー"></category></entry><entry><title>だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</title><link href="/echo_home_server_2015.html" rel="alternate"></link><published>2015-04-25T19:58:00+09:00</published><updated>2015-04-25T19:58:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-04-25:/echo_home_server_2015.html</id><summary type="html">&lt;h2&gt;なぜ自宅サーバーか？&lt;/h2&gt;
+&lt;/table&gt;</content><category term="サーバー管理"></category></entry><entry><title>だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</title><link href="/echo_home_server_2015.html" rel="alternate"></link><published>2015-04-25T19:58:00+09:00</published><updated>2015-04-25T19:58:00+09:00</updated><author><name>waura</name></author><id>tag:None,2015-04-25:/echo_home_server_2015.html</id><summary type="html">&lt;h2&gt;なぜ自宅サーバーか？&lt;/h2&gt;
 &lt;p&gt;「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。&lt;br&gt;
 たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。&lt;br&gt;
 しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。&lt;/p&gt;
@@ -1128,11 +1153,11 @@ ServerからCentOSに入れ替えようと思うので、OSを入れる用のHDD
 &lt;p&gt;以上が今回選んだパーツの構成です。&lt;/p&gt;
 &lt;p&gt;サーバーのベンチマーク等は、今後の記事で載せていこうと思います。&lt;/p&gt;
 &lt;p&gt;↓届いたパーツ&lt;/p&gt;
-&lt;p&gt;&lt;a href="./images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_201837" src="./images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href="./images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_201837" src="../images/IMG_20150408_201837-1024x768.jpg"&gt;&lt;/a&gt;
  
  &lt;/p&gt;
 &lt;p&gt;↓セットアップ中のサーバー&lt;/p&gt;
-&lt;p&gt;&lt;a href="./images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_210434" src="./images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;/a&gt;&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>Android Studioで作成したプロジェクトをJenkinsでビルドする</title><link href="/201305181368891937.html" rel="alternate"></link><published>2013-05-18T00:45:00+09:00</published><updated>2013-05-18T00:45:00+09:00</updated><author><name>waura</name></author><id>tag:None,2013-05-18:/201305181368891937.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;AndroidStudio&lt;/a&gt;のプロジェクトはgradleベースなので簡単にJenkinsでビルドすることができます。&lt;br&gt;
+&lt;p&gt;&lt;a href="./images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;img alt="IMG_20150408_210434" src="../images/IMG_20150408_210434-1024x768.jpg"&gt;&lt;/a&gt;&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>Android Studioで作成したプロジェクトをJenkinsでビルドする</title><link href="/201305181368891937.html" rel="alternate"></link><published>2013-05-18T00:45:00+09:00</published><updated>2013-05-18T00:45:00+09:00</updated><author><name>waura</name></author><id>tag:None,2013-05-18:/201305181368891937.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android%20Studio"&gt;AndroidStudio&lt;/a&gt;のプロジェクトはgradleベースなので簡単にJenkinsでビルドすることができます。&lt;br&gt;
 以下、ビルドするために行った手順です。&lt;/p&gt;
 &lt;h4&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Android"&gt;Android&lt;/a&gt; &lt;a href="http://d.hatena.ne.jp/keyword/SDK"&gt;SDK&lt;/a&gt;をインストールする&lt;/h4&gt;
 &lt;p&gt;[Jenkinsの管理]-&amp;gt;[システムの設定]で環境変数$ANDROID_HOEMを追加して、値にAndroid SDKをインストールしたディレクトリへのパスを入力する&lt;/p&gt;
@@ -1199,9 +1224,11 @@ Invoke Gradleのラジオボタンを選択して、Gradle VersionでGradle 1.6�
 
 &lt;h4&gt;参考リンク&lt;/h4&gt;
 &lt;p&gt;&lt;a href="http://tmpla.info/archives/1211"&gt;http://tmpla.info/archives/1211&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</title><link href="/201112031322919731.html" rel="alternate"></link><published>2011-12-03T22:42:00+09:00</published><updated>2011-12-03T22:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2011-12-03:/201112031322919731.html</id><summary type="html">&lt;p&gt;↓の続き  &lt;/p&gt;
-&lt;p&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
-&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
-&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;今回はアライメントをずらした場合での計測をします。&lt;/p&gt;
 &lt;p&gt;_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、&lt;br&gt;
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。&lt;/p&gt;
@@ -1232,9 +1259,11 @@ Invoke Gradleのラジオボタンを選択して、Gradle VersionでGradle 1.6�
 &lt;li&gt;チャンネルサイズ8bit
     5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。&lt;/li&gt;
 &lt;li&gt;画像の保存、読み込みは …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;↓の続き  &lt;/p&gt;
-&lt;p&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
-&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
-&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;今回はアライメントをずらした場合での計測をします。&lt;/p&gt;
 &lt;p&gt;_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、&lt;br&gt;
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。&lt;/p&gt;
@@ -5710,7 +5739,7 @@ Exporterというのがあるのだが、、、&lt;br&gt;
         &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
         &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
-        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -5728,7 +5757,7 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
         &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
         &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
-        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -5840,7 +5869,7 @@ AnimationSet AnimationSet_name {
 フレームの形式はは、このようになっている。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
     &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -5852,7 +5881,7 @@ AnimationSet AnimationSet_name {
 &lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame {
     FrameTransformMatrix { //単位行列なので変換は行わない
-        1.0, 0.0, 0.0, 0.0 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+        1.0, 0.0, 0.0, 0 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
 &lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
@@ -5860,7 +5889,7 @@ AnimationSet AnimationSet_name {
 フレームの形式はは、このようになっている。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
     &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;

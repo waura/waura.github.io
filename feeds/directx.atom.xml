@@ -36,7 +36,7 @@ Exporterというのがあるのだが、、、&lt;br&gt;
         &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
         &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
-        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -54,7 +54,7 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
         &lt;span class="err"&gt;重みの数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="err"&gt;重みを与える頂点&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
         &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;の値の頂点に対する重み&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//繰り返し&lt;/span&gt;
-        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="err"&gt;メッシュの頂点をボーンの空間にトランスフォームする&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -166,7 +166,7 @@ AnimationSet AnimationSet_name {
 フレームの形式はは、このようになっている。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
     &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
@@ -178,7 +178,7 @@ AnimationSet AnimationSet_name {
 &lt;p&gt;最小のフレームを持つXファイルの形式は以下のようになります。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Frame {
     FrameTransformMatrix { //単位行列なので変換は行わない
-        1.0, 0.0, 0.0, 0.0 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+        1.0, 0.0, 0.0, 0 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
 &lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
@@ -186,7 +186,7 @@ AnimationSet AnimationSet_name {
 フレームの形式はは、このようになっている。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Frame&lt;/span&gt; &lt;span class="n"&gt;Aframe&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。&lt;/span&gt;
     &lt;span class="n"&gt;FrameTransformMatrix&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4行列&lt;/span&gt;
+        &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;x4&lt;/span&gt;&lt;span class="err"&gt;行列&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;Meshes&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;More&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;

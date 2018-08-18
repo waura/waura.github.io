@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
 
 
@@ -36,18 +36,42 @@
         <a href="">waura's blog</a>
       </div>
       <p>
-          <a href="/archives.html"><i class="fa fa-archive"></i> Archive</a>
-          <a href="/categories.html"><i class="fa fa-category"></i> CateGory</a>
-      
+        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
     </header>
-    
+
+<article>
+  <div class="article__title">
+    <h1><a href="/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html">CentOS7で固定IPアドレスの設定を行う</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Sat 18 August 2018</p>
+ Tags:
+      <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
+  </div>
+  <div class="article__text">
+    <h1>固定IPアドレス設定</h1>
+<p>CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。</p>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+</pre></div>
+
+
+<p>2番目と3番目のオプションは、それぞれ短縮可能です。
+- connection -&gt; c
+- modify -&gt; m</p>
+<p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
+<h3>実行例</h3>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article__title">
     <h1><a href="/swiperefreshlayout_setrefreshing.html">SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 14 11月 2015</p>
+    <p class="article__meta__post-date">Posted on: Sat 14 November 2015</p>
  Tags:
       <a href="/tag/android.html">#Android</a>    </p>
   </div>
@@ -74,7 +98,7 @@
     <h1><a href="/rails-api_sample.html">Rails5で取り込まれる予定のrails-apiを使ってWeb APIをつくる</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 31 10月 2015</p>
+    <p class="article__meta__post-date">Posted on: Sat 31 October 2015</p>
  Tags:
       <a href="/tag/rails.html">#Rails</a>,      <a href="/tag/ruby.html">#Ruby</a>    </p>
   </div>
@@ -119,9 +143,9 @@ $ ./bin/rake db:migrate
     <h1><a href="/atom330_vs_athlon5350_benchmark.html">2008年と2015年に組んだ省電力サーバーのベンチマーク比較</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 25 5月 2015</p>
+    <p class="article__meta__post-date">Posted on: Mon 25 May 2015</p>
  Tags:
-      <a href="/tag/unixbench.html">#unixbench</a>,      <a href="/tag/benchimaku.html">#ベンチマーク</a>,      <a href="/tag/sheng-dian-li-saba.html">#省電力サーバー</a>,      <a href="/tag/zi-zhai-saba.html">#自宅サーバー</a>    </p>
+      <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
   </div>
   <div class="article__text">
     <h2>はじめに</h2>
@@ -195,7 +219,7 @@ $ ./bin/rake db:migrate
     <h1><a href="/echo_home_server_2015.html">だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 25 4月 2015</p>
+    <p class="article__meta__post-date">Posted on: Sat 25 April 2015</p>
  Tags:
       <a href="/tag/sabaguan-li.html">#サーバー管理</a>    </p>
   </div>
@@ -238,7 +262,7 @@ J1900やPentium …</p>
     <h1><a href="/201305181368891937.html">Android Studioで作成したプロジェクトをJenkinsでビルドする</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 18 5月 2013</p>
+    <p class="article__meta__post-date">Posted on: Sat 18 May 2013</p>
     </p>
   </div>
   <div class="article__text">
@@ -270,7 +294,7 @@ Invoke …</p>
     <h1><a href="/201210011349098138.html">Androidアプリを複数のプロジェクトに分割して開発する時の設定</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 01 10月 2012</p>
+    <p class="article__meta__post-date">Posted on: Mon 01 October 2012</p>
     </p>
   </div>
   <div class="article__text">
@@ -297,14 +321,16 @@ Invoke …</p>
     <h1><a href="/201112031322919731.html">SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 土 03 12月 2011</p>
+    <p class="article__meta__post-date">Posted on: Sat 03 December 2011</p>
     </p>
   </div>
   <div class="article__text">
     <p>↓の続き  </p>
-<p><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a>
-<a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a>
-<a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></p>
+<ul>
+<li><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a></li>
+<li><a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></li>
+<li><a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></li>
+</ul>
 <p>今回はアライメントをずらした場合での計測をします。</p>
 <p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
@@ -343,7 +369,7 @@ Invoke …</p>
     <h1><a href="/201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 28 11月 2011</p>
+    <p class="article__meta__post-date">Posted on: Mon 28 November 2011</p>
     </p>
   </div>
   <div class="article__text">
@@ -375,7 +401,7 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3
     <h1><a href="/201106061307361103.html">TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 月 06 6月 2011</p>
+    <p class="article__meta__post-date">Posted on: Mon 06 June 2011</p>
     </p>
   </div>
   <div class="article__text">
@@ -388,40 +414,7 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3
 </pre></div>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article__title">
-    <h1><a href="/201012241293217750.html">wintabから傾きを取得するコード</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 金 24 12月 2010</p>
-    </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://f.hatena.ne.jp/hiroki0/20101225035447"><img alt="f:id:hiroki0:20101225035447j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20101225/20101225035447.jpg" title="f:id:hiroki0:20101225035447j:image"></a>
-Azimuthがペンとタブレットの前後方向の軸がなす角、<br>
-Altitudeがペンとタブレット平面がなす角です。<br>
-ペンが逆さまのときAltitudeは負の値になります。<br>
-矢印が向いてるほうがタブレットの上側を表しています。</p>
-<p>まず、取得するデータ型に傾きを定義するために、PK_ORIENTATIONをPACKETDATAに含めます。</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;wintab.h&gt;</span><span class="cp"></span>
-<span class="cp">#define PACKETDATA (PK_CURSOR | PK_X | PK_Y | PK_Z | PK_BUTTONS | PK_NORMAL_PRESSURE | PK_ORIENTATION)</span>
-<span class="cp">#define PACKETMODE PK_BUTTONS</span>
-<span class="cp">#include</span> <span class="cpf">&lt;pktdef.h&gt;</span><span class="cp"></span>
-</pre></div>
 
-
-<p>タブレットからのデータを正規化するために、<br>
-WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べています。</p>
-<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">UINT</span> <span class="p">(</span><span class="n">API</span> <span class="o">*</span><span class="n">WTInfo_</span><span class="p">)(</span> <span class="n">UINT</span> <span class="n">wCategory</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">LPVOID</span> <span class="n">lpOutput</span> <span class="p">);</span>
-
-<span class="n">HMODULE</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
-<span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
-
-<span class="kt">double …</span></pre></div>
-  </div>
-</article>
-    
 <div class="pagination">
     <ul>
         <li class="pagination__prev">
@@ -466,8 +459,12 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
             </li>
 
 
+                <li>.....</li>
+            </li>
+
+
           <li>
-            <a  href="/index9.html">9</a>
+            <a  href="/index10.html">10</a>
           </li>
 
         <li class="pagination__next">
@@ -475,14 +472,12 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
         </li>
     </ul>
 </div>
-          
+
   </main>
     <footer>
-      <!--
       <div class="author__logo">
           <img src="/theme/images/logo.png" alt="logo">
       </div>
-      -->
       <section class="author">
         <div class="author__name">
           <a href="/pages/about.html">waura</a>
@@ -492,7 +487,7 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
           <ul>
             <li>
               <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fa fa-github-square"></i>
+                <i class="fab fa-github-square"></i>
               </a>
             </li>
             <li>
@@ -501,12 +496,12 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
             </li>
             <li>
               <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fa fa-rss"></i>
+                <i class="fas fa-rss-square"></i>
               </a>
             </li>
           </ul>
         </div>
-      </section>          
+      </section>
       <div class="ending-message">
         <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
       </div>

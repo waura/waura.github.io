@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - ペイントツール</title><link href="/" rel="alternate"></link><link href="/feeds/peintotsuru.atom.xml" rel="self"></link><id>/</id><updated>2011-12-03T22:42:00+09:00</updated><entry><title>SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</title><link href="/201112031322919731.html" rel="alternate"></link><published>2011-12-03T22:42:00+09:00</published><updated>2011-12-03T22:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2011-12-03:/201112031322919731.html</id><summary type="html">&lt;p&gt;↓の続き  &lt;/p&gt;
-&lt;p&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
-&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
-&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;今回はアライメントをずらした場合での計測をします。&lt;/p&gt;
 &lt;p&gt;_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、&lt;br&gt;
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。&lt;/p&gt;
@@ -33,9 +35,11 @@
 &lt;li&gt;チャンネルサイズ8bit
     5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。&lt;/li&gt;
 &lt;li&gt;画像の保存、読み込みは …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;↓の続き  &lt;/p&gt;
-&lt;p&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;
-&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;
-&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="./200909141252931917.html"&gt;SSE用いたアルファブレンドの高速化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201003201269074009.html"&gt;SSE用いたアルファブレンドの高速化2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="./201111281322504210.html"&gt;SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;今回はアライメントをずらした場合での計測をします。&lt;/p&gt;
 &lt;p&gt;_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、&lt;br&gt;
 前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。&lt;/p&gt;
