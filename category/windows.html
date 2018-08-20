@@ -1,58 +1,97 @@
+
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-  <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
-  -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
-  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
-
-
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="waura">
-  <meta name="description" content="Posts and writings by waura">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
 
-  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-<link href="/feeds/windows.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Windows Category Atom" />
+    <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
-  <title>
-    waura's blog
-&ndash; Category: Windows  </title>
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-122706525-2', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333333">
+
+    <meta name="author" content="waura" />
+    <meta name="description" content="waura's Thoughts and Writings" />
+<meta property="og:site_name" content="waura's blog"/>
+<meta property="og:type" content="blog"/>
+<meta property="og:title" content="waura's blog"/>
+<meta property="og:description" content="waura's Thoughts and Writings"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://waura.github.io"/>
+<meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
+
+  <title>waura's blog &ndash;     Category Windows
+</title>
 
 </head>
-
 <body>
+  <aside>
+    <div>
+      <a href="https://waura.github.io">
+        <img src="//avatars3.githubusercontent.com/u/99647" alt="" title="">
+      </a>
+      <h1><a href="https://waura.github.io"></a></h1>
+
+<p>Software Engineer</p>
+
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
   <main>
-    <header>
-      <div class="site-name">
-        <a href="">waura's blog</a>
-      </div>
-      <p>
-        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
-&gt; Category: Windows
-&brvbar; <a href="/feeds/windows.atom.xml">Atom</a>
-      </p>
-    </header>
+
+
+
 
 <article>
-  <div class="article__title">
-    <h1><a href="/201011061289036459.html">CPUID命令のIntrinsic関数を使用して、SSEに対応しているか調べるコード</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sat 06 November 2010</p>
+  <header>
+    <h2><a href="https://waura.github.io/201011061289036459.html#201011061289036459">CPUID命令のIntrinsic関数を使用して、SSEに対応しているか調べるコード</a></h2>
+    <p>
+          Posted on Sat 06 November 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>↓のコードをIntrinsic関数を使用して書き換えてみます。</p>
+  </header>
+  <div>
+      <p>↓のコードをIntrinsic関数を使用して書き換えてみます。</p>
 <p><a href="../200909121252748821.html">CPUID命令を使用して、SSEに対応しているか調べるコード</a></p>
 <h4>__cpuid()</h4>
 <p>CPUID命令のIntrinsic関数は、</p>
@@ -82,38 +121,49 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
 </ul>
 <h4>コード</h4>
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;intrin …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/201011061289036459.html#201011061289036459">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/201003171268808033.html">ブレークポイントがヒットしない時の対処</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Wed 17 March 2010</p>
- Tags:
-      <a href="/tag/windows.html">#Windows</a>    </p>
-  </div>
-  <div class="article__text">
-    <p>デバック時、リビルドしたソースに<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>を設定しても、<br>
+  <header>
+    <h2><a href="https://waura.github.io/201003171268808033.html#201003171268808033">ブレークポイントがヒットしない時の対処</a></h2>
+    <p>
+          Posted on Wed 17 March 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/windows.html">Windows</a>
+    </p>
+  </header>
+  <div>
+      <p>デバック時、リビルドしたソースに<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>を設定しても、<br>
 「<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>は、現在の設定ではヒットしません。<a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>
 が元のバージョンと異なります。」<br>
 と表示されるときの対処</p>
 <p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] </p>
 <p><a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/201003171268808033.html#201003171268808033">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/201003131268457303.html">C言語、32bit環境と64bit環境の変数のサイズ</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sat 13 March 2010</p>
+  <header>
+    <h2><a href="https://waura.github.io/201003131268457303.html#201003131268457303">C言語、32bit環境と64bit環境の変数のサイズ</a></h2>
+    <p>
+          Posted on Sat 13 March 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <ul>
+  </header>
+  <div>
+      <ul>
 <li>OS: <a href="http://d.hatena.ne.jp/keyword/Windows%207">Windows 7</a>
     64bit</li>
 <li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
@@ -176,19 +226,24 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
 </tbody>
 </table>
 <p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
+      <br>
+      <a class="btn" href="https://waura.github.io/201003131268457303.html#201003131268457303">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/201003071267910248.html">WH_KEYBOARDのフックプロシージャサンプル</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 07 March 2010</p>
+  <header>
+    <h2><a href="https://waura.github.io/201003071267910248.html#201003071267910248">WH_KEYBOARDのフックプロシージャサンプル</a></h2>
+    <p>
+          Posted on Sun 07 March 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>キーボードが押されてない状態から押された状態へ遷移した時と、押している状態から、押されていない状態へ遷移した時に、押されたキーの仮想コード、shift、ctrl、altのそれぞれの状態を表示するフックプロシージャのコード</p>
+  </header>
+  <div>
+      <p>キーボードが押されてない状態から押された状態へ遷移した時と、押している状態から、押されていない状態へ遷移した時に、押されたキーの仮想コード、shift、ctrl、altのそれぞれの状態を表示するフックプロシージャのコード</p>
 <p>WH_KEYBORDのフックプロシージャは、0を返すと他のフックプシージャやウィンドウメッセージを処理するウィンドウへメッセージを渡し、0以外を返すとメッセージを渡さない。</p>
 <div class="highlight"><pre><span></span><span class="n">LRESULT</span> <span class="nf">KeyboardHookProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
@@ -203,19 +258,24 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
       <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="c1">//check keyup …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/201003071267910248.html#201003071267910248">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/201002111265869988.html">ローカルフック使用時にはスレッドIDが必要</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Thu 11 February 2010</p>
+  <header>
+    <h2><a href="https://waura.github.io/201002111265869988.html#201002111265869988">ローカルフック使用時にはスレッドIDが必要</a></h2>
+    <p>
+          Posted on Thu 11 February 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>ローカルフックを作成するには、<br>
+  </header>
+  <div>
+      <p>ローカルフックを作成するには、<br>
 第3引数にNULL、第4引数にスレッドIDを指定する。</p>
 <p>対して、グローバルフックの場合は、<br>
 第3引数にDLLモジュールのハンドル、第4引数に0を指定する。</p>
@@ -226,19 +286,24 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
   <span class="nb">NULL</span><span class="p">,</span>
   <span class="o">::</span><span class="n">GetCurrentThreadId</span><span class="p">());</span>
 </pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/201002111265869988.html#201002111265869988">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200911141258218733.html">プロセッサ数を求めるコード</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sat 14 November 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200911141258218733.html#200911141258218733">プロセッサ数を求めるコード</a></h2>
+    <p>
+          Posted on Sat 14 November 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>GetSystemInfoでシステムの情報をSYSTEM_INFO構造体に取得すると、dwNumberOfProcessorsにプロセッサ数が入る。</p>
+  </header>
+  <div>
+      <p>GetSystemInfoでシステムの情報をSYSTEM_INFO構造体に取得すると、dwNumberOfProcessorsにプロセッサ数が入る。</p>
 <div class="highlight"><pre><span></span>SYSTEM_INFO si;
 GetSystemInfo(&amp;si);
 si.dwNumberOfProcessors; //プロセッサ数
@@ -247,19 +312,24 @@ si.dwNumberOfProcessors; //プロセッサ数
 
 <h2>参考URL</h2>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx">http://msdn.microsoft.com/ja-jp/library/cc429808.aspx</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200911141258218733.html#200911141258218733">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909231253715978.html">画面の大きさを取得するWinAPI メモ</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Wed 23 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909231253715978.html#200909231253715978">画面の大きさを取得するWinAPI メモ</a></h2>
+    <p>
+          Posted on Wed 23 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <h2>メイン画面の大きさを取得</h2>
+  </header>
+  <div>
+      <h2>メイン画面の大きさを取得</h2>
 <div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXSCREEN</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYSCREEN</span><span class="p">);</span>
 </pre></div>
@@ -273,19 +343,24 @@ si.dwNumberOfProcessors; //プロセッサ数
 
 <h2>参考URL</h2>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx">http://msdn.microsoft.com/ja-jp/library/cc429812.aspx</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909231253715978.html#200909231253715978">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909131252813492.html">インラインアセンブラでデバッグ時にレジスタの値を表示させる。</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 13 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909131252813492.html#200909131252813492">インラインアセンブラでデバッグ時にレジスタの値を表示させる。</a></h2>
+    <p>
+          Posted on Sun 13 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
 Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>の値を表示させる。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>中に[<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>]→[ウィンドウ]→[<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>]で<br>
 <a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>ウィンドウを開く。</p>
@@ -293,19 +368,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 右クリックして、表示したいアイテムをクリックする。</p>
 <h3>参考URL</h3>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx">http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909131252813492.html#200909131252813492">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909121252748821.html">CPUID命令を使用して、SSEに対応しているか調べるコード</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sat 12 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909121252748821.html#200909121252748821">CPUID命令を使用して、SSEに対応しているか調べるコード</a></h2>
+    <p>
+          Posted on Sat 12 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。</p>
+  </header>
+  <div>
+      <p>VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。</p>
 <h2>CPUID命令</h2>
 <p>EAXレジスタに値を入れてCPUID命令を呼び出すと、<br>
 各レジスタにCPUの情報が格納されます。</p>
@@ -325,19 +405,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 </ul>
 <p>今回はSSEに対応しているか調べたいのでEAXには、1を入れてCPUID命令を呼び出します。</p>
 <p><a href="http://www.sandpile.org/ia32/cpuid.htm">http://www.sandpile.org/ia32/cpuid …</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909121252748821.html#200909121252748821">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909011251772858.html">ファイル検索関数サンプル</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Tue 01 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909011251772858.html#200909011251772858">ファイル検索関数サンプル</a></h2>
+    <p>
+          Posted on Tue 01 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>ディレクトリを指定してファイルを検索するWinAPIサンプル</p>
+  </header>
+  <div>
+      <p>ディレクトリを指定してファイルを検索するWinAPIサンプル</p>
 <div class="highlight"><pre><span></span><span class="n">HANDLE</span> <span class="n">hFind</span><span class="p">;</span>
 <span class="n">WIN32_FIND_DATA</span> <span class="n">fd</span><span class="p">;</span>
 <span class="kt">char</span> <span class="n">fpath</span><span class="p">[</span><span class="n">_MAX_PATH</span><span class="p">];</span>
@@ -352,74 +437,41 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="o">::</span><span class="n">FindNextFile</span><span class="p">(</span><span class="n">hFind</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fd</span><span class="p">));</span>
 <span class="o">::</span><span class="n">FindClose</span><span class="p">(</span><span class="n">hFind</span><span class="p">);</span>
 </pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909011251772858.html#200909011251772858">    Continue reading
+</a>
   </div>
 </article>
 
-<div class="pagination">
-    <ul>
-        <li class="pagination__prev">
-            <div class="pagination__prev--none">&laquo;</div>
-        </li>
+  <div class="pagination">
+    <a class="btn float-left" href="https://waura.github.io/category/windows2.html">
+      <i class="fa fa-angle-left"></i>     Older Posts
+
+    </a>
+  </div>
 
 
 
-          <li>
-            <a class="pagination__page--current" href="/category/windows.html">1</a>
-          </li>
 
-
-          <li>
-            <a  href="/category/windows2.html">2</a>
-          </li>
-
-
-          <li>
-            <a  href="/category/windows3.html">3</a>
-          </li>
-
-
-          <li>
-            <a  href="/category/windows4.html">4</a>
-          </li>
-
-        <li class="pagination__next">
-            <a href="/category/windows2.html">&raquo;</a>
-        </li>
-    </ul>
-</div>
-
-  </main>
     <footer>
-      <div class="author__logo">
-          <img src="/theme/images/logo.png" alt="logo">
-      </div>
-      <section class="author">
-        <div class="author__name">
-          <a href="/pages/about.html">waura</a>
-          <p></p>
-        </div>
-        <div class="author__link">
-          <ul>
-            <li>
-              <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fab fa-github-square"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://qiita.com/waura" target="_blank" title="qiita">
-              </a>
-            </li>
-            <li>
-              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fas fa-rss-square"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-      <div class="ending-message">
-        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
-      </div>
-    </footer>
+<p>&copy;  2007</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " waura's blog ",
+  "url" : "https://waura.github.io",
+  "image": "//avatars3.githubusercontent.com/u/99647",
+  "description": "waura's Thoughts and Writings"
+}
+</script>
+
 </body>
 </html>

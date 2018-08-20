@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - DirectX</title><link href="/" rel="alternate"></link><link href="/feeds/directx.atom.xml" rel="self"></link><id>/</id><updated>2009-02-11T15:31:00+09:00</updated><entry><title>LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</title><link href="/200902111234333888.html" rel="alternate"></link><published>2009-02-11T15:31:00+09:00</published><updated>2009-02-11T15:31:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-11:/200902111234333888.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の公式&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3"&gt;プラグイン&lt;/a&gt;で、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;形式でモデルを出力してくれる&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - DirectX</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/directx.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2009-02-11T15:31:00+09:00</updated><entry><title>LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</title><link href="https://waura.github.io/200902111234333888.html" rel="alternate"></link><published>2009-02-11T15:31:00+09:00</published><updated>2009-02-11T15:31:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-02-11:/200902111234333888.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の公式&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3"&gt;プラグイン&lt;/a&gt;で、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;形式でモデルを出力してくれる&lt;a href="http://d.hatena.ne.jp/keyword/DirectX"&gt;DirectX&lt;/a&gt;
 Exporterというのがあるのだが、、、&lt;br&gt;
 ダメダメすぎて、ストレスがたまる。&lt;/p&gt;
 &lt;ul&gt;
@@ -25,7 +25,7 @@ Exporterというのがあるのだが、、、&lt;br&gt;
 ・&lt;a href="http://d.hatena.ne.jp/keyword/Lightwave"&gt;Lightwave&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1"&gt;デベロッパ&lt;/a&gt;ー情報&lt;br&gt;
 &lt;a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm"&gt;http://www.dstorm.co.jp/products/lw8/developer/game/index.htm&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;DirectX10で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;にこだわることも無いのかもしれない。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(5)</title><link href="/200902071233968785.html" rel="alternate"></link><published>2009-02-07T10:06:00+09:00</published><updated>2009-02-07T10:06:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-07:/200902071233968785.html</id><summary type="html">&lt;p&gt;今回はスキンメッシュに使うテンプレートの説明。&lt;/p&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;にこだわることも無いのかもしれない。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(5)</title><link href="https://waura.github.io/200902071233968785.html" rel="alternate"></link><published>2009-02-07T10:06:00+09:00</published><updated>2009-02-07T10:06:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-02-07:/200902071233968785.html</id><summary type="html">&lt;p&gt;今回はスキンメッシュに使うテンプレートの説明。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;SkinMeshHeader&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="err"&gt;一つの頂点に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="err"&gt;一つの面に対して、影響を与えるボーンの最大数&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -61,7 +61,7 @@ AnimationKeyでボーンが変形されたとき、重みにあわせて変形�
 
 &lt;p&gt;SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。&lt;br&gt;
 AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって&lt;br&gt;
-スキンメッシュを実装します。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(4)</title><link href="/200902051233792037.html" rel="alternate"></link><published>2009-02-05T09:00:00+09:00</published><updated>2009-02-05T09:00:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-05:/200902051233792037.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+スキンメッシュを実装します。&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(4)</title><link href="https://waura.github.io/200902051233792037.html" rel="alternate"></link><published>2009-02-05T09:00:00+09:00</published><updated>2009-02-05T09:00:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-02-05:/200902051233792037.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
 &lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;
 &lt;a href="200902041233704553.html"&gt;Xファイルのフォーマット(3)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今回は、アニメーションのまとめ。&lt;br&gt;
@@ -158,7 +158,7 @@ AnimationSet AnimationSet_name {
         }
     }
 }
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(3)</title><link href="/200902041233704553.html" rel="alternate"></link><published>2009-02-04T08:42:00+09:00</published><updated>2009-02-04T08:42:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-02-04:/200902041233704553.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(3)</title><link href="https://waura.github.io/200902041233704553.html" rel="alternate"></link><published>2009-02-04T08:42:00+09:00</published><updated>2009-02-04T08:42:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-02-04:/200902041233704553.html</id><summary type="html">&lt;p&gt;&lt;a href="200703241174740494.html"&gt;Xファイルのフォーマット(1)&lt;/a&gt;
 &lt;a href="200703251174775823.html"&gt;Xファイルのフォーマット(2)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;学校の課題で&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のアニメーションを&lt;a href="http://d.hatena.ne.jp/keyword/OpenGL"&gt;OpenGL&lt;/a&gt;で再生することになりそうなので、&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;のフォーマットの続きをまとめてみる。&lt;/p&gt;
 &lt;p&gt;今回はフレームについて、&lt;br&gt;
@@ -229,7 +229,7 @@ AnimationSet AnimationSet_name {
         }
     }
 }
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>DirectShowムービー表示</title><link href="/200711091194621506.html" rel="alternate"></link><published>2007-11-09T00:18:00+09:00</published><updated>2007-11-09T00:18:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-09:/200711091194621506.html</id><summary type="html">&lt;p&gt;ただムービを再生するだけだと別ウィンドウで表示されてしまうのでこれをIvideoWindowで操作して子ウィンドウとすれば任意のウィンドウ内でムービーを再生させることができる。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>DirectShowムービー表示</title><link href="https://waura.github.io/200711091194621506.html" rel="alternate"></link><published>2007-11-09T00:18:00+09:00</published><updated>2007-11-09T00:18:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-11-09:/200711091194621506.html</id><summary type="html">&lt;p&gt;ただムービを再生するだけだと別ウィンドウで表示されてしまうのでこれをIvideoWindowで操作して子ウィンドウとすれば任意のウィンドウ内でムービーを再生させることができる。&lt;/p&gt;
 &lt;p&gt;IGraphBuilder::QueryInterface()でIVideoWindowを作れるのだが上手くいかない。。。&lt;/p&gt;
 &lt;p&gt;IGraphBuilder::RenderFile()の後に&lt;br&gt;
 IGraphBuilder::QueryInterface()でIVideoWindowを作らないとダメなようだ。&lt;/p&gt;
@@ -255,7 +255,7 @@ WS_CLIPCHILDREN&lt;br&gt;
 を指定しなければならなかった。
 考えてみたら当然だったが･･･&lt;/p&gt;
 &lt;p&gt;参考リンク&lt;br&gt;
-&lt;a href="http://www.geekpage.jp/programming/directshow/renderfile.php"&gt;http://www.geekpage.jp/programming/directshow/renderfile.php&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(2)</title><link href="/200703251174775823.html" rel="alternate"></link><published>2007-03-25T07:37:00+09:00</published><updated>2007-03-25T07:37:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-03-25:/200703251174775823.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//これはコメントです。  
+&lt;a href="http://www.geekpage.jp/programming/directshow/renderfile.php"&gt;http://www.geekpage.jp/programming/directshow/renderfile.php&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Xファイルのフォーマット(2)</title><link href="https://waura.github.io/200703251174775823.html" rel="alternate"></link><published>2007-03-25T07:37:00+09:00</published><updated>2007-03-25T07:37:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-03-25:/200703251174775823.html</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;//これはコメントです。  
 #これもコメントです。  
 //この例は、正しいポリゴンでない可能性があります。  
 Mesh (ここにメッシュの名前をつけることもできる。){  
@@ -413,7 +413,7 @@ TextureFilenameは、テクスチャファイルのパスを指定する。&lt;/
             テクスチャ座標u;テクスチャ座標v;//繰り返し
         }
     }
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(1)</title><link href="/200703241174740494.html" rel="alternate"></link><published>2007-03-24T21:48:00+09:00</published><updated>2007-03-24T21:48:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-03-24:/200703241174740494.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Xファイルのフォーマット(1)</title><link href="https://waura.github.io/200703241174740494.html" rel="alternate"></link><published>2007-03-24T21:48:00+09:00</published><updated>2007-03-24T21:48:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-03-24:/200703241174740494.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB"&gt;Xファイル&lt;/a&gt;の一番上には、
 xof 0302txt 0064 というような可変長ヘッダーがある。&lt;br&gt;
 \"xof\"は、マジック番号と呼ばれる。&lt;br&gt;
 \"03\"は、メジャーバージョン3をあらわす。&lt;br&gt;

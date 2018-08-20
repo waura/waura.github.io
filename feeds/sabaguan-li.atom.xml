@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - サーバー管理</title><link href="/" rel="alternate"></link><link href="/feeds/sabaguan-li.atom.xml" rel="self"></link><id>/</id><updated>2010-04-09T23:23:00+09:00</updated><entry><title>まるごと吸い出したHDDイメージをマウントする</title><link href="/201004091270823038.html" rel="alternate"></link><published>2010-04-09T23:23:00+09:00</published><updated>2010-04-09T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-09:/201004091270823038.html</id><summary type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウントすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - サーバー管理</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/sabaguan-li.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2010-04-09T23:23:00+09:00</updated><entry><title>まるごと吸い出したHDDイメージをマウントする</title><link href="https://waura.github.io/201004091270823038.html" rel="alternate"></link><published>2010-04-09T23:23:00+09:00</published><updated>2010-04-09T23:23:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2010-04-09:/201004091270823038.html</id><summary type="html">&lt;p&gt;ddなどでHDD全体をイメージファイルにした場合は、そのままマウントすることが出来ないので以下の手順でマウントを行う。&lt;/p&gt;
 &lt;p&gt;まずは、HDDディスクイメージをループバックデバイスに結びつける。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup /dev/loop0 hdd.img
 &lt;/pre&gt;&lt;/div&gt;
@@ -45,7 +45,7 @@ $ sudo mount -o loop /dev/loop1 /mnt
 &lt;p&gt;使い終わったら以下のようにして解放する。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo losetup -d /dev/loop1
 $ sudo losetup -d /dev/loop0
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Ubuntuにmrtgをインストールする。</title><link href="/201004031270264748.html" rel="alternate"></link><published>2010-04-03T12:19:00+09:00</published><updated>2010-04-03T12:19:00+09:00</updated><author><name>waura</name></author><id>tag:None,2010-04-03:/201004031270264748.html</id><summary type="html">&lt;p&gt;mrtgは、cronで定期的に実行され
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Ubuntuにmrtgをインストールする。</title><link href="https://waura.github.io/201004031270264748.html" rel="alternate"></link><published>2010-04-03T12:19:00+09:00</published><updated>2010-04-03T12:19:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2010-04-03:/201004031270264748.html</id><summary type="html">&lt;p&gt;mrtgは、cronで定期的に実行され
 snmpから機器の状態を取得して、HTML形式のグラフに加工し出力するツールです。&lt;br&gt;
 Ubuntu serverをインストールしてあるマシンにmrtgをインストールしてグラフ表示出来るようにします。&lt;/p&gt;
 &lt;h2&gt;パッケージのインストール&lt;/h2&gt;
@@ -194,7 +194,7 @@ PageTop[disk_usage]: &lt;span class="nt"&gt;&amp;lt;H1&amp;gt;&lt;/span&gt;Disk 
 &lt;p&gt;最後に、グラフ出力ディレクトリとその中にあるファイルをウェブサーバから参照出来るように&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%DF%A5%C3%A5%B7%A5%E7%A5%F3"&gt;パーミッション&lt;/a&gt;などの設定をします。&lt;/p&gt;
 &lt;h2&gt;参考リンク&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/slywalker/20080927/1222501190"&gt;http://d.hatena.ne.jp/slywalker/20080927/1222501190&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html"&gt;http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>ssh経由でgit</title><link href="/200906281246189191.html" rel="alternate"></link><published>2009-06-28T20:39:00+09:00</published><updated>2009-06-28T20:39:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-06-28:/200906281246189191.html</id><summary type="html">&lt;p&gt;Git Extensionsから&lt;a href="http://d.hatena.ne.jp/keyword/SSH"&gt;SSH&lt;/a&gt;経由でgitを使うために&lt;a href="http://d.hatena.ne.jp/keyword/WinSCP"&gt;WinSCP&lt;/a&gt;についてくるPuttyGen等で作成する。
+&lt;a href="http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html"&gt;http://saba.nitty-gritty.org/500mrtg/66_mrtgcpu.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>ssh経由でgit</title><link href="https://waura.github.io/200906281246189191.html" rel="alternate"></link><published>2009-06-28T20:39:00+09:00</published><updated>2009-06-28T20:39:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-06-28:/200906281246189191.html</id><summary type="html">&lt;p&gt;Git Extensionsから&lt;a href="http://d.hatena.ne.jp/keyword/SSH"&gt;SSH&lt;/a&gt;経由でgitを使うために&lt;a href="http://d.hatena.ne.jp/keyword/WinSCP"&gt;WinSCP&lt;/a&gt;についてくるPuttyGen等で作成する。
 Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;ssh&lt;/a&gt;のppkキーはssh1のものでないとエラーがでる。
  Urlはこんな感じで指定する。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
@@ -202,7 +202,7 @@ Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;s
 Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;ssh&lt;/a&gt;のppkキーはssh1のものでないとエラーがでる。
  Urlはこんな感じで指定する。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>gitサーバからソースを取ってきて、編集してサーバに変更を反映する</title><link href="/200904201240227874.html" rel="alternate"></link><published>2009-04-20T20:44:00+09:00</published><updated>2009-04-20T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-04-20:/200904201240227874.html</id><summary type="html">&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を新規作成&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>gitサーバからソースを取ってきて、編集してサーバに変更を反映する</title><link href="https://waura.github.io/200904201240227874.html" rel="alternate"></link><published>2009-04-20T20:44:00+09:00</published><updated>2009-04-20T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-04-20:/200904201240227874.html</id><summary type="html">&lt;h2&gt;&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を新規作成&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;フォルダを新規作成&lt;/li&gt;
 &lt;li&gt;[フォルダを右クリック]→[Git Extensions]→[Browse]でGit
@@ -240,7 +240,7 @@ Git Extensionsで使用する&lt;a href="http://d.hatena.ne.jp/keyword/ssh"&gt;s
 &lt;ul&gt;
 &lt;li&gt;pushダイアログを開いてRemote
     repositoryにgitサーバの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA"&gt;リポジトリ&lt;/a&gt;を指定してpush&lt;/li&gt;
-&lt;/ul&gt;</content></entry><entry><title>Debian上にgitサーバーを立てる</title><link href="/200904141239716590.html" rel="alternate"></link><published>2009-04-14T22:43:00+09:00</published><updated>2009-04-14T22:43:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-04-14:/200904141239716590.html</id><summary type="html">&lt;h2&gt;gitとgitデーモン起動用のパッケージをインストール&lt;/h2&gt;
+&lt;/ul&gt;</content></entry><entry><title>Debian上にgitサーバーを立てる</title><link href="https://waura.github.io/200904141239716590.html" rel="alternate"></link><published>2009-04-14T22:43:00+09:00</published><updated>2009-04-14T22:43:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-04-14:/200904141239716590.html</id><summary type="html">&lt;h2&gt;gitとgitデーモン起動用のパッケージをインストール&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#apt-get install git-core git-daemon-run
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -295,7 +295,7 @@ $ git commit -m &lt;span class="s2"&gt;&amp;quot;コメント&amp;quot;&lt;/span
 
 &lt;h2&gt;参考&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/amacou/20090113/1231831940"&gt;http://d.hatena.ne.jp/amacou/20090113/1231831940&lt;/a&gt;&lt;br&gt;
-&lt;a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html"&gt;http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>玄箱に組み込んだSeagateのHDDのチェック</title><link href="/200901191232360978.html" rel="alternate"></link><published>2009-01-19T19:29:00+09:00</published><updated>2009-01-19T19:29:00+09:00</updated><author><name>waura</name></author><id>tag:None,2009-01-19:/200901191232360978.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
+&lt;a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html"&gt;http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>玄箱に組み込んだSeagateのHDDのチェック</title><link href="https://waura.github.io/200901191232360978.html" rel="alternate"></link><published>2009-01-19T19:29:00+09:00</published><updated>2009-01-19T19:29:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2009-01-19:/200901191232360978.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Seagate"&gt;Seagate&lt;/a&gt;の1.5TのHDD(ST31500341AS)に、ファーム関係で問題があるらしい。&lt;br&gt;
 &lt;a href="http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm"&gt;http://pc.watch.impress.co.jp/docs/2009/0119/seagate.htm&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; # apt-get install hdparam
  # hdparm -i /dev/hda
@@ -313,7 +313,7 @@ $ git commit -m &lt;span class="s2"&gt;&amp;quot;コメント&amp;quot;&lt;/span
 
 &lt;p&gt;で、HDDの型番とシリアル番号をチェック。&lt;/p&gt;
 &lt;p&gt;CCとかLCがシリアル番号に入ってたらセーフ&lt;br&gt;
-&lt;a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957"&gt;http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>tftpboot成功</title><link href="/200711181195406346.html" rel="alternate"></link><published>2007-11-18T02:19:00+09:00</published><updated>2007-11-18T02:19:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-18:/200711181195406346.html</id><summary type="html">&lt;p&gt;余り物のCPUとマザーボードをtftpbootで起動するようにしてみた。 
+&lt;a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957"&gt;http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>tftpboot成功</title><link href="https://waura.github.io/200711181195406346.html" rel="alternate"></link><published>2007-11-18T02:19:00+09:00</published><updated>2007-11-18T02:19:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-11-18:/200711181195406346.html</id><summary type="html">&lt;p&gt;余り物のCPUとマザーボードをtftpbootで起動するようにしてみた。 
 &lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;の設定でpxebootで対称のマシンが起動するようにしておく。&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/IPv6"&gt;IPv6&lt;/a&gt;が動作していると上手くいかないようなので切っておく。&lt;br&gt;
 ここの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;のオプションでルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;を&lt;a href="http://d.hatena.ne.jp/keyword/nfs"&gt;nfs&lt;/a&gt;でマウントするようにしておく。&lt;br&gt;
@@ -325,7 +325,7 @@ $ git commit -m &lt;span class="s2"&gt;&amp;quot;コメント&amp;quot;&lt;/span
 ここの&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;のオプションでルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;を&lt;a href="http://d.hatena.ne.jp/keyword/nfs"&gt;nfs&lt;/a&gt;でマウントするようにしておく。&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;は2.6.22.10でnfsrootをサポート、&lt;a href="http://d.hatena.ne.jp/keyword/NIC"&gt;NIC&lt;/a&gt;ドライバを組み込むようにした。&lt;br&gt;
 ルート&lt;a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0"&gt;ファイルシステム&lt;/a&gt;はdebootstrapでつくり、&lt;a href="http://d.hatena.ne.jp/keyword/chroot"&gt;chroot&lt;/a&gt;でいろいろ設定。&lt;/p&gt;
-&lt;p&gt;動いてるのはCPUのファンだけなので結構静か。&lt;/p&gt;</content></entry><entry><title>sambaが。。</title><link href="/200711031194114825.html" rel="alternate"></link><published>2007-11-03T03:33:00+09:00</published><updated>2007-11-03T03:33:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-11-03:/200711031194114825.html</id><summary type="html">&lt;p&gt;いろいろいじってたら&lt;br&gt;
+&lt;p&gt;動いてるのはCPUのファンだけなので結構静か。&lt;/p&gt;</content></entry><entry><title>sambaが。。</title><link href="https://waura.github.io/200711031194114825.html" rel="alternate"></link><published>2007-11-03T03:33:00+09:00</published><updated>2007-11-03T03:33:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-11-03:/200711031194114825.html</id><summary type="html">&lt;p&gt;いろいろいじってたら&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;と&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;が調子悪くなった・・・・&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;は何とか復旧したものの&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の方は。。。orz&lt;/p&gt;
@@ -333,7 +333,7 @@ $ git commit -m &lt;span class="s2"&gt;&amp;quot;コメント&amp;quot;&lt;/span
 &lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;と&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;が調子悪くなった・・・・&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;は何とか復旧したものの&lt;br&gt;
 &lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の方は。。。orz&lt;/p&gt;
-&lt;p&gt;ついでにようやくsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へアップグレードした。。&lt;/p&gt;</content></entry><entry><title>DHCPサーバー構築</title><link href="/200710291193673267.html" rel="alternate"></link><published>2007-10-29T00:54:00+09:00</published><updated>2007-10-29T00:54:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-10-29:/200710291193673267.html</id><summary type="html">&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
+&lt;p&gt;ついでにようやくsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へアップグレードした。。&lt;/p&gt;</content></entry><entry><title>DHCPサーバー構築</title><link href="https://waura.github.io/200710291193673267.html" rel="alternate"></link><published>2007-10-29T00:54:00+09:00</published><updated>2007-10-29T00:54:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-10-29:/200710291193673267.html</id><summary type="html">&lt;p&gt;いままで&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;の&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバー機能を使っていたのだが&lt;br&gt;
 nfsboot環境を構築するために、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;サーバーを立ててみた。&lt;/p&gt;
 &lt;p&gt;aptで&lt;a href="http://d.hatena.ne.jp/keyword/dhcp"&gt;dhcp&lt;/a&gt;をインストールしてdhcpd.confをいじる。
 編集後はこんな感じになる。&lt;/p&gt;
@@ -362,7 +362,7 @@ max-lease-time 72000;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;のほうの&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;機能を切って、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;のdhcpdを立ち上げて完了。&lt;/p&gt;</content></entry><entry><title>Debian etchへバージョンアップ</title><link href="/200708141187191261.html" rel="alternate"></link><published>2007-08-14T00:21:00+09:00</published><updated>2007-08-14T00:21:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-08-14:/200708141187191261.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
+&lt;p&gt;で&lt;a href="http://d.hatena.ne.jp/keyword/%A5%EB%A1%BC%A5%BF%A1%BC"&gt;ルーター&lt;/a&gt;のほうの&lt;a href="http://d.hatena.ne.jp/keyword/DHCP"&gt;DHCP&lt;/a&gt;機能を切って、&lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;のdhcpdを立ち上げて完了。&lt;/p&gt;</content></entry><entry><title>Debian etchへバージョンアップ</title><link href="https://waura.github.io/200708141187191261.html" rel="alternate"></link><published>2007-08-14T00:21:00+09:00</published><updated>2007-08-14T00:21:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-08-14:/200708141187191261.html</id><summary type="html">&lt;p&gt;&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;のバージョンをsargeから&lt;a href="http://d.hatena.ne.jp/keyword/etch"&gt;etch&lt;/a&gt;へあげたくなったので、  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get upgrade  
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -378,7 +378,7 @@ max-lease-time 72000;
 &lt;p&gt;してみたけど、エラーが出た。&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://90h.dip.jp/archives/2007/05/hgetch.html"&gt;http://90h.dip.jp/archives/2007/05/hgetch.html&lt;/a&gt;&lt;br&gt;
 ↑の方法でいけるみたいだ。&lt;br&gt;
-&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;が2.6じゃないとだめなのか？&lt;/p&gt;</content></entry><entry><title>共有ドライブ完成</title><link href="/200705081178633500.html" rel="alternate"></link><published>2007-05-08T23:11:00+09:00</published><updated>2007-05-08T23:11:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-05-08:/200705081178633500.html</id><summary type="html">&lt;p&gt;SWATで&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の設定をして、&lt;br&gt;
+&lt;a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB"&gt;カーネル&lt;/a&gt;が2.6じゃないとだめなのか？&lt;/p&gt;</content></entry><entry><title>共有ドライブ完成</title><link href="https://waura.github.io/200705081178633500.html" rel="alternate"></link><published>2007-05-08T23:11:00+09:00</published><updated>2007-05-08T23:11:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-05-08:/200705081178633500.html</id><summary type="html">&lt;p&gt;SWATで&lt;a href="http://d.hatena.ne.jp/keyword/Samba"&gt;Samba&lt;/a&gt;の設定をして、&lt;br&gt;
 ネットの情報を見ながら、&lt;br&gt;
 問題なく共有ドライブが完成。&lt;/p&gt;
 &lt;p&gt;次は、NTPを入れて、時刻あわせをした。&lt;br&gt;
@@ -396,7 +396,7 @@ max-lease-time 72000;
 &lt;a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2"&gt;玄箱&lt;/a&gt;が、Sleep状態に入ってしまい、&lt;br&gt;
 そのまま元に戻らなくなるという症状が発覚。&lt;br&gt;
 おそらく、&lt;a href="http://d.hatena.ne.jp/keyword/Debian"&gt;Debian&lt;/a&gt;化する前Sleepするように設定していたので&lt;br&gt;
-それが原因かな･･･&lt;/p&gt;</content></entry><entry><title>Samba起動</title><link href="/200705061178454893.html" rel="alternate"></link><published>2007-05-06T21:34:00+09:00</published><updated>2007-05-06T21:34:00+09:00</updated><author><name>waura</name></author><id>tag:None,2007-05-06:/200705061178454893.html</id><summary type="html">&lt;p&gt;玄箱のセットアップCDについていた、開発ツール類を入れようとしたが、なぜか展開できなかったので断念。&lt;/p&gt;
+それが原因かな･･･&lt;/p&gt;</content></entry><entry><title>Samba起動</title><link href="https://waura.github.io/200705061178454893.html" rel="alternate"></link><published>2007-05-06T21:34:00+09:00</published><updated>2007-05-06T21:34:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2007-05-06:/200705061178454893.html</id><summary type="html">&lt;p&gt;玄箱のセットアップCDについていた、開発ツール類を入れようとしたが、なぜか展開できなかったので断念。&lt;/p&gt;
 &lt;p&gt;しょうがないので、apt-getを、使えるようにするしかない･･･&lt;br&gt;
 sources.list の「woody」を「sarge」に書き換え、&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Samba

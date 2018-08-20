@@ -79,8 +79,441 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">CentOS7で固定IPアドレスの設定を行う</a></h2>
+    <p>
+          Posted on Sat 18 August 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h1>固定IPアドレス設定</h1>
+<p>CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。</p>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+</pre></div>
+
+
+<p>2番目と3番目のオプションは、それぞれ短縮可能です。
+- connection -&gt; c
+- modify -&gt; m</p>
+<p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
+<h3>実行例</h3>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/swiperefreshlayout_setrefreshing.html#swiperefreshlayout_setrefreshing">SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</a></h2>
+    <p>
+          Posted on Sat 14 November 2015 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/android.html">Android</a>
+    </p>
+  </header>
+  <div>
+      <p>SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。</p>
+<p>参考：<a href="https://code.google.com/p/android/issues/detail?id=77712">https://code.google.com/p/android/issues/detail?id=77712</a></p>
+<p>このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。</p>
+<div class="highlight"><pre><span></span><span class="c1">// MySwipeRefreshLayout.java  </span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MySwipeRefreshLayout</span> <span class="kd">extends</span> <span class="n">SwipeRefreshLayout</span> <span class="o">{</span>  
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">mMeasured</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">mPreMeasureRefreshing</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">MySwipeRefreshLayout</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>  
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nf">MySwipeRefreshLayout</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>  
+    <span class="kd">super</span><span class="o">(</span><span class="n">context …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/swiperefreshlayout_setrefreshing.html#swiperefreshlayout_setrefreshing">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/rails-api_sample.html#rails-api_sample">Rails5で取り込まれる予定のrails-apiを使ってWeb APIをつくる</a></h2>
+    <p>
+          Posted on Sat 31 October 2015 in <a href="https://waura.github.io/category/ruby-on-rails.html">Ruby on Rails</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/rails.html">Rails</a>,              <a href="https://waura.github.io/tag/ruby.html">Ruby</a>
+    </p>
+  </header>
+  <div>
+      <h2>はじめに</h2>
+<p>web apiを作るのに特化したrails-apiを使ってweb apiを作ってみます。<br>
+<a href="https://github.com/rails-api/rails-api">rails-api</a>は、Rails5で取り込まれる予定みたいです。<br>
+rails-apiは、web
+apiを作るだけなら不要なrails要素を省いてアプリを作成することができます。<br>
+Web
+APIオンリーでフロントエンドは、別のフレームワーク等を使って開発する場合などに使用すると良いのではないでしょうか。<br>
+今回は、問い合わせるとjsonを返すだけの単純なGETメソッドのAPIを作成してみます。</p>
+<h2>rails-apiのインストール</h2>
+<div class="highlight"><pre><span></span>$ gem install rails-api  
+</pre></div>
+
+
+<h2>rails-apiのディレクトリを作成</h2>
+<p>今回は、sample_apiという名前で作成してみました。</p>
+<div class="highlight"><pre><span></span>$ rails-api new sample_api  
+</pre></div>
+
+
+<h2>ModelとControllerの作成</h2>
+<p>rails-apiでは、Viewを使わないのでModelとControllerだけ作成します。<br>
+ここでは、Model名とController名はそれぞれBookとbooksとしておきます。<br>
+自分で作成する場合は、好きな名前にしてください。</p>
+<h3>Modelの作成</h3>
+<div class="highlight"><pre><span></span>$ ./bin/rails g model Book name:string  
+$ ./bin/rake db:migrate  
+</pre></div>
+
+
+<h3>Controllerの作成</h3>
+<p>Controllerは、バージョニングできるようにバージョン名でディレクトリを振り分けて配置しています。</p>
+<div class="highlight"><pre><span></span>$ ./bin/rails g …</pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/rails-api_sample.html#rails-api_sample">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">2008年と2015年に組んだ省電力サーバーのベンチマーク比較</a></h2>
+    <p>
+          Posted on Mon 25 May 2015 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h2>はじめに</h2>
+<p>サーバーを新しく組んだので、ベンチマークの比較をしてみます。<br>
+比較対象サーバーの構成の比較は下記のとおりです。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="left">2008年</th>
+<th align="left">2015年</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">CPU</td>
+<td align="left">Intel Atom330</td>
+<td align="left">AMD Athlon5350</td>
+</tr>
+<tr>
+<td align="center">メモリ</td>
+<td align="left">DDR2-800 2GB</td>
+<td align="left">DDR3-1600 16GB</td>
+</tr>
+</tbody>
+</table>
+<p>ベンチマークソフトは<a href="https://code.google.com/p/byte-unixbench/">unixbench</a>を使用します。</p>
+<h2>Atom330とAthlon5350のスペック比較</h2>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="right">Atom330</th>
+<th align="right">Athlon5350</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">周波数</td>
+<td align="right">1.6GHz</td>
+<td align="right">2.05GHz</td>
+</tr>
+<tr>
+<td align="left">L1 cache</td>
+<td align="right">64 KB (code) / 48 KB (data)</td>
+<td align="right">128 KB (code) / 128 KB</td>
+</tr>
+<tr>
+<td align="left">(data)</td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td align="left">L2 cache</td>
+<td align="right">1024KB</td>
+<td align="right">2048KB</td>
+</tr>
+<tr>
+<td align="left">TDP</td>
+<td align="right">8W</td>
+<td align="right">25W</td>
+</tr>
+<tr>
+<td align="left">実Core数</td>
+<td align="right">2 …</td></tr></tbody></table>
+      <br>
+      <a class="btn" href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">だれでも組める！ 省電力かつ実用的な自宅サーバー 2015年版</a></h2>
+    <p>
+          Posted on Sat 25 April 2015 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h2>なぜ自宅サーバーか？</h2>
+<p>「自宅サーバーではなく、VPSを利用すれば安くサーバーを使えるのでは？」と思われる方も多いかと思います。<br>
+たしかに、VPSをレンタルすれば安い費用でサーバーを利用でき、さらに「初期投資が不必要」「サーバーの電気代がかからない」というメリットがあります。<br>
+しかし、自分はファイルサーバーにも使用したいのでファイルを手元に置いておける自宅サーバーを使用することにします。</p>
+<h2>どんなサーバーを組むのか？</h2>
+<p>どんなサーバーを組むのかによって、重視するポイントが変わってきます。<br>
+自分は下のような用途でサーバーを使用します。</p>
+<ul>
+<li>Webサーバー</li>
+<li>ビルドサーバー</li>
+<li>ファイルサーバ</li>
+</ul>
+<p>ビルドサーバー用途からなるべくCPU性能がいい方がいいし、メモリーも多い方がいい。<br>
+また、ファイルサーバにも使うのでディスク容量もたくさん欲しい。自宅にサーバーを置くので電気代はあまりかからない方がいい。<br>
+...と、要は性能はなるべく高く、かつ電気代はなるべく安くとないものねだりになってしまいした。<br>
+というわけで今回は、通常のデスクトップPCよりは低消費電力かつ、サーバーの用途に支障をきたさない程度のサーバーの構成を考えてみたいと思います。</p>
+<h2>PCパーツの選択</h2>
+<p>サーバーを建てるには、以下のパーツを用意する必要があります。</p>
+<ul>
+<li>CPU</li>
+<li>マザーボード</li>
+<li>メモリー</li>
+<li>HDDまたはSSD</li>
+<li>電源</li>
+<li>PCケース</li>
+</ul>
+<p>自分は、電源とPCケースは持ってるもの使用するので、ここではCPU、メモリーとHDD(SSD)を選んで行きます。</p>
+<h3>CPU</h3>
+<p>今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
+J1900やPentium …</p>
+      <br>
+      <a class="btn" href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201305181368891937.html#201305181368891937">Android Studioで作成したプロジェクトをJenkinsでビルドする</a></h2>
+    <p>
+          Posted on Sat 18 May 2013 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/Android%20Studio">AndroidStudio</a>のプロジェクトはgradleベースなので簡単にJenkinsでビルドすることができます。<br>
+以下、ビルドするために行った手順です。</p>
+<h4><a href="http://d.hatena.ne.jp/keyword/Android">Android</a> <a href="http://d.hatena.ne.jp/keyword/SDK">SDK</a>をインストールする</h4>
+<p>[Jenkinsの管理]-&gt;[システムの設定]で環境変数$ANDROID_HOEMを追加して、値にAndroid SDKをインストールしたディレクトリへのパスを入力する</p>
+<h4><a href="http://d.hatena.ne.jp/keyword/Android%20Studio">Android Studio</a>で作成したプロジェクトをgit等に追加する</h4>
+<h4>Jenkinsの設定</h4>
+<p>[Jenkinsの管理]-&gt;[プラグインの管理]からJenkins
+Gradle pluginをインストールする。<br>
+[Jenkinsの管理]-&gt;[システムの設定]-&gt;[Gradle]<br>
+Gradle追加ボタンを押して、下記のように選択する</p>
+<ul>
+<li>name : Gradle 1.6</li>
+<li>自動インストール : チェックあり</li>
+<li>インストーラの追加：Install
+    from Gradle.org</li>
+<li>バージョン : Gradle 1.6</li>
+</ul>
+<h4>Jenkins ジョブの作成</h4>
+<p>ジョブの設定から[ビルド]-&gt;[ビルド手順の追加]を押してInvoke Gradlescriptを選択する。<br>
+Invoke …</p>
+      <br>
+      <a class="btn" href="https://waura.github.io/201305181368891937.html#201305181368891937">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201210011349098138.html#201210011349098138">Androidアプリを複数のプロジェクトに分割して開発する時の設定</a></h2>
+    <p>
+          Posted on Mon 01 October 2012 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>eclipseのプロジェクトのプロパティから「Java Build Path」や「Project References」を設定してみたら、ビルドは通るが実行時にClassNotFoundExceptionが出て上手くいかなかった。</p>
+<p>正しくは、プロジェクトのプロパティの「Android」を選んでLibraryの設定をするようだ。</p>
+<ul>
+<li>呼び出される側のプロジェクトはIs Libraryにチェックを入れる。</li>
+<li>呼び出す側のプロジェクトはAddから呼び出すプロジェクトを選択する。</li>
+</ul>
+<p>また、AndroidManifest.xmlに呼び出す側のActivityなりServiceなりを下記のように書いておく必要がある。</p>
+<div class="highlight"><pre><span></span>・・・
+&lt;service android:name=&quot;key0note.GoogleReaderWidget.GoogleReaderWidgetDataService&quot; /&gt;
+・・・
+</pre></div>
+
+
+<h4>参考リンク</h4>
+<p><a href="http://tmpla.info/archives/1211">http://tmpla.info/archives/1211</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/201210011349098138.html#201210011349098138">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201112031322919731.html#201112031322919731">SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</a></h2>
+    <p>
+          Posted on Sat 03 December 2011 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>↓の続き  </p>
+<ul>
+<li><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a></li>
+<li><a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></li>
+<li><a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></li>
+</ul>
+<p>今回はアライメントをずらした場合での計測をします。</p>
+<p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
+前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
+<p>しかし、アライメントを合わせる必要があるロード・ストア命令を使用する場合は、<br>
+処理方法をアライメントのズレによって変える必要があります。</p>
+<p>今回のアルファブレンド処理では、</p>
+<ol>
+<li>入出力メモリともアライメントが揃っている場合</li>
+<li>入出力メモリともアライメントから同じだけずれている場合</li>
+<li>入力、出力メモリのアライメントのずれ量が違う場合</li>
+</ol>
+<p>の3通りに分けてコードを実装しました。</p>
+<p>1の場合は、前回と同様のコードで処理します。<br>
+2の場合は、ずれてる分を処理して入出力ともアライメントを合わせた状態にして、1と同じように処理します。<br>
+3の場合は、ずれてる分をシフト演算を使用してずれを合わせる処理をいれて、<br>
+ロード・ストア命令がアライメントが合った状態で実行されるようにします。</p>
+<h4>計測方法</h4>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ol>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_si128でメモリ読み込み、_mm_storeu_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_store_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ol>
+<p>の4通りの処理の処理速度を計測する。<br>
+前回までは間違えて<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点用の_mm_loadu_ps等を使っていたので、今回は_mm_loadu_si128等を使います。</p>
+<ul>
+<li>チャンネルサイズ8bit
+    5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは …</li></ul>
+      <br>
+      <a class="btn" href="https://waura.github.io/201112031322919731.html#201112031322919731">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201111281322504210.html#201111281322504210">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></h2>
+    <p>
+          Posted on Mon 28 November 2011 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>↓の続き<br>
+<a href="http://d.hatena.ne.jp/hiroki0/20090914/1252931917">http://d.hatena.ne.jp/hiroki0/20090914/1252931917</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20100320/1269074009">http://d.hatena.ne.jp/hiroki0/20100320/1269074009</a></p>
+<h2>使用するアルファブレンド計算式</h2>
+<p>チャンネルサイズ8bitとして<br>
+<img alt="a_{dst} = 255 - (255 - a_{over})(255 - a_{under}) /
+255" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=a_%7Bdst%7D%20%3D%20255%20-%20%28255%20-%20a_%7Bover%7D%29%28255%20-%20a_%7Bunder%7D%29%20%2F%20255"><br>
+<img alt="d_{dst} = (d_{over} a_{over} + (d_{under} a_{under} (255 -
+a_{over}) / 255) /
+a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3D%20%28d_%7Bover%7D%20a_%7Bover%7D%20%2B%20%28d_%7Bunder%7D%20a_%7Bunder%7D%20%28255%20-%20a_%7Bover%7D%29%20%2F%20255%29%20%2F%20a_%7Bdst%7D"></p>
+<p>ここで、aはアルファ値、dは画素値である。</p>
+<p>この計算式をコードにすると以下のようになる。<br>
+255による除算は、高速化のために256の除算に変更しシフト演算で処理している。<br>
+また、計算量を減らすためにアルファ値により分岐を行なっている。<br>
+今回は、この処理をSSEにより実装して計測を行う。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">((</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/201111281322504210.html#201111281322504210">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201106061307361103.html#201106061307361103">TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</a></h2>
+    <p>
+          Posted on Mon 06 June 2011 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <div class="highlight"><pre><span></span>./internal_install_SDK.exp: コマンドが見つかりませんでした
+</pre></div>
+
+
+<p>とエラーがでる場合は次のようにして、expectパッケージをインストールする。</p>
+<div class="highlight"><pre><span></span>sudo apt-get install expect
+</pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/201106061307361103.html#201106061307361103">    Continue reading
+</a>
+  </div>
+</article>
 
   <div class="pagination">
+    <a class="btn float-left" href="https://waura.github.io/index2.html">
+      <i class="fa fa-angle-left"></i>     Older Posts
+
+    </a>
   </div>
 
 

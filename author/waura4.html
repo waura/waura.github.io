@@ -1,56 +1,97 @@
+
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-  <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
-  -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="/">
-  <link rel="stylesheet" type="text/css" href="/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/hatena-bookmark-icon.css">
-
-
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="waura">
-  <meta name="description" content="Posts and writings by waura">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
 
-  <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
 
 
-  <title>
-    waura's blog
-&ndash; Posts by: waura  </title>
+    <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-122706525-2', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333333">
+
+    <meta name="author" content="waura" />
+    <meta name="description" content="waura's Thoughts and Writings" />
+<meta property="og:site_name" content="waura's blog"/>
+<meta property="og:type" content="blog"/>
+<meta property="og:title" content="waura's blog"/>
+<meta property="og:description" content="waura's Thoughts and Writings"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://waura.github.io"/>
+<meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
+
+  <title>waura's blog &ndash;     Posts by waura
+:</title>
 
 </head>
-
 <body>
+  <aside>
+    <div>
+      <a href="https://waura.github.io">
+        <img src="//avatars3.githubusercontent.com/u/99647" alt="" title="">
+      </a>
+      <h1><a href="https://waura.github.io"></a></h1>
+
+<p>Software Engineer</p>
+
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
   <main>
-    <header>
-      <div class="site-name">
-        <a href="">waura's blog</a>
-      </div>
-      <p>
-        <a href="/archives.html"><i class="fab fas-archive"></i> Archive</a>
-&gt; Author: waura
-      </p>
-    </header>
+
+
+
 
 <article>
-  <div class="article__title">
-    <h1><a href="/200909211253548524.html">OpenCVで3次スプライン補間</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Mon 21 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909211253548524.html#200909211253548524">OpenCVで3次スプライン補間</a></h2>
+    <p>
+          Posted on Mon 21 September 2009 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>の連立1次方程式を解くcvSolveを利用して3次のスプライン補間を行うコード。</p>
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>の連立1次方程式を解くcvSolveを利用して3次のスプライン補間を行うコード。</p>
 <h2>コード</h2>
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
@@ -63,19 +104,24 @@
   <span class="k">if</span><span class="p">((</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
   <span class="p">{</span>
     <span class="n">b …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909211253548524.html#200909211253548524">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909141252931917.html">SSE用いたアルファブレンドの高速化</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Mon 14 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909141252931917.html#200909141252931917">SSE用いたアルファブレンドの高速化</a></h2>
+    <p>
+          Posted on Mon 14 September 2009 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <h2>計測するアルファブレンド処理</h2>
+  </header>
+  <div>
+      <h2>計測するアルファブレンド処理</h2>
 <ul>
 <li>SSEを使わない処理</li>
 <li>16バイトアライメントなし、SSEを使って1pixelごとに処理</li>
@@ -98,19 +144,24 @@
 <li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
     <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
     Studio …</a></li></ul>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909141252931917.html#200909141252931917">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909131252813492.html">インラインアセンブラでデバッグ時にレジスタの値を表示させる。</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 13 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909131252813492.html#200909131252813492">インラインアセンブラでデバッグ時にレジスタの値を表示させる。</a></h2>
+    <p>
+          Posted on Sun 13 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p><a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
 Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>の値を表示させる。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>中に[<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>]→[ウィンドウ]→[<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>]で<br>
 <a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">レジスタ</a>ウィンドウを開く。</p>
@@ -118,19 +169,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 右クリックして、表示したいアイテムをクリックする。</p>
 <h3>参考URL</h3>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx">http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909131252813492.html#200909131252813492">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909121252748821.html">CPUID命令を使用して、SSEに対応しているか調べるコード</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sat 12 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909121252748821.html#200909121252748821">CPUID命令を使用して、SSEに対応しているか調べるコード</a></h2>
+    <p>
+          Posted on Sat 12 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。</p>
+  </header>
+  <div>
+      <p>VC++のインラインアセンブラからCPUID命令を使用してSSEに対応しているか調べるコードを書きました。</p>
 <h2>CPUID命令</h2>
 <p>EAXレジスタに値を入れてCPUID命令を呼び出すと、<br>
 各レジスタにCPUの情報が格納されます。</p>
@@ -150,19 +206,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 </ul>
 <p>今回はSSEに対応しているか調べたいのでEAXには、1を入れてCPUID命令を呼び出します。</p>
 <p><a href="http://www.sandpile.org/ia32/cpuid.htm">http://www.sandpile.org/ia32/cpuid …</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909121252748821.html#200909121252748821">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909021251868590.html">Makefileメモ</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Wed 02 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909021251868590.html#200909021251868590">Makefileメモ</a></h2>
+    <p>
+          Posted on Wed 02 September 2009 in <a href="https://waura.github.io/category/makefile.html">Makefile</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <h2>Makefailを分割</h2>
+  </header>
+  <div>
+      <h2>Makefailを分割</h2>
 <p>makeでデフォルトで実行されるのは<a href="http://d.hatena.ne.jp/keyword/Makefile">Makefile</a><br>
 ファイルを指定して実行するのには</p>
 <div class="highlight"><pre><span></span> make -f Makefile.hoge hoge
@@ -178,19 +239,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 
 
 <p>の様にすれば()のなかだけ<a href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>に移動して()の外に出ると元のディレクトリに自動で戻る。</p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909021251868590.html#200909021251868590">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200909011251772858.html">ファイル検索関数サンプル</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Tue 01 September 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200909011251772858.html#200909011251772858">ファイル検索関数サンプル</a></h2>
+    <p>
+          Posted on Tue 01 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>ディレクトリを指定してファイルを検索するWinAPIサンプル</p>
+  </header>
+  <div>
+      <p>ディレクトリを指定してファイルを検索するWinAPIサンプル</p>
 <div class="highlight"><pre><span></span><span class="n">HANDLE</span> <span class="n">hFind</span><span class="p">;</span>
 <span class="n">WIN32_FIND_DATA</span> <span class="n">fd</span><span class="p">;</span>
 <span class="kt">char</span> <span class="n">fpath</span><span class="p">[</span><span class="n">_MAX_PATH</span><span class="p">];</span>
@@ -205,19 +271,24 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="o">::</span><span class="n">FindNextFile</span><span class="p">(</span><span class="n">hFind</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fd</span><span class="p">));</span>
 <span class="o">::</span><span class="n">FindClose</span><span class="p">(</span><span class="n">hFind</span><span class="p">);</span>
 </pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200909011251772858.html#200909011251772858">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200908301251628999.html">CBitmapButtonを継承してマウスオーバー時に画像を変化させるようにする。</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 30 August 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200908301251628999.html#200908301251628999">CBitmapButtonを継承してマウスオーバー時に画像を変化させるようにする。</a></h2>
+    <p>
+          Posted on Sun 30 August 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>デフォルトのCBitmapButtonだとマウスオーバー時の画像を読み込んで<br>
+  </header>
+  <div>
+      <p>デフォルトのCBitmapButtonだとマウスオーバー時の画像を読み込んで<br>
 表示させてくれないので、CBitmapButtonを継承して機能を付け足しました。</p>
 <p>Create()で作成して、LoadBitmapsで画像を読み込みます。<br>
 その他のAutoLoadなどには対応していません。</p>
@@ -239,20 +310,26 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
   <span class="k">protected</span><span class="o">:</span>
     <span class="n">afx_msg</span> <span class="kt">void</span> <span class="n">OnMouseMove</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="n">CPoint</span> <span class="n">point</span><span class="p">);</span>
     <span class="n">LRESULT</span> <span class="nf">OnMouseHover</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wp …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200908281251430033.html">TreeViewコントロール 選択されたアイテムの文字列を取得するには</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Fri 28 August 2009</p>
- Tags:
-      <a href="/tag/windows.html">#Windows</a>    </p>
-  </div>
-  <div class="article__text">
-    <p>まず、親ウィンドウでWM_NOTIFYを捕まえる。<br>
+  <header>
+    <h2><a href="https://waura.github.io/200908281251430033.html#200908281251430033">TreeViewコントロール 選択されたアイテムの文字列を取得するには</a></h2>
+    <p>
+          Posted on Fri 28 August 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/windows.html">Windows</a>
+    </p>
+  </header>
+  <div>
+      <p>まず、親ウィンドウでWM_NOTIFYを捕まえる。<br>
 WM_NOTIFYでTreeViewのイベントが送られてくるのでこれを処理する。<br>
 このときLPARAMにはNMTREEVIEW構造体のアドレスが入っている。</p>
 <div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
@@ -277,19 +354,24 @@ NM_CLICKを捕まえて、選択アイテムを取得するというやり方で
 <p>コード例は以下のようになる。</p>
 <div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
 <span class="k">if …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200908271251337964.html">Ubuntu9.04 netbook remixのインストール</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Thu 27 August 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200908271251337964.html#200908271251337964">Ubuntu9.04 netbook remixのインストール</a></h2>
+    <p>
+          Posted on Thu 27 August 2009 in <a href="https://waura.github.io/category/pc.html">PC</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>Ubuntu9.04 <a href="http://d.hatena.ne.jp/keyword/netbook">netbook</a>
+  </header>
+  <div>
+      <p>Ubuntu9.04 <a href="http://d.hatena.ne.jp/keyword/netbook">netbook</a>
 remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 1002HAEにインストールした。<br>
 インストール直後の<a href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>ではCドライブ80GBとDドライブ60GBに<a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3">パーティション</a>が分かれており、(他に4GBほどのリカバリー用の<a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3">パーティション</a>がついている。)<br>
@@ -300,19 +382,24 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 <p>起動も結構早くていい感じ。</p>
 <h4>参考URL</h4>
 <p><a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html">http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html</a></p>
+      <br>
+      <a class="btn" href="https://waura.github.io/200908271251337964.html#200908271251337964">    Continue reading
+</a>
   </div>
+  <hr />
 </article>
-<hr />
 <article>
-  <div class="article__title">
-    <h1><a href="/200908061249511852.html">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h1>
-  </div>
-  <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Thu 06 August 2009</p>
+  <header>
+    <h2><a href="https://waura.github.io/200908061249511852.html#200908061249511852">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h2>
+    <p>
+          Posted on Thu 06 August 2009 in <a href="https://waura.github.io/category/ruby.html">Ruby</a>
+
+
+
     </p>
-  </div>
-  <div class="article__text">
-    <p>Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。<br>
+  </header>
+  <div>
+      <p>Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。<br>
 リンクされているのが同じホスト内のhtmlならそのhtmlもパースします。</p>
 <div class="highlight"><pre><span></span><span class="ch">#!ruby -Ks</span>
 <span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
@@ -340,102 +427,45 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 
       <span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
         <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
+      <br>
+      <a class="btn" href="https://waura.github.io/200908061249511852.html#200908061249511852">    Continue reading
+</a>
   </div>
 </article>
 
-<div class="pagination">
-    <ul>
-        <li class="pagination__prev">
-            <a href="/author/waura3.html">&laquo;</a>
-        </li>
+  <div class="pagination">
+    <a class="btn float-left" href="https://waura.github.io/author/waura5.html">
+      <i class="fa fa-angle-left"></i>     Older Posts
+
+    </a>
+    <a class="btn float-right" href="https://waura.github.io/author/waura3.html">
+          Newer Posts
+ <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
 
 
 
-          <li>
-            <a  href="/author/waura.html">1</a>
-          </li>
 
-
-          <li>
-            <a  href="/author/waura2.html">2</a>
-          </li>
-
-
-          <li>
-            <a  href="/author/waura3.html">3</a>
-          </li>
-
-
-          <li>
-            <a class="pagination__page--current" href="/author/waura4.html">4</a>
-          </li>
-
-
-          <li>
-            <a  href="/author/waura5.html">5</a>
-          </li>
-
-
-          <li>
-            <a  href="/author/waura6.html">6</a>
-          </li>
-
-
-          <li>
-            <a  href="/author/waura7.html">7</a>
-          </li>
-
-
-                <li>.....</li>
-            </li>
-
-
-                <li>.....</li>
-            </li>
-
-
-          <li>
-            <a  href="/author/waura10.html">10</a>
-          </li>
-
-        <li class="pagination__next">
-            <a href="/author/waura5.html">&raquo;</a>
-        </li>
-    </ul>
-</div>
-
-  </main>
     <footer>
-      <div class="author__logo">
-          <img src="/theme/images/logo.png" alt="logo">
-      </div>
-      <section class="author">
-        <div class="author__name">
-          <a href="/pages/about.html">waura</a>
-          <p></p>
-        </div>
-        <div class="author__link">
-          <ul>
-            <li>
-              <a href="https://github.com/waura" target="_blank" title="github">
-                <i class="fab fa-github-square"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://qiita.com/waura" target="_blank" title="qiita">
-              </a>
-            </li>
-            <li>
-              <a href="/feeds/all.atom.xml" target="_blank" title="Feed">
-                <i class="fas fa-rss-square"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-      <div class="ending-message">
-        <p>&copy; waura. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
-      </div>
-    </footer>
+<p>&copy;  2007</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " waura's blog ",
+  "url" : "https://waura.github.io",
+  "image": "//avatars3.githubusercontent.com/u/99647",
+  "description": "waura's Thoughts and Writings"
+}
+</script>
+
 </body>
 </html>
