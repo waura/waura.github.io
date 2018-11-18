@@ -42,12 +42,12 @@
     <meta name="msapplication-TileColor" content="#333333">
 
 <meta name="author" content="waura" />
-<meta name="description" content="固定IPアドレス設定 CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。 # nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes 2番目と3番目のオプションは、それぞれ短縮可能です。 - connection -&gt; c - modify -&gt; m ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。 実行例 # nmcli connection modify eth0 ipv4.addresses 192.168.1 …" />
+<meta name="description" content="固定IPアドレス設定 CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。 # nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes 2番目と3番目のオプションは、それぞれ短縮可能です。 connection -&gt; c modify -&gt; m ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。 実行例 # nmcli connection modify eth0 ipv4.addresses 192.168.1 …" />
 <meta name="keywords" content="サーバー管理">
 
 <meta property="og:site_name" content="waura's blog"/>
 <meta property="og:title" content="CentOS7で固定IPアドレスの設定を行う"/>
-<meta property="og:description" content="固定IPアドレス設定 CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。 # nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes 2番目と3番目のオプションは、それぞれ短縮可能です。 - connection -&gt; c - modify -&gt; m ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。 実行例 # nmcli connection modify eth0 ipv4.addresses 192.168.1 …"/>
+<meta property="og:description" content="固定IPアドレス設定 CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。 # nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes 2番目と3番目のオプションは、それぞれ短縮可能です。 connection -&gt; c modify -&gt; m ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。 実行例 # nmcli connection modify eth0 ipv4.addresses 192.168.1 …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html"/>
 <meta property="og:type" content="article"/>
@@ -103,9 +103,11 @@
 </pre></div>
 
 
-<p>2番目と3番目のオプションは、それぞれ短縮可能です。
-- connection -&gt; c
-- modify -&gt; m</p>
+<p>2番目と3番目のオプションは、それぞれ短縮可能です。</p>
+<ul>
+<li>connection -&gt; c</li>
+<li>modify -&gt; m</li>
+</ul>
 <p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
 <h3>実行例</h3>
