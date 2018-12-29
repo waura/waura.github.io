@@ -1,34 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/all.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2018-08-18T12:51:00+09:00</updated><entry><title>CentOS7で固定IPアドレスの設定を行う</title><link href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html" rel="alternate"></link><published>2018-08-18T12:51:00+09:00</published><updated>2018-08-18T12:51:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-08-18:/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html</id><summary type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
-&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;connection -&amp;gt; c&lt;/li&gt;
-&lt;li&gt;modify -&amp;gt; m&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
-connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
-&lt;h3&gt;実行例&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
-&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;connection -&amp;gt; c&lt;/li&gt;
-&lt;li&gt;modify -&amp;gt; m&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
-connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
-&lt;h3&gt;実行例&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1.65/24 ipv4.gateway 192.168.1.1 ipv4.dns 192.168.1.1 ipv4.method manual connection.autoconnect yes
-&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>自宅SAN(Storage Area Network)の構築</title><link href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html" rel="alternate"></link><published>2018-03-30T19:58:00+09:00</published><updated>2018-03-30T19:58:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-03-30:/zi-zhai-sanstorage-area-networknogou-zhu.html</id><summary type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/all.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2018-12-29T21:36:00+09:00</updated><entry><title>自宅SAN(Storage Area Network)の構築</title><link href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html" rel="alternate"></link><published>2018-12-29T21:36:00+09:00</published><updated>2018-12-29T21:36:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-12-29:/zi-zhai-sanstorage-area-networknogou-zhu.html</id><summary type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
 &lt;p&gt;仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
 ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
 そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。&lt;/p&gt;
@@ -236,7 +207,36 @@ Configuration saved to /etc/rtslib-fb-target/saveconfig.json
 &lt;p&gt;フォーマット後は、マウントして使用することができます。&lt;/p&gt;
 &lt;h1&gt;参考&lt;/h1&gt;
 &lt;p&gt;http://linux-iscsi.org/wiki/Fibre_Channel
-http://www.linux-iscsi.org/Doc/LIO%20Admin%20Manual.pdf&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</title><link href="https://waura.github.io/swiperefreshlayout_setrefreshing.html" rel="alternate"></link><published>2015-11-14T21:46:00+09:00</published><updated>2015-11-14T21:46:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2015-11-14:/swiperefreshlayout_setrefreshing.html</id><summary type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
+http://www.linux-iscsi.org/Doc/LIO%20Admin%20Manual.pdf&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>CentOS7で固定IPアドレスの設定を行う</title><link href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html" rel="alternate"></link><published>2018-08-18T12:51:00+09:00</published><updated>2018-08-18T12:51:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-08-18:/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html</id><summary type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
+&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;connection -&amp;gt; c&lt;/li&gt;
+&lt;li&gt;modify -&amp;gt; m&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
+&lt;h3&gt;実行例&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;固定IPアドレス設定&lt;/h1&gt;
+&lt;p&gt;CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2番目と3番目のオプションは、それぞれ短縮可能です。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;connection -&amp;gt; c&lt;/li&gt;
+&lt;li&gt;modify -&amp;gt; m&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
+&lt;h3&gt;実行例&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1.65/24 ipv4.gateway 192.168.1.1 ipv4.dns 192.168.1.1 ipv4.method manual connection.autoconnect yes
+&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>SwipeRefreshLayoutのsetRefreshing(true)が効かない場合の対処</title><link href="https://waura.github.io/swiperefreshlayout_setrefreshing.html" rel="alternate"></link><published>2015-11-14T21:46:00+09:00</published><updated>2015-11-14T21:46:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2015-11-14:/swiperefreshlayout_setrefreshing.html</id><summary type="html">&lt;p&gt;SwipeRefreshLayoutのsetRefreshing(true)は、onMeasure()が呼ばれるまでは有効にならないみたいです。&lt;/p&gt;
 &lt;p&gt;参考：&lt;a href="https://code.google.com/p/android/issues/detail?id=77712"&gt;https://code.google.com/p/android/issues/detail?id=77712&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;このような場合、SwipeRefreshLayoutを継承して下記のようにsetRefreshingが呼ばれた時の引数の値を覚えておいて、onMesure()のタイミングでsetRefreshing()をもう一回読んであげると良いようです。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// MySwipeRefreshLayout.java  &lt;/span&gt;

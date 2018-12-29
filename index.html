@@ -99,43 +99,9 @@
 
 <article>
   <header>
-    <h2><a href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">CentOS7で固定IPアドレスの設定を行う</a></h2>
-    <p>
-          Posted on Sat 18 August 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
-
-
-          &#8226;     Tagged with
-
-              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
-    </p>
-  </header>
-  <div>
-      <h1>固定IPアドレス設定</h1>
-<p>CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。</p>
-<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
-</pre></div>
-
-
-<p>2番目と3番目のオプションは、それぞれ短縮可能です。</p>
-<ul>
-<li>connection -&gt; c</li>
-<li>modify -&gt; m</li>
-</ul>
-<p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
-connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
-<h3>実行例</h3>
-<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
-        <br>
-        <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
     <h2><a href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">自宅SAN(Storage Area Network)の構築</a></h2>
     <p>
-          Posted on Fri 30 March 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+          Posted on Sat 29 December 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
 
 
           &#8226;     Tagged with
@@ -166,6 +132,40 @@ qla2xxx向けの設定ファイルを新規で作成します。</p>
 <div class="highlight"><pre><span></span>$ sudo …</pre></div>
         <br>
         <a class="btn" href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">CentOS7で固定IPアドレスの設定を行う</a></h2>
+    <p>
+          Posted on Sat 18 August 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h1>固定IPアドレス設定</h1>
+<p>CentOS 7.5.1804 での固定IPアドレスを設定するコマンドです。</p>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses [割り当てたいIPアドレス] ipv4.gateway [GatewayのIPアドレス] ipv4.dns [参照するDNSサーバのIPアドレス] ipv4.method manual connection.autoconnect yes
+</pre></div>
+
+
+<p>2番目と3番目のオプションは、それぞれ短縮可能です。</p>
+<ul>
+<li>connection -&gt; c</li>
+<li>modify -&gt; m</li>
+</ul>
+<p>ipv4.methodにmanualを設定しているのは、DHCPではなく固定でIPアドレスを割り当てるためです。
+connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
+<h3>実行例</h3>
+<div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
 </a>
   </div>
   <hr />
