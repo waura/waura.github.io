@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -108,8 +126,47 @@
 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
 <h3>実行例</h3>
 <div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">自宅SAN(Storage Area Network)の構築</a></h2>
+    <p>
+          Posted on Fri 30 March 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h1>自宅SANの構築</h1>
+<p>仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
+ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
+そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。</p>
+<p>今回は、自宅にSANを構築したので、その手順をまとめます。</p>
+<h1>構成</h1>
+<p><a href="./images/HomeSAN.png"><img alt="HomeSAN" src="../images/HomeSAN.png"></a></p>
+<p>ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。
+ターゲットとイニシエータには、<a href="http://www.fibrechannelworks.com/QLE2560.asp">QLogicのQLE2560のHBA (Host Bus Adapter)</a>をPCIeで刺しています。
+このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。</p>
+<p>それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。
+HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。</p>
+<p>私の場合は、LC - マルチモードのケーブルを使用しています。</p>
+<p>ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。</p>
+<h1>ターゲット側のセットアップ</h1>
+<h2>ターゲットモードを有効にする</h2>
+<p>QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。
+qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。
+qla2xxx向けの設定ファイルを新規で作成します。</p>
+<div class="highlight"><pre><span></span>$ sudo …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">    Continue reading
 </a>
   </div>
   <hr />
@@ -190,8 +247,8 @@ connection.autoconnect yesで起動時にNICが立ち上がるように設定し
 <tr>
 <td align="left">実Core数</td>
 <td align="right">2 …</td></tr></tbody></table>
-      <br>
-      <a class="btn" href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">    Continue reading
 </a>
   </div>
   <hr />
@@ -239,8 +296,8 @@ connection.autoconnect yesで起動時にNICが立ち上がるように設定し
 <h3>CPU</h3>
 <p>今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
 J1900やPentium …</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">    Continue reading
 </a>
   </div>
 </article>

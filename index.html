@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -65,10 +67,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -107,8 +125,47 @@
 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。</p>
 <h3>実行例</h3>
 <div class="highlight"><pre><span></span># nmcli connection modify eth0 ipv4.addresses 192.168.1 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/centos7degu-ding-ipadoresunoshe-ding-woxing-u.html#centos7degu-ding-ipadoresunoshe-ding-woxing-u">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">自宅SAN(Storage Area Network)の構築</a></h2>
+    <p>
+          Posted on Fri 30 March 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h1>自宅SANの構築</h1>
+<p>仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
+ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
+そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。</p>
+<p>今回は、自宅にSANを構築したので、その手順をまとめます。</p>
+<h1>構成</h1>
+<p><a href="./images/HomeSAN.png"><img alt="HomeSAN" src="../images/HomeSAN.png"></a></p>
+<p>ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。
+ターゲットとイニシエータには、<a href="http://www.fibrechannelworks.com/QLE2560.asp">QLogicのQLE2560のHBA (Host Bus Adapter)</a>をPCIeで刺しています。
+このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。</p>
+<p>それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。
+HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。</p>
+<p>私の場合は、LC - マルチモードのケーブルを使用しています。</p>
+<p>ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。</p>
+<h1>ターゲット側のセットアップ</h1>
+<h2>ターゲットモードを有効にする</h2>
+<p>QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。
+qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。
+qla2xxx向けの設定ファイルを新規で作成します。</p>
+<div class="highlight"><pre><span></span>$ sudo …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">    Continue reading
 </a>
   </div>
   <hr />
@@ -140,8 +197,8 @@ connection.autoconnect yesで起動時にNICが立ち上がるように設定し
 
   <span class="kd">public</span> <span class="nf">MySwipeRefreshLayout</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>  
     <span class="kd">super</span><span class="o">(</span><span class="n">context …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/swiperefreshlayout_setrefreshing.html#swiperefreshlayout_setrefreshing">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/swiperefreshlayout_setrefreshing.html#swiperefreshlayout_setrefreshing">    Continue reading
 </a>
   </div>
   <hr />
@@ -191,8 +248,8 @@ $ ./bin/rake db:migrate
 <h3>Controllerの作成</h3>
 <p>Controllerは、バージョニングできるようにバージョン名でディレクトリを振り分けて配置しています。</p>
 <div class="highlight"><pre><span></span>$ ./bin/rails g …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/rails-api_sample.html#rails-api_sample">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/rails-api_sample.html#rails-api_sample">    Continue reading
 </a>
   </div>
   <hr />
@@ -273,8 +330,8 @@ $ ./bin/rake db:migrate
 <tr>
 <td align="left">実Core数</td>
 <td align="right">2 …</td></tr></tbody></table>
-      <br>
-      <a class="btn" href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html#atom330_vs_athlon5350_benchmark">    Continue reading
 </a>
   </div>
   <hr />
@@ -322,8 +379,8 @@ $ ./bin/rake db:migrate
 <h3>CPU</h3>
 <p>今現在、デスクトップ向けで低消費電力かつそこそこの性能のCPUは、IntelのCelenron
 J1900やPentium …</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/echo_home_server_2015.html#echo_home_server_2015">    Continue reading
 </a>
   </div>
   <hr />
@@ -359,8 +416,8 @@ Gradle追加ボタンを押して、下記のように選択する</p>
 <h4>Jenkins ジョブの作成</h4>
 <p>ジョブの設定から[ビルド]-&gt;[ビルド手順の追加]を押してInvoke Gradlescriptを選択する。<br>
 Invoke …</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201305181368891937.html#201305181368891937">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201305181368891937.html#201305181368891937">    Continue reading
 </a>
   </div>
   <hr />
@@ -391,9 +448,6 @@ Invoke …</p>
 
 <h4>参考リンク</h4>
 <p><a href="http://tmpla.info/archives/1211">http://tmpla.info/archives/1211</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201210011349098138.html#201210011349098138">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -444,8 +498,8 @@ Invoke …</p>
 <li>チャンネルサイズ8bit
     5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
 <li>画像の保存、読み込みは …</li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/201112031322919731.html#201112031322919731">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201112031322919731.html#201112031322919731">    Continue reading
 </a>
   </div>
   <hr />
@@ -481,32 +535,8 @@ a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3
 <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
 <span class="p">}</span> <span class="k">else …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201111281322504210.html#201111281322504210">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/201106061307361103.html#201106061307361103">TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</a></h2>
-    <p>
-          Posted on Mon 06 June 2011 in <a href="https://waura.github.io/category/android.html">Android</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <div class="highlight"><pre><span></span>./internal_install_SDK.exp: コマンドが見つかりませんでした
-</pre></div>
-
-
-<p>とエラーがでる場合は次のようにして、expectパッケージをインストールする。</p>
-<div class="highlight"><pre><span></span>sudo apt-get install expect
-</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201106061307361103.html#201106061307361103">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201111281322504210.html#201111281322504210">    Continue reading
 </a>
   </div>
 </article>

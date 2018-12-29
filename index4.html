@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -65,10 +67,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -79,6 +97,34 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200909231253715978.html#200909231253715978">画面の大きさを取得するWinAPI メモ</a></h2>
+    <p>
+          Posted on Wed 23 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <h2>メイン画面の大きさを取得</h2>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXSCREEN</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYSCREEN</span><span class="p">);</span>
+</pre></div>
+
+
+<h2>マルチディスプレイ環境で全ての画面領域の大きさを取得</h2>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXVIRTUALSCREEN</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYVIRTUALSCREEN</span><span class="p">);</span>
+</pre></div>
+
+
+<h2>参考URL</h2>
+<p><a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx">http://msdn.microsoft.com/ja-jp/library/cc429812.aspx</a></p>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200909211253548524.html#200909211253548524">OpenCVで3次スプライン補間</a></h2>
@@ -103,8 +149,8 @@
   <span class="k">if</span><span class="p">((</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
   <span class="p">{</span>
     <span class="n">b …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909211253548524.html#200909211253548524">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200909211253548524.html#200909211253548524">    Continue reading
 </a>
   </div>
   <hr />
@@ -143,8 +189,8 @@
 <li><a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%E9">コンパイラ</a>:
     <a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
     Studio …</a></li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909141252931917.html#200909141252931917">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200909141252931917.html#200909141252931917">    Continue reading
 </a>
   </div>
   <hr />
@@ -168,9 +214,6 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 右クリックして、表示したいアイテムをクリックする。</p>
 <h3>参考URL</h3>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx">http://msdn.microsoft.com/ja-jp/library/aa290860%28VS.71%29.aspx</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909131252813492.html#200909131252813492">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -205,8 +248,8 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 </ul>
 <p>今回はSSEに対応しているか調べたいのでEAXには、1を入れてCPUID命令を呼び出します。</p>
 <p><a href="http://www.sandpile.org/ia32/cpuid.htm">http://www.sandpile.org/ia32/cpuid …</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909121252748821.html#200909121252748821">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200909121252748821.html#200909121252748821">    Continue reading
 </a>
   </div>
   <hr />
@@ -238,9 +281,6 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 
 
 <p>の様にすれば()のなかだけ<a href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>に移動して()の外に出ると元のディレクトリに自動で戻る。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909021251868590.html#200909021251868590">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -270,9 +310,6 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
 <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="o">::</span><span class="n">FindNextFile</span><span class="p">(</span><span class="n">hFind</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fd</span><span class="p">));</span>
 <span class="o">::</span><span class="n">FindClose</span><span class="p">(</span><span class="n">hFind</span><span class="p">);</span>
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909011251772858.html#200909011251772858">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -309,8 +346,8 @@ Studio</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%EC%A5%B8%A5%B9%A5%BF">�
   <span class="k">protected</span><span class="o">:</span>
     <span class="n">afx_msg</span> <span class="kt">void</span> <span class="n">OnMouseMove</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="n">CPoint</span> <span class="n">point</span><span class="p">);</span>
     <span class="n">LRESULT</span> <span class="nf">OnMouseHover</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wp …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
 </a>
   </div>
   <hr />
@@ -353,8 +390,8 @@ NM_CLICKを捕まえて、選択アイテムを取得するというやり方で
 <p>コード例は以下のようになる。</p>
 <div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
 <span class="k">if …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
 </a>
   </div>
   <hr />
@@ -381,54 +418,6 @@ remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
 <p>起動も結構早くていい感じ。</p>
 <h4>参考URL</h4>
 <p><a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html">http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908271251337964.html#200908271251337964">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200908061249511852.html#200908061249511852">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h2>
-    <p>
-          Posted on Thu 06 August 2009 in <a href="https://waura.github.io/category/ruby.html">Ruby</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。<br>
-リンクされているのが同じホスト内のhtmlならそのhtmlもパースします。</p>
-<div class="highlight"><pre><span></span><span class="ch">#!ruby -Ks</span>
-<span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;hpricot&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
-<span class="k">class</span> <span class="nc">GetWebFile</span>
-
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
-    <span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">begin</span>
-      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-      <span class="k">begin</span>
-        <span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
-          <span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-        <span class="p">}</span>
-        <span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
-          <span class="nb">warn</span> <span class="n">to</span>
-        <span class="k">return</span>
-      <span class="k">end</span>
-
-      <span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
-        <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908061249511852.html#200908061249511852">    Continue reading
-</a>
   </div>
 </article>
 

@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -108,8 +126,8 @@ Studio</a>のプロジェクトを作成する。<br>
 <h4>64bit対応にするために</h4>
 <ul>
 <li>すべてのプロジェクトのプロパティの「構成プロパティ」→「<a href="http://d.hatena.ne.jp/keyword/C/C%2B%2B">C/C …</a></li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
 </a>
   </div>
   <hr />
@@ -138,8 +156,8 @@ Studio</a>のプロジェクトを作成する。<br>
   <span class="k">if</span><span class="p">((</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
   <span class="p">{</span>
     <span class="n">b …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909211253548524.html#200909211253548524">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200909211253548524.html#200909211253548524">    Continue reading
 </a>
   </div>
   <hr />
@@ -163,9 +181,6 @@ Studio</a>のプロジェクトを作成する。<br>
 <p><a href="http://d.hatena.ne.jp/DOSEI/20060508/p1">http://d.hatena.ne.jp/DOSEI/20060508/p1</a></p>
 <p>↑によるとcvMul()は要素同士の積なので、エラーが出たようだ。<br>
 cvMatMul()を使用すると、上手くいけた。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200807061215360635.html#200807061215360635">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -197,8 +212,8 @@ IplImageのimageDataから画像データにアクセスできる。<br>
   <span class="n">hr</span> <span class="o">=</span> <span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateTexture</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">Levels</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">D3DFMT_A8R8G8B8</span><span class="p">,</span> <span class="n">D3DPOOL_MANAGED</span><span class="p">,</span> <span class="n">ppTexture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">)){</span>
     <span class="k">return …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805221211471166.html#200805221211471166">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200805221211471166.html#200805221211471166">    Continue reading
 </a>
   </div>
   <hr />
@@ -217,9 +232,6 @@ IplImageのimageDataから画像データにアクセスできる。<br>
       <p>安いUSBカメラかったので<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>に手を出してみました。</p>
 <p>背景差分法のプログラムです。<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20080521063155"><img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805211211319214.html#200805211211319214">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -244,9 +256,6 @@ IplImageのimageDataから画像データにアクセスできる。<br>
 <p>顔追跡<br>
 ・肌色領域の重心をもとめてそこを中心に円を描く<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20080522011925"><img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805211211387379.html#200805211211387379">    Continue reading
-</a>
   </div>
 </article>
 

@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -80,6 +98,27 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/20080421.html#20080421">マルチバイト文字列処理 isleadbyte()</a></h2>
+    <p>
+          Posted on Mon 21 April 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <h2>マルチバイト文字列処理 isleadbyte()</h2>
+<div class="highlight"><pre><span></span><span class="n">setlocale</span><span class="p">(</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s">&quot;Japanese&quot;</span><span class="p">);</span>
+<span class="n">isleadbyte</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span><span class="n">c</span><span class="p">);</span>
+</pre></div>
+
+
+<p>ってかかないと正しく動かないんだね･･･</p>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200802071202826993.html#200802071202826993">追記1</a></h2>
@@ -94,9 +133,6 @@
       <p>標準でインストールされるPlatformSDKで<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>してみたがダメ。<br>
 <a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>も問題なさそうだし・・・</p>
 <p>もうちょっと調べてみないとだめみたい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200802071202826993.html#200802071202826993">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -114,9 +150,6 @@
       <p>XPの方のVisualStudioのインストール場所にあるVCフォルダを<a href="http://d.hatena.ne.jp/keyword/Vista">Vista</a>の方に持っていて置き換えて<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>してみた。<br>
 結果は正常に動作した。(当たり前といえば当たり前というような気もするけど･･･<br>
 とりあえず、問題がでるまでこれで行ってみようかと思う。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200802071202938274.html#200802071202938274">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -136,9 +169,6 @@
 XPの方で普通に<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>できていたのは古いDirectSDKへのリンクがはってあったからみたいだ。</p>
 <p>不具合のほうは一回XPの方のファイルを<a href="http://d.hatena.ne.jp/keyword/Vista">Vista</a>に突っ込んで<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>させてみようと思う。<br>
 これで上手くいかなかったら、.NetFrameworkが原因だったりするのかな･･･</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200802071202932163.html#200802071202932163">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -155,9 +185,6 @@ XPの方で普通に<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5
   <div>
       <p><a href="http://d.hatena.ne.jp/keyword/Vista">Vista</a>で<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>したものを、XPに持っていって実行してみると正常に動作しない・・・<br>
 おそらくDirectXSDKかWindowsSDKが原因だと思われるのだが・・・・</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200802071202404779.html#200802071202404779">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -194,8 +221,8 @@ November2007は、dMusic.hがなくなったりと面倒だったので、August
 ここは、特に問題なくいけた。</p>
 <p>ここで、XPで作成していたプロジェクトを<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>してみる。<br>
 dShow …</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200802031202053013.html#200802031202053013">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200802031202053013.html#200802031202053013">    Continue reading
 </a>
   </div>
   <hr />
@@ -232,9 +259,6 @@ dShow …</p>
     <a href="http://d.hatena.ne.jp/keyword/Radeon">Radeon</a> x700</li>
 <li>OS: XP 32bit</li>
 </ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200801271201444962.html#200801271201444962">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -263,9 +287,6 @@ int isleadbyte(int c) マルチバイトの一文字目を判定する。<br>
 <p>ワイド文字　すべて2ビット(<a href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>では)の形式　wchar_tであらわす。<br>
 <a href="http://d.hatena.ne.jp/keyword/UTF-16">UTF-16</a></p>
 <p>TCHAR 状況にあわせてマルチバイト・ワイドに切り替わってくれる型</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200712031196697167.html#200712031196697167">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -287,9 +308,6 @@ int isleadbyte(int c) マルチバイトの一文字目を判定する。<br>
 <a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>は2.6.22.10でnfsrootをサポート、<a href="http://d.hatena.ne.jp/keyword/NIC">NIC</a>ドライバを組み込むようにした。<br>
 ルート<a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0">ファイルシステム</a>はdebootstrapでつくり、<a href="http://d.hatena.ne.jp/keyword/chroot">chroot</a>でいろいろ設定。</p>
 <p>動いてるのはCPUのファンだけなので結構静か。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200711181195406346.html#200711181195406346">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -318,31 +336,6 @@ WS_CLIPCHILDREN<br>
 考えてみたら当然だったが･･･</p>
 <p>参考リンク<br>
 <a href="http://www.geekpage.jp/programming/directshow/renderfile.php">http://www.geekpage.jp/programming/directshow/renderfile.php</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200711091194621506.html#200711091194621506">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200711031194114825.html#200711031194114825">sambaが。。</a></h2>
-    <p>
-          Posted on Sat 03 November 2007 in <a href="https://waura.github.io/category/sabaguan-li.html">サーバー管理</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>いろいろいじってたら<br>
-<a href="http://d.hatena.ne.jp/keyword/Samba">Samba</a>と<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>が調子悪くなった・・・・</p>
-<p><a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>は何とか復旧したものの<br>
-<a href="http://d.hatena.ne.jp/keyword/Samba">Samba</a>の方は。。。orz</p>
-<p>ついでにようやくsargeから<a href="http://d.hatena.ne.jp/keyword/etch">etch</a>へアップグレードした。。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200711031194114825.html#200711031194114825">    Continue reading
-</a>
   </div>
 </article>
 

@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -80,6 +98,44 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200902041233704553.html#200902041233704553">Xファイルのフォーマット(3)</a></h2>
+    <p>
+          Posted on Wed 04 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
+<a href="200703251174775823.html">Xファイルのフォーマット(2)</a></p>
+<p>学校の課題で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のアニメーションを<a href="http://d.hatena.ne.jp/keyword/OpenGL">OpenGL</a>で再生することになりそうなので、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のフォーマットの続きをまとめてみる。</p>
+<p>今回はフレームについて、<br>
+フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。<br>
+フレームの形式はは、このようになっている。</p>
+<div class="highlight"><pre><span></span><span class="n">Frame</span> <span class="n">Aframe</span> <span class="p">{</span> <span class="c1">// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。</span>
+    <span class="n">FrameTransformMatrix</span> <span class="p">{</span>
+        <span class="mi">4</span><span class="n">x4</span><span class="err">行列</span>
+    <span class="p">}</span>
+    <span class="p">[</span> <span class="n">Meshes</span> <span class="p">]</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="p">[</span> <span class="n">More</span> <span class="n">frames</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。<br>
+行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。</p>
+<p>最小のフレームを持つXファイルの形式は以下のようになります。</p>
+<div class="highlight"><pre><span></span>Frame {
+    FrameTransformMatrix { //単位行列なので変換は行わない
+        1.0, 0.0, 0.0, 0 …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200902041233704553.html#200902041233704553">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200901191232360978.html#200901191232360978">玄箱に組み込んだSeagateのHDDのチェック</a></h2>
@@ -101,9 +157,6 @@
 <p>で、HDDの型番とシリアル番号をチェック。</p>
 <p>CCとかLCがシリアル番号に入ってたらセーフ<br>
 <a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957">http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901191232360978.html#200901191232360978">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -122,9 +175,6 @@
 <p>GetOpenFileNameなどでダイアログを開くとカレントディレクトリが変わってしまうようです。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/%C1%EA%C2%D0%A5%D1%A5%B9">相対パス</a>で指定したファイルが開けない場合があったので調べてみると、上の通りでした。<br>
 何時間無駄にしたことやら･･･</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901151232037934.html#200901151232037934">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -144,9 +194,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 を行っておく。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/MSDN">MSDN</a>:<br>
 <a href="http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx">http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901071231340723.html#200901071231340723">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -164,9 +211,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
       <p>CViewのアクティブイベントは、CView::OnActivateView()で拾える。</p>
 <p>OnActivate()とかOnMDIActivate()とかOnNcActivate()だとだめだった。<br>
 調べてみたが結局OnActivateView()が正解みたいだ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200812231230038929.html#200812231230038929">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -183,9 +227,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
   <div>
       <p>CDocument::GetDefaultMenu()をオーバーライドし、<br>
 自分で作成したHMENUを返せばよい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200812221230038929.html#200812221230038929">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -209,9 +250,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 <p>参考リンク<br>
 <a href="http://support.microsoft.com/kb/172396/ja">http://support.microsoft.com/kb/172396/ja</a><br>
 <a href="http://lamoo.s53.xrea.com/develop/tips/dlltips.html">http://lamoo.s53.xrea.com/develop/tips/dlltips.html</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200811281227899513.html#200811281227899513">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -229,9 +267,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
       <p>__declspec(dllexport)
 をひとつもつけないでdllを<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>すると<br>
 インポートライブラリ(*.lib)を吐かない。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200811221227385060.html#200811221227385060">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -264,8 +299,8 @@ software]{style="font-weight:bold;"}<br>
 <a href="http://www.ijg.org/">http://www.ijg.org/</a><br>
 [libpng]{style="font-weight:bold;"}<br>
 <a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png …</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200811071226064350.html#200811071226064350">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200811071226064350.html#200811071226064350">    Continue reading
 </a>
   </div>
   <hr />
@@ -287,35 +322,6 @@ software]{style="font-weight:bold;"}<br>
 <p><a href="http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm">http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm</a><br>
 ↑は、DLLとEXE側で、クラスのサイズが違ってたりすることがあるので、<br>
 DLL側でメモリの確保、開放をしたほうがいいよということらしい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200809101221052880.html#200809101221052880">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200809081220891447.html#200809081220891447">プリコンパイル済みヘッダー</a></h2>
-    <p>
-          Posted on Mon 08 September 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>コンパイル時間の短縮のためにプリコンパイル済みヘッダーを導入したが、</p>
-<div class="highlight"><pre><span></span>c80.pdbは、このプリコンパイル済みヘッダーが作成されたときに使用されたpdbファイルではありません。プリコンパイル済みヘッダーを再作成してください。
-</pre></div>
-
-
-<p>の様なエラーが出た。</p>
-<p>これは、後から、StdAfx.cppを追加すると、デフォルトで「プリコンパイル済ヘッダの使用」になっているので起こるようだ。<br>
-ソリューションエクスプローラからStdAfx.cppを右クリック→プロパティーで「プリコンパイル済ヘッダの作成」に変更する。</p>
-<p>StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200809081220891447.html#200809081220891447">    Continue reading
-</a>
   </div>
 </article>
 

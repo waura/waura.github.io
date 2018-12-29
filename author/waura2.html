@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -80,6 +98,27 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201106061307361103.html#201106061307361103">TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</a></h2>
+    <p>
+          Posted on Mon 06 June 2011 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <div class="highlight"><pre><span></span>./internal_install_SDK.exp: コマンドが見つかりませんでした
+</pre></div>
+
+
+<p>とエラーがでる場合は次のようにして、expectパッケージをインストールする。</p>
+<div class="highlight"><pre><span></span>sudo apt-get install expect
+</pre></div>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/201012241293217750.html#201012241293217750">wintabから傾きを取得するコード</a></h2>
@@ -112,8 +151,8 @@ WTInfo関数を呼び出して、AzimuthとAltitudeの最大値を調べてい�
 <span class="n">WTInfo_</span> <span class="n">wtInfo</span> <span class="o">=</span> <span class="p">(</span><span class="n">WTInfo_</span><span class="p">)</span><span class="n">GetProcAddress</span><span class="p">(</span><span class="n">dll</span><span class="p">,</span> <span class="s">&quot;WTInfoA&quot;</span><span class="p">);</span>
 
 <span class="kt">double …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201012241293217750.html#201012241293217750">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201012241293217750.html#201012241293217750">    Continue reading
 </a>
   </div>
   <hr />
@@ -159,8 +198,8 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
 </ul>
 <h4>コード</h4>
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;intrin …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201011061289036459.html#201011061289036459">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201011061289036459.html#201011061289036459">    Continue reading
 </a>
   </div>
   <hr />
@@ -182,9 +221,6 @@ InfoTypeで数値を指定して、対応した情報がCPUInfoに入ります�
 <li>General選択</li>
 <li>Additional Include Directoriesにパスを追加</li>
 </ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/201006201277015164.html#201006201277015164">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -207,9 +243,6 @@ Webデータから抽出された語嚢データは含まれていないよう�
 憩いの場【Linux/ソフト紹介】</a></p>
 <p>インストール方法は、すべて↑の通り。<br>
 Anthyは使いにくいなぁ、と思っていたので助かりました。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201006061275834228.html#201006061275834228">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -237,8 +270,8 @@ Disk /dev/loop0: <span class="m">4034</span> MB, <span class="m">4034838528</spa
 <span class="nv">Units</span> <span class="o">=</span> sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
 Disk identifier: 0x001c2022
 Device Boot      Start         End      Blocks   Id …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201004091270823038.html#201004091270823038">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201004091270823038.html#201004091270823038">    Continue reading
 </a>
   </div>
   <hr />
@@ -281,8 +314,8 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 
 <p>snmpdデーモンを再起動させます。</p>
 <div class="highlight"><pre><span></span> $ sudo /etc/init …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201004031270264748.html#201004031270264748">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201004031270264748.html#201004031270264748">    Continue reading
 </a>
   </div>
   <hr />
@@ -364,8 +397,8 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 <li>5760x3600BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
 <li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
     2 …</li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003201269074009.html#201003201269074009">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201003201269074009.html#201003201269074009">    Continue reading
 </a>
   </div>
   <hr />
@@ -389,9 +422,6 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 と表示されるときの対処</p>
 <p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] </p>
 <p><a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003171268808033.html#201003171268808033">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -423,34 +453,8 @@ Studio</a>のプロジェクトを作成する。<br>
 <h4>64bit対応にするために</h4>
 <ul>
 <li>すべてのプロジェクトのプロパティの「構成プロパティ」→「<a href="http://d.hatena.ne.jp/keyword/C/C%2B%2B">C/C …</a></li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/201003141268524584.html#201003141268524584">64bit版のWintab DLLのロード</a></h2>
-    <p>
-          Posted on Sun 14 March 2010 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="http://d.hatena.ne.jp/keyword/%A5%BF%A5%D6%A5%EC%A5%C3%A5%C8">タブレット</a>の情報を取得するのに、以下のようにWintabのDLLを使用している。</p>
-<div class="highlight"><pre><span></span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
-</pre></div>
-
-
-<p>wintab32.dllという名前なのでこのDLLは32bit用で、64bitのexeから呼び出すには64bit用のDLLを読み込まないとダメだと思い、それらしいものを探してみるがどこにも見当たらない。</p>
-<p>この記事によると、OSが同じ名前のDLLを32bit用と64bit用で切り替えてくれるようだ。<br>
-[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;sa=838339906]</p>
-<p>なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003141268524584.html#201003141268524584">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
 </a>
   </div>
 </article>

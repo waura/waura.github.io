@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -80,6 +98,50 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200703251174775823.html#200703251174775823">Xファイルのフォーマット(2)</a></h2>
+    <p>
+          Posted on Sun 25 March 2007 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <div class="highlight"><pre><span></span>//これはコメントです。  
+#これもコメントです。  
+//この例は、正しいポリゴンでない可能性があります。  
+Mesh (ここにメッシュの名前をつけることもできる。){  
+    3; //頂点の数  
+    0.00000;271.38129;0.00000;,　//頂点1の座標  
+    0.00000;240.92551;-153.11031;, //頂点2の座標  
+    0.00000;-128.71561;-400.09680;; //頂点3の座標
+
+    1; //面の数  
+    3;0,1,2;; //インデックスの数;インデックスの配列
+
+    //ここまでが必須要素です。
+</pre></div>
+
+
+<p>これに付随してオプションのデータをつけることができます。<br>
+使用できるオプションのデータは、<br>
+･MeshFaceWraps (今では使われてないらしい)<br>
+･MeshTextureCoords<br>
+･MeshNormals<br>
+･MeshVertexColors<br>
+･MeshMaterialList<br>
+である。</p>
+<div class="highlight"><pre><span></span>/////////////////////////////////////////////////////////////  
+//MeshTextureCoordsはメッシュのテスクチャ座標を定義する。  
+template MeshTextureCoords …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200703251174775823.html#200703251174775823">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200703241174740494.html#200703241174740494">Xファイルのフォーマット(1)</a></h2>
@@ -116,8 +178,8 @@ xof 0302txt 0064 というような可変長ヘッダーがある。<br>
   FLOAT x;  
   FLOAT y;  
   FLOAT …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200703241174740494.html#200703241174740494">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200703241174740494.html#200703241174740494">    Continue reading
 </a>
   </div>
 </article>

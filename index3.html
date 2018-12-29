@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -65,10 +67,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -79,6 +97,29 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201003141268524584.html#201003141268524584">64bit版のWintab DLLのロード</a></h2>
+    <p>
+          Posted on Sun 14 March 2010 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/%A5%BF%A5%D6%A5%EC%A5%C3%A5%C8">タブレット</a>の情報を取得するのに、以下のようにWintabのDLLを使用している。</p>
+<div class="highlight"><pre><span></span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s">&quot;wintab32.dll&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>wintab32.dllという名前なのでこのDLLは32bit用で、64bitのexeから呼び出すには64bit用のDLLを読み込まないとダメだと思い、それらしいものを探してみるがどこにも見当たらない。</p>
+<p>この記事によると、OSが同じ名前のDLLを32bit用と64bit用で切り替えてくれるようだ。<br>
+[http://kait-field.spaces.live.com/Blog/cns!B90E9B4A3C4DFD66!889.entry?wa=wsignin1.0&amp;sa=838339906]</p>
+<p>なので、64bit版の方でもwintab32.dllを読み込めばいいということらしい。</p>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/201003131268457303.html#201003131268457303">C言語、32bit環境と64bit環境の変数のサイズ</a></h2>
@@ -153,9 +194,6 @@
 </tbody>
 </table>
 <p>どうやら、32bit環境と64bit環境で変数サイズに違いは無いみたいだ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003131268457303.html#201003131268457303">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -185,8 +223,8 @@
       <span class="o">::</span><span class="n">OutputDebugString</span><span class="p">(</span><span class="s">&quot;shift &quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="c1">//check keyup …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003071267910248.html#201003071267910248">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201003071267910248.html#201003071267910248">    Continue reading
 </a>
   </div>
   <hr />
@@ -212,9 +250,6 @@
 <p><a href="http://f.hatena.ne.jp/hiroki0/20100301063557"><img alt="f:id:hiroki0:20100301063557j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100301/20100301063557.jpg" title="f:id:hiroki0:20100301063557j:image"></a>
 ブラシのテスト。<br>
 黒い線がハード円ブラシ、赤い線がハードエアーブラシ、青い線がソフト円ブラシ、緑の線がソフトエアーブラシ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201003011267393466.html#201003011267393466">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -249,8 +284,8 @@ Studio</a>
 再起動が求められた場合は、再起動を行います。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/windows7">windows7</a>の場合では、インクルードファイルとライブラリファイルはそれぞれ次の箇所にインストールされてました。</p>
 <div class="highlight"><pre><span></span>C:\Users\(ユーザ)\AppData …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201002231266941596.html#201002231266941596">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201002231266941596.html#201002231266941596">    Continue reading
 </a>
   </div>
   <hr />
@@ -270,9 +305,6 @@ Studio</a>
 <a href="http://f.hatena.ne.jp/hiroki0/20100215002421"><img alt="f:id:hiroki0:20100215002421p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002421.png" title="f:id:hiroki0:20100215002421p:image"></a></p>
 <p>ついでにブラシ描画のテスト<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20100215002422"><img alt="f:id:hiroki0:20100215002422p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20100215/20100215002422.png" title="f:id:hiroki0:20100215002422p:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/201002141266161163.html#201002141266161163">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -298,9 +330,6 @@ Studio</a>
   <span class="nb">NULL</span><span class="p">,</span>
   <span class="o">::</span><span class="n">GetCurrentThreadId</span><span class="p">());</span>
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201002111265869988.html#201002111265869988">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -326,9 +355,6 @@ erase()の返り値で次の要素の<a href="http://d.hatena.ne.jp/keyword/%A5%
   <span class="n">it</span><span class="o">++</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200911151258237873.html#200911151258237873">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -352,9 +378,6 @@ si.dwNumberOfProcessors; //プロセッサ数
 
 <h2>参考URL</h2>
 <p><a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx">http://msdn.microsoft.com/ja-jp/library/cc429808.aspx</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200911141258218733.html#200911141258218733">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -373,40 +396,6 @@ si.dwNumberOfProcessors; //プロセッサ数
   <div>
       <p>3次スプラインを利用して<a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6">トーンカーブ</a>を実装してみた。<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909271254003613.html#200909271254003613">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200909231253715978.html#200909231253715978">画面の大きさを取得するWinAPI メモ</a></h2>
-    <p>
-          Posted on Wed 23 September 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <h2>メイン画面の大きさを取得</h2>
-<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXSCREEN</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYSCREEN</span><span class="p">);</span>
-</pre></div>
-
-
-<h2>マルチディスプレイ環境で全ての画面領域の大きさを取得</h2>
-<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXVIRTUALSCREEN</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="o">::</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYVIRTUALSCREEN</span><span class="p">);</span>
-</pre></div>
-
-
-<h2>参考URL</h2>
-<p><a href="http://msdn.microsoft.com/ja-jp/library/cc429812.aspx">http://msdn.microsoft.com/ja-jp/library/cc429812.aspx</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200909231253715978.html#200909231253715978">    Continue reading
-</a>
   </div>
 </article>
 

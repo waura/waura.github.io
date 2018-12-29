@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -80,6 +98,29 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200809081220891447.html#200809081220891447">プリコンパイル済みヘッダー</a></h2>
+    <p>
+          Posted on Mon 08 September 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>コンパイル時間の短縮のためにプリコンパイル済みヘッダーを導入したが、</p>
+<div class="highlight"><pre><span></span>c80.pdbは、このプリコンパイル済みヘッダーが作成されたときに使用されたpdbファイルではありません。プリコンパイル済みヘッダーを再作成してください。
+</pre></div>
+
+
+<p>の様なエラーが出た。</p>
+<p>これは、後から、StdAfx.cppを追加すると、デフォルトで「プリコンパイル済ヘッダの使用」になっているので起こるようだ。<br>
+ソリューションエクスプローラからStdAfx.cppを右クリック→プロパティーで「プリコンパイル済ヘッダの作成」に変更する。</p>
+<p>StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。</p>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200808131218617651.html#200808131218617651">ソースからショートカットメニューを表示する場合の注意</a></h2>
@@ -93,9 +134,6 @@
   <div>
       <p>TrackPopupMenu()でショートカットメニューを表示する場合、CreateMenu()ではなく、<br>
 CreatePopupMenu()で作成したメニューを使用しないと上手く表示されない。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200808131218617651.html#200808131218617651">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -136,8 +174,8 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
 ｜ [1byte] 圧縮有りか無しか
 以下ver 6と同様
 /* 圧縮無しの場合 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200807111215788657.html#200807111215788657">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200807111215788657.html#200807111215788657">    Continue reading
 </a>
   </div>
   <hr />
@@ -167,8 +205,8 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
 ｜ [4byte] ブラシサイズ ブラシデータのサイズ
 ｜ [37byte] 不要なデータ
 ｜ [10 or 264 byte] 不要なデータ 6.1の場合は10byte 6 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200807101215708667.html#200807101215708667">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200807101215708667.html#200807101215708667">    Continue reading
 </a>
   </div>
   <hr />
@@ -192,9 +230,6 @@ CreatePopupMenu()で作成したメニューを使用しないと上手く表示
 <p><a href="http://d.hatena.ne.jp/DOSEI/20060508/p1">http://d.hatena.ne.jp/DOSEI/20060508/p1</a></p>
 <p>↑によるとcvMul()は要素同士の積なので、エラーが出たようだ。<br>
 cvMatMul()を使用すると、上手くいけた。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200807061215360635.html#200807061215360635">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -215,9 +250,6 @@ DialogBox()の第3引数で指定したものが得られるとは限らない�
 <p>DialogBox()の第3引数で指定したウィンドウが子ウィンドウの場合、<br>
 子ウィンドウはオーナーウィンドウになれないので、子ウィンドウの親を調べて子ウィンドウでなければ、そのウィンドウがオーナーウィンドウになる。<br>
 子ウィンドウの親も子ウィンドウだった場合さらにその親を調べる。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200806301214832557.html#200806301214832557">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -236,9 +268,6 @@ DialogBox()の第3引数で指定したものが得られるとは限らない�
 プロシージャーから、SetProp(), GetProp(), RemoveProp()<br>
 をしようして、ウィンドウハンドルから、自身のオブジェクトの<a href="http://d.hatena.ne.jp/keyword/%A5%DD%A5%A4%A5%F3%A5%BF%A1%BC">ポインター</a>を
 得れば何とかいけそう。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200806021212424580.html#200806021212424580">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -270,8 +299,8 @@ IplImageのimageDataから画像データにアクセスできる。<br>
   <span class="n">hr</span> <span class="o">=</span> <span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateTexture</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">Levels</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">D3DFMT_A8R8G8B8</span><span class="p">,</span> <span class="n">D3DPOOL_MANAGED</span><span class="p">,</span> <span class="n">ppTexture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">)){</span>
     <span class="k">return …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805221211471166.html#200805221211471166">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200805221211471166.html#200805221211471166">    Continue reading
 </a>
   </div>
   <hr />
@@ -290,9 +319,6 @@ IplImageのimageDataから画像データにアクセスできる。<br>
       <p>安いUSBカメラかったので<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>に手を出してみました。</p>
 <p>背景差分法のプログラムです。<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20080521063155"><img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805211211319214.html#200805211211319214">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -317,33 +343,6 @@ IplImageのimageDataから画像データにアクセスできる。<br>
 <p>顔追跡<br>
 ・肌色領域の重心をもとめてそこを中心に円を描く<br>
 <a href="http://f.hatena.ne.jp/hiroki0/20080522011925"><img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"></a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200805211211387379.html#200805211211387379">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/20080421.html#20080421">マルチバイト文字列処理 isleadbyte()</a></h2>
-    <p>
-          Posted on Mon 21 April 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <h2>マルチバイト文字列処理 isleadbyte()</h2>
-<div class="highlight"><pre><span></span><span class="n">setlocale</span><span class="p">(</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s">&quot;Japanese&quot;</span><span class="p">);</span>
-<span class="n">isleadbyte</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span><span class="n">c</span><span class="p">);</span>
-</pre></div>
-
-
-<p>ってかかないと正しく動かないんだね･･･</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/20080421.html#20080421">    Continue reading
-</a>
   </div>
 </article>
 

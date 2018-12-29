@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
+
+
+    <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-122706525-2', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333333">
+
+<meta name="author" content="waura" />
+<meta name="description" content="自宅SANの構築 仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。 ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。 そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。 今回は、自宅にSANを構築したので、その手順をまとめます。 構成 ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。 ターゲットとイニシエータには、QLogicのQLE2560のHBA (Host Bus Adapter)をPCIeで刺しています。 このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。 それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。 HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。 私の場合は、LC - マルチモードのケーブルを使用しています。 ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。 ターゲット側のセットアップ ターゲットモードを有効にする QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。 qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。 qla2xxx向けの設定ファイルを新規で作成します。 $ sudo …" />
+<meta name="keywords" content="サーバー管理">
+
+<meta property="og:site_name" content="waura's blog"/>
+<meta property="og:title" content="自宅SAN(Storage Area Network)の構築"/>
+<meta property="og:description" content="自宅SANの構築 仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。 ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。 そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。 今回は、自宅にSANを構築したので、その手順をまとめます。 構成 ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。 ターゲットとイニシエータには、QLogicのQLE2560のHBA (Host Bus Adapter)をPCIeで刺しています。 このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。 それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。 HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。 私の場合は、LC - マルチモードのケーブルを使用しています。 ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。 ターゲット側のセットアップ ターゲットモードを有効にする QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。 qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。 qla2xxx向けの設定ファイルを新規で作成します。 $ sudo …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-03-30 19:58:00+09:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://waura.github.io/author/waura.html">
+<meta property="article:section" content="JP"/>
+<meta property="article:tag" content="サーバー管理"/>
+<meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
+
+  <title>waura's blog &ndash; 自宅SAN(Storage Area Network)の構築</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://waura.github.io">
+        <img src="//avatars3.githubusercontent.com/u/99647" alt="" title="">
+      </a>
+      <h1><a href="https://waura.github.io"></a></h1>
+
+<p>Software Engineer</p>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="zi-zhai-sanstorage-area-networknogou-zhu">自宅SAN(Storage Area Network)の構築</h1>
+    <p>
+          Posted on Fri 30 March 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <h1>自宅SANの構築</h1>
+<p>仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
+ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
+そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。</p>
+<p>今回は、自宅にSANを構築したので、その手順をまとめます。</p>
+<h1>構成</h1>
+<p><a href="./images/HomeSAN.png"><img alt="HomeSAN" src="../images/HomeSAN.png"></a></p>
+<p>ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。
+ターゲットとイニシエータには、<a href="http://www.fibrechannelworks.com/QLE2560.asp">QLogicのQLE2560のHBA (Host Bus Adapter)</a>をPCIeで刺しています。
+このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。</p>
+<p>それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。
+HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。</p>
+<p>私の場合は、LC - マルチモードのケーブルを使用しています。</p>
+<p>ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。</p>
+<h1>ターゲット側のセットアップ</h1>
+<h2>ターゲットモードを有効にする</h2>
+<p>QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。
+qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。
+qla2xxx向けの設定ファイルを新規で作成します。</p>
+<div class="highlight"><pre><span></span>$ sudo vi /etc/modprobe.d/qla2xxx.conf
+</pre></div>
+
+
+<p>記述する内容は下記のとおりです。</p>
+<div class="highlight"><pre><span></span>options qla2xxx qlini_mode=&quot;disabled&quot;
+</pre></div>
+
+
+<h2>initramfsの更新</h2>
+<div class="highlight"><pre><span></span>$ sudo update-initramfs -u
+</pre></div>
+
+
+<h2>LVMの作成</h2>
+<p>パーティションの拡張・縮小やディスク追加・交換を容易に行うためにLVM(Logical Volume Manager)を使って論理ボリュームを作成して、これを公開する構成にします。</p>
+<h3>パーティションの作成</h3>
+<p>fdiskでディスク1つの全領域をPrimaryパーティションを1つ作りました。
+TypeはLinux LVMにしてあります。</p>
+<div class="highlight"><pre><span></span>$ sudo fdisk -l /dev/sdd
+Disk /dev/sdd: <span class="m">223</span>.6 GiB, <span class="m">240057409536</span> bytes, <span class="m">468862128</span> sectors
+Units: sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+Disklabel type: dos
+Disk identifier: 0x3b9d0378
+
+Device     Boot Start       End   Sectors   Size Id Type
+/dev/sdd1        <span class="m">2048</span> <span class="m">468862127</span> <span class="m">468860080</span> <span class="m">223</span>.6G 8e Linux LVM
+</pre></div>
+
+
+<h3>PV(物理ボリューム)の作成</h3>
+<p>作成したパーティションでPVを作成します。</p>
+<div class="highlight"><pre><span></span>$ sudo pvcreate /dev/sdd1
+  Physical volume <span class="s2">&quot;/dev/sdd1&quot;</span> successfully created.
+</pre></div>
+
+
+<h3>VG(ボリュームグループ)の作成</h3>
+<p>新規でVGを作成します。
+VGの名前はsata3_ssd_vgにしてあります。</p>
+<div class="highlight"><pre><span></span>$ sudo vgcreate sata3_ssd_vg /dev/sdd1
+  Volume group <span class="s2">&quot;sata3_ssd_vg&quot;</span> successfully created
+</pre></div>
+
+
+<h3>LV(論理ボリューム)の作成</h3>
+<p>作成したVGからLVを切り出します。
+名前はfcで切り出すサイズはとりあえず200Gにしました。</p>
+<div class="highlight"><pre><span></span>$ sudo lvcreate -L 200G -n <span class="nb">fc</span>  sata3_ssd_vg
+  Logical volume <span class="s2">&quot;fc&quot;</span> created.
+</pre></div>
+
+
+<p>ここまでの手順で"/dev/mapper/sata3_ssd_vg-fc"が作られていると思います。</p>
+<h2>LIOの設定</h2>
+<h3>targetcliのインストール</h3>
+<div class="highlight"><pre><span></span>$ sudo apt install targetcli-fb
+</pre></div>
+
+
+<h3>backstoreの登録</h3>
+<p>LIOには、公開する論理・物理ストレージを管理しており、管理しているストレージをbackstoresと呼んでいます。
+このbackstoresに先程作成したLVMのボリュームを登録します。</p>
+<p>登録は下記のコマンドで行います。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /backstores/block create <span class="nv">name</span><span class="o">=</span><span class="nb">fc</span> <span class="nv">dev</span><span class="o">=</span>/dev/mapper/sata3_ssd_vg-fc
+Created block storage object <span class="nb">fc</span> using /dev/mapper/sata3_ssd_vg-fc.
+</pre></div>
+
+
+<p>下記のコマンドで管理されているbackstoresを見るとblockの下にfcが登録されているのがわかります。</p>
+<div class="highlight"><pre><span></span><span class="err">$</span> <span class="n">sudo</span> <span class="n">targetcli</span> <span class="n">ls</span> <span class="o">/</span><span class="n">backstores</span>
+<span class="n">o</span><span class="o">-</span> <span class="n">backstores</span> <span class="p">..............................................................................</span> <span class="p">[...]</span>
+  <span class="n">o</span><span class="o">-</span> <span class="n">block</span> <span class="p">..................................................................</span> <span class="p">[</span><span class="n">Storage</span> <span class="nl">Objects</span><span class="p">:</span> <span class="mi">1</span><span class="p">]</span>
+  <span class="o">|</span> <span class="n">o</span><span class="o">-</span> <span class="n">fc</span> <span class="p">........................</span> <span class="p">[</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">sata3_ssd_vg</span><span class="o">-</span><span class="n">fc</span> <span class="p">(</span><span class="mf">200.0</span><span class="n">GiB</span><span class="p">)</span> <span class="n">write</span><span class="o">-</span><span class="n">thru</span> <span class="n">deactivated</span><span class="p">]</span>
+  <span class="n">o</span><span class="o">-</span> <span class="n">fileio</span> <span class="p">.................................................................</span> <span class="p">[</span><span class="n">Storage</span> <span class="nl">Objects</span><span class="p">:</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="n">o</span><span class="o">-</span> <span class="n">pscsi</span> <span class="p">..................................................................</span> <span class="p">[</span><span class="n">Storage</span> <span class="nl">Objects</span><span class="p">:</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="n">o</span><span class="o">-</span> <span class="n">ramdisk</span> <span class="p">................................................................</span> <span class="p">[</span><span class="n">Storage</span> <span class="nl">Objects</span><span class="p">:</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>LIOがサポートしているストレージデバイスの形式はblock、fileio、pscsi、ramdiskの4つです。
+blockはブロックデバイスを
+fileioは、マウントされたファイルシステム内のファイルを登録するときに使用します。ファイルシステムによる性能劣化があるのでテスト目的でのみ使用が奨励されています。
+pscsiは、SCSIコマンドをそのままデバイスに流すときに使用します。エミュレーションを使用していないのでSCSIデバイスのパフォーマンスを最大限に出せます。
+ramdiskは、SCSIエミュレーションを行うRAMディスクを使用する際に使用します。</p>
+<h3>Fibre Channel Targetの設定</h3>
+<h4>Fibre Channel Targetの作成</h4>
+<p>HBAのWWNを調べる</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /qla2xxx info
+Fabric module name: qla2xxx
+ConfigFS path: /sys/kernel/config/target/qla2xxx
+Allowed WWN types: naa
+Allowed WWNs list: naa.21000024ff0634a8
+Fabric module features: acls
+Corresponding kernel module: tcm_qla2xxx
+</pre></div>
+
+
+<p>調べたWWNでFibre Channelターゲットを作成します。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /qla2xxx create naa.21000024ff0634a8
+Created target naa.21000024ff0634a8.
+</pre></div>
+
+
+<p>WWNの名前でターゲットができているのを確認します。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /qla2xxx ls
+o- qla2xxx .......................................................................... <span class="o">[</span>Targets: <span class="m">1</span><span class="o">]</span>
+  o- naa.21000024ff0634a8 ............................................................. <span class="o">[</span>gen-acls<span class="o">]</span>
+    o- acls ............................................................................ <span class="o">[</span>ACLs: <span class="m">0</span><span class="o">]</span>
+    o- luns ............................................................................ <span class="o">[</span>LUNs: <span class="m">0</span><span class="o">]</span>
+</pre></div>
+
+
+<p>lunsは公開しているストレージ、aclsは公開を許可している相手のWWNを表しています。
+まだ、何も登録されていないので登録していきます。</p>
+<h4>LUNの登録</h4>
+<p>登録済みのbackstoreをlunsに追加します。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /qla2xxx/naa.21000024ff0634a8/luns create /backstores/block/fc
+Created LUN <span class="m">0</span>.
+</pre></div>
+
+
+<h4>イニシエータへのアクセス許可</h4>
+<p>aclsに通信先になるイニシエータのWWN(World Wide Name)を登録します。
+このWWNは、EthernetのMACアドレスのようなものでHBAのポート1つに対し1つ割り当てられています。
+このFibre ChannelではこのWWNを使用して通信相手を識別します。
+イニシエータになるマシン上で同様にtargetcliを使用してWWNを調べて、aclsに追加します。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli /qla2xxx/naa.21000024ff0634a8/acls create 21000024ff063657
+Created Node ACL <span class="k">for</span> naa.21000024ff063657
+Created mapped LUN <span class="m">0</span>.
+</pre></div>
+
+
+<h4>設定の保存</h4>
+<p>再起動後も設定を有効にさせるために下記コマンドで保存します。</p>
+<div class="highlight"><pre><span></span>$ sudo targetcli / saveconfig
+Last <span class="m">10</span> configs saved in /etc/rtslib-fb-target/backup.
+Configuration saved to /etc/rtslib-fb-target/saveconfig.json
+</pre></div>
+
+
+<h1>イニシエータ側のセットアップ</h1>
+<h2>ターゲット側で公開されているLUNを再スキャン</h2>
+<div class="highlight"><pre><span></span># echo 1 &gt; /sys/class/fc_host/host9/issue_lip
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>[    3.138509] scsi 9:0:0:0: Direct-Access     LIO-ORG  fc               4.0  PQ: 0 ANSI: 5
+[    3.180932] sd 9:0:0:0: Attached scsi generic sg0 type 0
+[    3.181678] sd 9:0:0:0: [sda] 419430400 512-byte logical blocks: (215 GB/200 GiB)
+[    3.181789] sd 9:0:0:0: [sda] Write Protect is off
+[    3.181790] sd 9:0:0:0: [sda] Mode Sense: 43 00 10 08
+[    3.181943] sd 9:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[    3.184574] sd 9:0:0:0: [sda] Attached SCSI disk
+</pre></div>
+
+
+<p>/dev/sda としてターゲット側で公開しているストレージが見えています。</p>
+<h2>フォーマット</h2>
+<p>通常のディスクと同様にフォーマットして使用します。
+今回はext4でフォーマットします。</p>
+<div class="highlight"><pre><span></span>sudo mkfs.ext4 /dev/sda
+</pre></div>
+
+
+<p>フォーマット後は、マウントして使用することができます。</p>
+<h1>参考</h1>
+<p>http://linux-iscsi.org/wiki/Fibre_Channel
+http://www.linux-iscsi.org/Doc/LIO%20Admin%20Manual.pdf</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  2007</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " waura's blog ",
+  "url" : "https://waura.github.io",
+  "image": "//avatars3.githubusercontent.com/u/99647",
+  "description": "waura's Thoughts and Writings"
+}
+</script>
+
+</body>
+</html>

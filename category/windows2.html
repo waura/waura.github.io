@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -113,8 +131,8 @@
   <span class="k">protected</span><span class="o">:</span>
     <span class="n">afx_msg</span> <span class="kt">void</span> <span class="n">OnMouseMove</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="n">CPoint</span> <span class="n">point</span><span class="p">);</span>
     <span class="n">LRESULT</span> <span class="nf">OnMouseHover</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wp …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
 </a>
   </div>
   <hr />
@@ -157,8 +175,8 @@ NM_CLICKを捕まえて、選択アイテムを取得するというやり方で
 <p>コード例は以下のようになる。</p>
 <div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
 <span class="k">if …</span></pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
 </a>
   </div>
   <hr />
@@ -178,9 +196,6 @@ NM_CLICKを捕まえて、選択アイテムを取得するというやり方で
 <p>GetOpenFileNameなどでダイアログを開くとカレントディレクトリが変わってしまうようです。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/%C1%EA%C2%D0%A5%D1%A5%B9">相対パス</a>で指定したファイルが開けない場合があったので調べてみると、上の通りでした。<br>
 何時間無駄にしたことやら･･･</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901151232037934.html#200901151232037934">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -200,9 +215,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 を行っておく。</p>
 <p><a href="http://d.hatena.ne.jp/keyword/MSDN">MSDN</a>:<br>
 <a href="http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx">http://msdn.microsoft.com/ja-jp/library/dz33x6wb(VS.71).aspx</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901071231340723.html#200901071231340723">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -220,9 +232,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
       <p>CViewのアクティブイベントは、CView::OnActivateView()で拾える。</p>
 <p>OnActivate()とかOnMDIActivate()とかOnNcActivate()だとだめだった。<br>
 調べてみたが結局OnActivateView()が正解みたいだ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200812231230038929.html#200812231230038929">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -239,9 +248,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
   <div>
       <p>CDocument::GetDefaultMenu()をオーバーライドし、<br>
 自分で作成したHMENUを返せばよい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200812221230038929.html#200812221230038929">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -265,9 +271,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 <p>参考リンク<br>
 <a href="http://support.microsoft.com/kb/172396/ja">http://support.microsoft.com/kb/172396/ja</a><br>
 <a href="http://lamoo.s53.xrea.com/develop/tips/dlltips.html">http://lamoo.s53.xrea.com/develop/tips/dlltips.html</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200811281227899513.html#200811281227899513">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -285,9 +288,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
       <p>__declspec(dllexport)
 をひとつもつけないでdllを<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>すると<br>
 インポートライブラリ(*.lib)を吐かない。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200811221227385060.html#200811221227385060">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -308,9 +308,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 <p><a href="http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm">http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm</a><br>
 ↑は、DLLとEXE側で、クラスのサイズが違ってたりすることがあるので、<br>
 DLL側でメモリの確保、開放をしたほうがいいよということらしい。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200809101221052880.html#200809101221052880">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -334,9 +331,6 @@ DLL側でメモリの確保、開放をしたほうがいいよということ�
 <p>これは、後から、StdAfx.cppを追加すると、デフォルトで「プリコンパイル済ヘッダの使用」になっているので起こるようだ。<br>
 ソリューションエクスプローラからStdAfx.cppを右クリック→プロパティーで「プリコンパイル済ヘッダの作成」に変更する。</p>
 <p>StdAfx.cppのみ、「プリコンパイル済ヘッダの作成」にすることで上手くいく様だ。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200809081220891447.html#200809081220891447">    Continue reading
-</a>
   </div>
 </article>
 

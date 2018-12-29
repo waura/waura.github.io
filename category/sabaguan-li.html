@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -66,10 +68,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -104,8 +122,8 @@ Disk /dev/loop0: <span class="m">4034</span> MB, <span class="m">4034838528</spa
 <span class="nv">Units</span> <span class="o">=</span> sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
 Disk identifier: 0x001c2022
 Device Boot      Start         End      Blocks   Id …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201004091270823038.html#201004091270823038">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201004091270823038.html#201004091270823038">    Continue reading
 </a>
   </div>
   <hr />
@@ -148,8 +166,8 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 
 <p>snmpdデーモンを再起動させます。</p>
 <div class="highlight"><pre><span></span> $ sudo /etc/init …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/201004031270264748.html#201004031270264748">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/201004031270264748.html#201004031270264748">    Continue reading
 </a>
   </div>
   <hr />
@@ -170,9 +188,6 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
  Urlはこんな感じで指定する。</p>
 <div class="highlight"><pre><span></span>[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200906281246189191.html#200906281246189191">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -207,9 +222,6 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
 <li>pushダイアログを開いてRemote
     repositoryにgitサーバの<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>を指定してpush</li>
 </ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200904201240227874.html#200904201240227874">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -243,8 +255,8 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <h2><a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
 <h2>ローカル<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
 <div class="highlight"><pre><span></span>$ mkdir -p …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200904141239716590.html#200904141239716590">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200904141239716590.html#200904141239716590">    Continue reading
 </a>
   </div>
   <hr />
@@ -270,9 +282,6 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <p>で、HDDの型番とシリアル番号をチェック。</p>
 <p>CCとかLCがシリアル番号に入ってたらセーフ<br>
 <a href="http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957">http://seagate.custkb.com/seagate/crm/selfservice/search.jsp?DocId=207957</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200901191232360978.html#200901191232360978">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -294,9 +303,6 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>は2.6.22.10でnfsrootをサポート、<a href="http://d.hatena.ne.jp/keyword/NIC">NIC</a>ドライバを組み込むようにした。<br>
 ルート<a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0">ファイルシステム</a>はdebootstrapでつくり、<a href="http://d.hatena.ne.jp/keyword/chroot">chroot</a>でいろいろ設定。</p>
 <p>動いてるのはCPUのファンだけなので結構静か。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200711181195406346.html#200711181195406346">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -316,9 +322,6 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <p><a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>は何とか復旧したものの<br>
 <a href="http://d.hatena.ne.jp/keyword/Samba">Samba</a>の方は。。。orz</p>
 <p>ついでにようやくsargeから<a href="http://d.hatena.ne.jp/keyword/etch">etch</a>へアップグレードした。。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200711031194114825.html#200711031194114825">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -345,8 +348,8 @@ max-lease-time 72000;
         option domain-name-servers (ルーターのIP);
         option routers (ルーターのIP);
         option broadcast-address 192.168 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200710291193673267.html#200710291193673267">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200710291193673267.html#200710291193673267">    Continue reading
 </a>
   </div>
   <hr />
@@ -371,9 +374,6 @@ max-lease-time 72000;
 <p><a href="http://90h.dip.jp/archives/2007/05/hgetch.html">http://90h.dip.jp/archives/2007/05/hgetch.html</a><br>
 ↑の方法でいけるみたいだ。<br>
 <a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>が2.6じゃないとだめなのか？</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200708141187191261.html#200708141187191261">    Continue reading
-</a>
   </div>
 </article>
 

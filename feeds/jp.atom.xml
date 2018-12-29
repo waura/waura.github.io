@@ -28,7 +28,215 @@ connection.autoconnect yesで起動時にNICが立ち上がるように設定し
 connection.autoconnect yesで起動時にNICが立ち上がるように設定しています。&lt;/p&gt;
 &lt;h3&gt;実行例&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# nmcli connection modify eth0 ipv4.addresses 192.168.1.65/24 ipv4.gateway 192.168.1.1 ipv4.dns 192.168.1.1 ipv4.method manual connection.autoconnect yes
-&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>2008年と2015年に組んだ省電力サーバーのベンチマーク比較</title><link href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html" rel="alternate"></link><published>2015-05-25T20:44:00+09:00</published><updated>2015-05-25T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2015-05-25:/atom330_vs_athlon5350_benchmark.html</id><summary type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>自宅SAN(Storage Area Network)の構築</title><link href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html" rel="alternate"></link><published>2018-03-30T19:58:00+09:00</published><updated>2018-03-30T19:58:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-03-30:/zi-zhai-sanstorage-area-networknogou-zhu.html</id><summary type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
+&lt;p&gt;仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
+ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
+そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。&lt;/p&gt;
+&lt;p&gt;今回は、自宅にSANを構築したので、その手順をまとめます。&lt;/p&gt;
+&lt;h1&gt;構成&lt;/h1&gt;
+&lt;p&gt;&lt;a href="./images/HomeSAN.png"&gt;&lt;img alt="HomeSAN" src="../images/HomeSAN.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。
+ターゲットとイニシエータには、&lt;a href="http://www.fibrechannelworks.com/QLE2560.asp"&gt;QLogicのQLE2560のHBA (Host Bus Adapter)&lt;/a&gt;をPCIeで刺しています。
+このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。&lt;/p&gt;
+&lt;p&gt;それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。
+HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。&lt;/p&gt;
+&lt;p&gt;私の場合は、LC - マルチモードのケーブルを使用しています。&lt;/p&gt;
+&lt;p&gt;ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。&lt;/p&gt;
+&lt;h1&gt;ターゲット側のセットアップ&lt;/h1&gt;
+&lt;h2&gt;ターゲットモードを有効にする&lt;/h2&gt;
+&lt;p&gt;QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。
+qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。
+qla2xxx向けの設定ファイルを新規で作成します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
+&lt;p&gt;仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
+ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
+そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。&lt;/p&gt;
+&lt;p&gt;今回は、自宅にSANを構築したので、その手順をまとめます。&lt;/p&gt;
+&lt;h1&gt;構成&lt;/h1&gt;
+&lt;p&gt;&lt;a href="./images/HomeSAN.png"&gt;&lt;img alt="HomeSAN" src="../images/HomeSAN.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ストレージを公開する側をターゲット、ストレージを使う側をイニシエータといいます。
+ターゲットとイニシエータには、&lt;a href="http://www.fibrechannelworks.com/QLE2560.asp"&gt;QLogicのQLE2560のHBA (Host Bus Adapter)&lt;/a&gt;をPCIeで刺しています。
+このボードは型が古いため運が良ければ一枚1,000円程度でヤフオクで取得できます。&lt;/p&gt;
+&lt;p&gt;それぞれのHBAはファイバーケーブルで接続します。ケーブルにはシンクルモードとマルチモードの違いがある他、コネクタ形状には、SCとLCという違いがあります。
+HBAに刺さっているSFPトランシーバーが対応しているものを使用する必要があります。&lt;/p&gt;
+&lt;p&gt;私の場合は、LC - マルチモードのケーブルを使用しています。&lt;/p&gt;
+&lt;p&gt;ターゲットとイニシエータには、Ubuntu 17.10をインストールしてあります。&lt;/p&gt;
+&lt;h1&gt;ターゲット側のセットアップ&lt;/h1&gt;
+&lt;h2&gt;ターゲットモードを有効にする&lt;/h2&gt;
+&lt;p&gt;QLE2560のボードを接続すると、自動でqla2xxxドライバーが読み込まれるはずです。
+qla2xxxはデフォルトでイニシィエータモードで動作するので、ターゲット側ではターゲットモードで動作するように設定を変更します。
+qla2xxx向けの設定ファイルを新規で作成します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vi /etc/modprobe.d/qla2xxx.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;記述する内容は下記のとおりです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;options qla2xxx qlini_mode=&amp;quot;disabled&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;initramfsの更新&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo update-initramfs -u
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;LVMの作成&lt;/h2&gt;
+&lt;p&gt;パーティションの拡張・縮小やディスク追加・交換を容易に行うためにLVM(Logical Volume Manager)を使って論理ボリュームを作成して、これを公開する構成にします。&lt;/p&gt;
+&lt;h3&gt;パーティションの作成&lt;/h3&gt;
+&lt;p&gt;fdiskでディスク1つの全領域をPrimaryパーティションを1つ作りました。
+TypeはLinux LVMにしてあります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo fdisk -l /dev/sdd
+Disk /dev/sdd: &lt;span class="m"&gt;223&lt;/span&gt;.6 GiB, &lt;span class="m"&gt;240057409536&lt;/span&gt; bytes, &lt;span class="m"&gt;468862128&lt;/span&gt; sectors
+Units: sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Disklabel type: dos
+Disk identifier: 0x3b9d0378
+
+Device     Boot Start       End   Sectors   Size Id Type
+/dev/sdd1        &lt;span class="m"&gt;2048&lt;/span&gt; &lt;span class="m"&gt;468862127&lt;/span&gt; &lt;span class="m"&gt;468860080&lt;/span&gt; &lt;span class="m"&gt;223&lt;/span&gt;.6G 8e Linux LVM
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;PV(物理ボリューム)の作成&lt;/h3&gt;
+&lt;p&gt;作成したパーティションでPVを作成します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo pvcreate /dev/sdd1
+  Physical volume &lt;span class="s2"&gt;&amp;quot;/dev/sdd1&amp;quot;&lt;/span&gt; successfully created.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;VG(ボリュームグループ)の作成&lt;/h3&gt;
+&lt;p&gt;新規でVGを作成します。
+VGの名前はsata3_ssd_vgにしてあります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vgcreate sata3_ssd_vg /dev/sdd1
+  Volume group &lt;span class="s2"&gt;&amp;quot;sata3_ssd_vg&amp;quot;&lt;/span&gt; successfully created
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;LV(論理ボリューム)の作成&lt;/h3&gt;
+&lt;p&gt;作成したVGからLVを切り出します。
+名前はfcで切り出すサイズはとりあえず200Gにしました。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo lvcreate -L 200G -n &lt;span class="nb"&gt;fc&lt;/span&gt;  sata3_ssd_vg
+  Logical volume &lt;span class="s2"&gt;&amp;quot;fc&amp;quot;&lt;/span&gt; created.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ここまでの手順で"/dev/mapper/sata3_ssd_vg-fc"が作られていると思います。&lt;/p&gt;
+&lt;h2&gt;LIOの設定&lt;/h2&gt;
+&lt;h3&gt;targetcliのインストール&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt install targetcli-fb
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;backstoreの登録&lt;/h3&gt;
+&lt;p&gt;LIOには、公開する論理・物理ストレージを管理しており、管理しているストレージをbackstoresと呼んでいます。
+このbackstoresに先程作成したLVMのボリュームを登録します。&lt;/p&gt;
+&lt;p&gt;登録は下記のコマンドで行います。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /backstores/block create &lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;fc&lt;/span&gt; &lt;span class="nv"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/mapper/sata3_ssd_vg-fc
+Created block storage object &lt;span class="nb"&gt;fc&lt;/span&gt; using /dev/mapper/sata3_ssd_vg-fc.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;下記のコマンドで管理されているbackstoresを見るとblockの下にfcが登録されているのがわかります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;targetcli&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;backstores&lt;/span&gt;
+&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;backstores&lt;/span&gt; &lt;span class="p"&gt;..............................................................................&lt;/span&gt; &lt;span class="p"&gt;[...]&lt;/span&gt;
+  &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="p"&gt;..................................................................&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Storage&lt;/span&gt; &lt;span class="nl"&gt;Objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;fc&lt;/span&gt; &lt;span class="p"&gt;........................&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sata3_ssd_vg&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;200.0&lt;/span&gt;&lt;span class="n"&gt;GiB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;thru&lt;/span&gt; &lt;span class="n"&gt;deactivated&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;fileio&lt;/span&gt; &lt;span class="p"&gt;.................................................................&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Storage&lt;/span&gt; &lt;span class="nl"&gt;Objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;pscsi&lt;/span&gt; &lt;span class="p"&gt;..................................................................&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Storage&lt;/span&gt; &lt;span class="nl"&gt;Objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;ramdisk&lt;/span&gt; &lt;span class="p"&gt;................................................................&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Storage&lt;/span&gt; &lt;span class="nl"&gt;Objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;LIOがサポートしているストレージデバイスの形式はblock、fileio、pscsi、ramdiskの4つです。
+blockはブロックデバイスを
+fileioは、マウントされたファイルシステム内のファイルを登録するときに使用します。ファイルシステムによる性能劣化があるのでテスト目的でのみ使用が奨励されています。
+pscsiは、SCSIコマンドをそのままデバイスに流すときに使用します。エミュレーションを使用していないのでSCSIデバイスのパフォーマンスを最大限に出せます。
+ramdiskは、SCSIエミュレーションを行うRAMディスクを使用する際に使用します。&lt;/p&gt;
+&lt;h3&gt;Fibre Channel Targetの設定&lt;/h3&gt;
+&lt;h4&gt;Fibre Channel Targetの作成&lt;/h4&gt;
+&lt;p&gt;HBAのWWNを調べる&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /qla2xxx info
+Fabric module name: qla2xxx
+ConfigFS path: /sys/kernel/config/target/qla2xxx
+Allowed WWN types: naa
+Allowed WWNs list: naa.21000024ff0634a8
+Fabric module features: acls
+Corresponding kernel module: tcm_qla2xxx
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;調べたWWNでFibre Channelターゲットを作成します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /qla2xxx create naa.21000024ff0634a8
+Created target naa.21000024ff0634a8.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;WWNの名前でターゲットができているのを確認します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /qla2xxx ls
+o- qla2xxx .......................................................................... &lt;span class="o"&gt;[&lt;/span&gt;Targets: &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  o- naa.21000024ff0634a8 ............................................................. &lt;span class="o"&gt;[&lt;/span&gt;gen-acls&lt;span class="o"&gt;]&lt;/span&gt;
+    o- acls ............................................................................ &lt;span class="o"&gt;[&lt;/span&gt;ACLs: &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+    o- luns ............................................................................ &lt;span class="o"&gt;[&lt;/span&gt;LUNs: &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;lunsは公開しているストレージ、aclsは公開を許可している相手のWWNを表しています。
+まだ、何も登録されていないので登録していきます。&lt;/p&gt;
+&lt;h4&gt;LUNの登録&lt;/h4&gt;
+&lt;p&gt;登録済みのbackstoreをlunsに追加します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /qla2xxx/naa.21000024ff0634a8/luns create /backstores/block/fc
+Created LUN &lt;span class="m"&gt;0&lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;イニシエータへのアクセス許可&lt;/h4&gt;
+&lt;p&gt;aclsに通信先になるイニシエータのWWN(World Wide Name)を登録します。
+このWWNは、EthernetのMACアドレスのようなものでHBAのポート1つに対し1つ割り当てられています。
+このFibre ChannelではこのWWNを使用して通信相手を識別します。
+イニシエータになるマシン上で同様にtargetcliを使用してWWNを調べて、aclsに追加します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli /qla2xxx/naa.21000024ff0634a8/acls create 21000024ff063657
+Created Node ACL &lt;span class="k"&gt;for&lt;/span&gt; naa.21000024ff063657
+Created mapped LUN &lt;span class="m"&gt;0&lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;設定の保存&lt;/h4&gt;
+&lt;p&gt;再起動後も設定を有効にさせるために下記コマンドで保存します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo targetcli / saveconfig
+Last &lt;span class="m"&gt;10&lt;/span&gt; configs saved in /etc/rtslib-fb-target/backup.
+Configuration saved to /etc/rtslib-fb-target/saveconfig.json
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;イニシエータ側のセットアップ&lt;/h1&gt;
+&lt;h2&gt;ターゲット側で公開されているLUNを再スキャン&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# echo 1 &amp;gt; /sys/class/fc_host/host9/issue_lip
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[    3.138509] scsi 9:0:0:0: Direct-Access     LIO-ORG  fc               4.0  PQ: 0 ANSI: 5
+[    3.180932] sd 9:0:0:0: Attached scsi generic sg0 type 0
+[    3.181678] sd 9:0:0:0: [sda] 419430400 512-byte logical blocks: (215 GB/200 GiB)
+[    3.181789] sd 9:0:0:0: [sda] Write Protect is off
+[    3.181790] sd 9:0:0:0: [sda] Mode Sense: 43 00 10 08
+[    3.181943] sd 9:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[    3.184574] sd 9:0:0:0: [sda] Attached SCSI disk
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;/dev/sda としてターゲット側で公開しているストレージが見えています。&lt;/p&gt;
+&lt;h2&gt;フォーマット&lt;/h2&gt;
+&lt;p&gt;通常のディスクと同様にフォーマットして使用します。
+今回はext4でフォーマットします。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mkfs.ext4 /dev/sda
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;フォーマット後は、マウントして使用することができます。&lt;/p&gt;
+&lt;h1&gt;参考&lt;/h1&gt;
+&lt;p&gt;http://linux-iscsi.org/wiki/Fibre_Channel
+http://www.linux-iscsi.org/Doc/LIO%20Admin%20Manual.pdf&lt;/p&gt;</content><category term="サーバー管理"></category></entry><entry><title>2008年と2015年に組んだ省電力サーバーのベンチマーク比較</title><link href="https://waura.github.io/atom330_vs_athlon5350_benchmark.html" rel="alternate"></link><published>2015-05-25T20:44:00+09:00</published><updated>2015-05-25T20:44:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2015-05-25:/atom330_vs_athlon5350_benchmark.html</id><summary type="html">&lt;h2&gt;はじめに&lt;/h2&gt;
 &lt;p&gt;サーバーを新しく組んだので、ベンチマークの比較をしてみます。&lt;br&gt;
 比較対象サーバーの構成の比較は下記のとおりです。&lt;/p&gt;
 &lt;table&gt;

@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
 
   <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
-  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
 
 
     <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
@@ -65,10 +67,26 @@
 <p>Software Engineer</p>
 
       <ul class="social">
-        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/waura" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a class="sc-twitter" href="https://twitter.com/waura8" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
       </ul>
     </div>
 
@@ -79,6 +97,51 @@
 
 
 
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200908061249511852.html#200908061249511852">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h2>
+    <p>
+          Posted on Thu 06 August 2009 in <a href="https://waura.github.io/category/ruby.html">Ruby</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>Hprocotを利用して、HTMLページでaタグのhref属性でリンクされているファイルを抜き出すスクリプトを書いてみた。<br>
+リンクされているのが同じホスト内のhtmlならそのhtmlもパースします。</p>
+<div class="highlight"><pre><span></span><span class="ch">#!ruby -Ks</span>
+<span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;hpricot&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
+<span class="k">class</span> <span class="nc">GetWebFile</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+    <span class="vi">@file_ary</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">parse_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">root_uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">begin</span>
+      <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+      <span class="k">begin</span>
+        <span class="n">timeout</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+          <span class="n">doc</span> <span class="o">=</span> <span class="no">Hpricot</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="p">}</span>
+        <span class="k">rescue</span> <span class="no">TimeoutError</span> <span class="o">=&gt;</span> <span class="n">to</span>
+          <span class="nb">warn</span> <span class="n">to</span>
+        <span class="k">return</span>
+      <span class="k">end</span>
+
+      <span class="p">(</span><span class="n">doc</span><span class="o">/</span><span class="s2">&quot;a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">atag</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">atag</span><span class="o">[</span><span class="s1">&#39;href&#39;</span><span class="o">].</span><span class="n">nil …</span></pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200908061249511852.html#200908061249511852">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
 <article>
   <header>
     <h2><a href="https://waura.github.io/200908051249477353.html#200908051249477353">バックアップファイルが作成されるディレクトリの指定</a></h2>
@@ -96,9 +159,6 @@
 (setq *backup-directory* &quot;D:/backup/&quot;)
 (setq *hierarchic-backup-directory* t)
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908051249477353.html#200908051249477353">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -136,8 +196,8 @@
 <ul>
 <li>カラーモード<ul>
 <li>0 Bitmap …</li></ul></li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200908021249208355.html#200908021249208355">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200908021249208355.html#200908021249208355">    Continue reading
 </a>
   </div>
   <hr />
@@ -158,9 +218,6 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
  Urlはこんな感じで指定する。</p>
 <div class="highlight"><pre><span></span>[ssh](http://d.hatena.ne.jp/keyword/ssh)://@:/var/repos/hogehoge.git
 </pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200906281246189191.html#200906281246189191">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -195,9 +252,6 @@ Git Extensionsで使用する<a href="http://d.hatena.ne.jp/keyword/ssh">ssh</a>
 <li>pushダイアログを開いてRemote
     repositoryにgitサーバの<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>を指定してpush</li>
 </ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200904201240227874.html#200904201240227874">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -231,9 +285,6 @@ foo.txt
 <p>[Add default]ボタンを押すと、大抵の邪魔なファイルを取り除くように設定される。</p>
 <h2>参考</h2>
 <p><a href="http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files">http://www8.atwiki.jp/git_jp/pub/Documentation.ja/user-manual.html#ignoring-files</a></p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200904141239716589.html#200904141239716589">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -267,8 +318,8 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <h2><a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
 <h2>ローカル<a href="http://d.hatena.ne.jp/keyword/%A5%EA%A5%DD%A5%B8%A5%C8%A5%EA">リポジトリ</a>の作成</h2>
 <div class="highlight"><pre><span></span>$ mkdir -p …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200904141239716590.html#200904141239716590">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200904141239716590.html#200904141239716590">    Continue reading
 </a>
   </div>
   <hr />
@@ -298,9 +349,6 @@ Exporterというのがあるのだが、、、<br>
 <a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm">http://www.dstorm.co.jp/products/lw8/developer/game/index.htm</a></p>
 <p>DirectX10で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので<br>
 <a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>にこだわることも無いのかもしれない。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200902111234333888.html#200902111234333888">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -334,9 +382,6 @@ Exporterというのがあるのだが、、、<br>
 <p>SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。<br>
 AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって<br>
 スキンメッシュを実装します。</p>
-      <br>
-      <a class="btn" href="https://waura.github.io/200902071233968785.html#200902071233968785">    Continue reading
-</a>
   </div>
   <hr />
 </article>
@@ -377,46 +422,8 @@ AnimationKey内のキータイプが0の場合は回転、1の場合はスケー
 <li>スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています</li>
 <li>平行移動の場合は、x,y,zの順で平行移動値データが格納されています</li>
 <li>変換行列の場合は、4x4の回転 …</li></ul>
-      <br>
-      <a class="btn" href="https://waura.github.io/200902051233792037.html#200902051233792037">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200902041233704553.html#200902041233704553">Xファイルのフォーマット(3)</a></h2>
-    <p>
-          Posted on Wed 04 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
-<a href="200703251174775823.html">Xファイルのフォーマット(2)</a></p>
-<p>学校の課題で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のアニメーションを<a href="http://d.hatena.ne.jp/keyword/OpenGL">OpenGL</a>で再生することになりそうなので、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のフォーマットの続きをまとめてみる。</p>
-<p>今回はフレームについて、<br>
-フレームは、メッシュの階層構造をあらわしたり、スキンメッシュにおけるボーンをあらわしたりします。<br>
-フレームの形式はは、このようになっている。</p>
-<div class="highlight"><pre><span></span><span class="n">Frame</span> <span class="n">Aframe</span> <span class="p">{</span> <span class="c1">// 名前を持つ場合もある、この場合はAframeがこのフレームの名前である。</span>
-    <span class="n">FrameTransformMatrix</span> <span class="p">{</span>
-        <span class="mi">4</span><span class="n">x4</span><span class="err">行列</span>
-    <span class="p">}</span>
-    <span class="p">[</span> <span class="n">Meshes</span> <span class="p">]</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="p">[</span> <span class="n">More</span> <span class="n">frames</span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<p>[フレームは、4x4行列1つを必ず持ち、メッシュを0\~N個、子フレームを0\~N個持ちます。<br>
-行列は、自分の空間から親の空間へ、座標変換を行うときに使用します。</p>
-<p>最小のフレームを持つXファイルの形式は以下のようになります。</p>
-<div class="highlight"><pre><span></span>Frame {
-    FrameTransformMatrix { //単位行列なので変換は行わない
-        1.0, 0.0, 0.0, 0 …</pre></div>
-      <br>
-      <a class="btn" href="https://waura.github.io/200902041233704553.html#200902041233704553">    Continue reading
+        <br>
+        <a class="btn" href="https://waura.github.io/200902051233792037.html#200902051233792037">    Continue reading
 </a>
   </div>
 </article>
