@@ -117,11 +117,37 @@
 <p>今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。</p>
 <h1>回路図</h1>
 <p>i2c_toolsの<a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools">README.md</a>によるとデフォルトのピンアサインは下記のようになっています。
-ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
-|                  | SDA    | SCL    | GND  | Other | VCC  |
-| ---------------- | ------ | ------ | ---- | ----- | ---- |
-| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
-| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |</p>
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SDA</th>
+<th>SCL</th>
+<th>GND</th>
+<th>Other</th>
+<th>VCC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ESP32 I2C Master</td>
+<td>GPIO18</td>
+<td>GPIO19</td>
+<td>GND</td>
+<td>GND</td>
+<td>3.3V</td>
+</tr>
+<tr>
+<td>Sensor</td>
+<td>SDA</td>
+<td>SCL</td>
+<td>GND</td>
+<td>WAK</td>
+<td>VCC</td>
+</tr>
+</tbody>
+</table>
 <p>このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。</p>
 <p>下記のように接続しました …</p>
         <br>

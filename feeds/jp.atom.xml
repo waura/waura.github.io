@@ -5,11 +5,37 @@
 &lt;p&gt;今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。&lt;/p&gt;
 &lt;h1&gt;回路図&lt;/h1&gt;
 &lt;p&gt;i2c_toolsの&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;README.md&lt;/a&gt;によるとデフォルトのピンアサインは下記のようになっています。
-ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
-|                  | SDA    | SCL    | GND  | Other | VCC  |
-| ---------------- | ------ | ------ | ---- | ----- | ---- |
-| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
-| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |&lt;/p&gt;
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;SDA&lt;/th&gt;
+&lt;th&gt;SCL&lt;/th&gt;
+&lt;th&gt;GND&lt;/th&gt;
+&lt;th&gt;Other&lt;/th&gt;
+&lt;th&gt;VCC&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ESP32 I2C Master&lt;/td&gt;
+&lt;td&gt;GPIO18&lt;/td&gt;
+&lt;td&gt;GPIO19&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;3.3V&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sensor&lt;/td&gt;
+&lt;td&gt;SDA&lt;/td&gt;
+&lt;td&gt;SCL&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;WAK&lt;/td&gt;
+&lt;td&gt;VCC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。&lt;/p&gt;
 &lt;p&gt;下記のように接続しました …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
 &lt;p&gt;I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。&lt;/p&gt;
@@ -17,11 +43,37 @@ ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側の
 &lt;p&gt;今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。&lt;/p&gt;
 &lt;h1&gt;回路図&lt;/h1&gt;
 &lt;p&gt;i2c_toolsの&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;README.md&lt;/a&gt;によるとデフォルトのピンアサインは下記のようになっています。
-ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
-|                  | SDA    | SCL    | GND  | Other | VCC  |
-| ---------------- | ------ | ------ | ---- | ----- | ---- |
-| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
-| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |&lt;/p&gt;
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;SDA&lt;/th&gt;
+&lt;th&gt;SCL&lt;/th&gt;
+&lt;th&gt;GND&lt;/th&gt;
+&lt;th&gt;Other&lt;/th&gt;
+&lt;th&gt;VCC&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ESP32 I2C Master&lt;/td&gt;
+&lt;td&gt;GPIO18&lt;/td&gt;
+&lt;td&gt;GPIO19&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;3.3V&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sensor&lt;/td&gt;
+&lt;td&gt;SDA&lt;/td&gt;
+&lt;td&gt;SCL&lt;/td&gt;
+&lt;td&gt;GND&lt;/td&gt;
+&lt;td&gt;WAK&lt;/td&gt;
+&lt;td&gt;VCC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。&lt;/p&gt;
 &lt;p&gt;下記のように接続しました。&lt;/p&gt;
 &lt;p&gt;&lt;a href="../images/esp32/ESP32-BME280.png"&gt;&lt;img alt="" src="../images/esp32/ESP32-BME280.png"&gt;&lt;/a&gt;&lt;/p&gt;
