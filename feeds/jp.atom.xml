@@ -1,5 +1,320 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - JP</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/jp.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2018-12-29T21:36:00+09:00</updated><entry><title>自宅SAN(Storage Area Network)の構築</title><link href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html" rel="alternate"></link><published>2018-12-29T21:36:00+09:00</published><updated>2018-12-29T21:36:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-12-29:/zi-zhai-sanstorage-area-networknogou-zhu.html</id><summary type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>waura's blog - JP</title><link href="https://waura.github.io/" rel="alternate"></link><link href="https://waura.github.io/feeds/jp.atom.xml" rel="self"></link><id>https://waura.github.io/</id><updated>2019-03-31T22:00:00+09:00</updated><entry><title>ESP32-DevKitCでI2C接続が正しくできていることを確認する</title><link href="https://waura.github.io/esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru.html" rel="alternate"></link><published>2019-03-31T22:00:00+09:00</published><updated>2019-03-31T22:00:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2019-03-31:/esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru.html</id><summary type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+&lt;p&gt;I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。&lt;/p&gt;
+&lt;p&gt;ESP-IDFに便利なツール(&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;i2c_tools&lt;/a&gt;)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。&lt;/p&gt;
+&lt;p&gt;今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。&lt;/p&gt;
+&lt;h1&gt;回路図&lt;/h1&gt;
+&lt;p&gt;i2c_toolsの&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;README.md&lt;/a&gt;によるとデフォルトのピンアサインは下記のようになっています。
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
+|                  | SDA    | SCL    | GND  | Other | VCC  |
+| ---------------- | ------ | ------ | ---- | ----- | ---- |
+| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
+| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |&lt;/p&gt;
+&lt;p&gt;このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。&lt;/p&gt;
+&lt;p&gt;下記のように接続しました …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+&lt;p&gt;I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。&lt;/p&gt;
+&lt;p&gt;ESP-IDFに便利なツール(&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;i2c_tools&lt;/a&gt;)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。&lt;/p&gt;
+&lt;p&gt;今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。&lt;/p&gt;
+&lt;h1&gt;回路図&lt;/h1&gt;
+&lt;p&gt;i2c_toolsの&lt;a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools"&gt;README.md&lt;/a&gt;によるとデフォルトのピンアサインは下記のようになっています。
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
+|                  | SDA    | SCL    | GND  | Other | VCC  |
+| ---------------- | ------ | ------ | ---- | ----- | ---- |
+| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
+| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |&lt;/p&gt;
+&lt;p&gt;このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。&lt;/p&gt;
+&lt;p&gt;下記のように接続しました。&lt;/p&gt;
+&lt;p&gt;&lt;a href="../images/esp32/ESP32-BME280.png"&gt;&lt;img alt="" src="../images/esp32/ESP32-BME280.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;ESP-IDFのセットアップとi2c_toolsのビルド・書き込み&lt;/h1&gt;
+&lt;h2&gt;ESP-IDFの取得&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone https://github.com/espressif/esp-idf.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;i2c_toolsのビルド設定&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;IDF_PATH&lt;/span&gt;&lt;span class="o"&gt;=(&lt;/span&gt;git cloneしたesp-idfのディレクトリパスを指定&lt;span class="o"&gt;)&lt;/span&gt;
+$ &lt;span class="nb"&gt;cd&lt;/span&gt; esp-idf/examples/peripherals/i2c/i2c_tools
+$ make menuconfig
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;/dev/ttyUSB0 を
+/dev/cu.SLAB_USBtoUART&lt;/p&gt;
+&lt;h2&gt;i2c_toolsのビルド・転送&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make -j4 flash monitor
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;I2Cバスに接続されているデバイスのアドレスをチェックする&lt;/h1&gt;
+&lt;p&gt;i2cdetectコマンドでI2Cバスに接続されているデバイスのアドレスを取得できます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is changeable by SDO value and can be changed during operation. Connecting SDO to GND results n slave address 1110110 (0x76); connection it to VDDIO results in slave address 1110111 (0x77), which is the same as BMP280’s I²C address. The SDO pin cannot be left loating;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;データシート &lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt; には、SDOにGNDを接続した場合は0x76、VDDIOを接続した場合は0x77のアドレスになると記載があります。
+BME280のSDOにGNDを接続しているので、アドレスは0x76で取得できるはずです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;esp32&amp;gt; i2cdetect
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+70: -- -- -- -- -- -- 76 -- -- -- -- -- -- -- -- --
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;正常に0x76が取得できています。&lt;/p&gt;
+&lt;h1&gt;レジスタを読む&lt;/h1&gt;
+&lt;p&gt;レジスタを読むには、i2cgetコマンドを使用します。&lt;/p&gt;
+&lt;p&gt;チップのIDを取得してみます。BME280の場合は0x60が返ってくるはずです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;esp32&amp;gt; i2cget -c 0x76 -r 0xd0 -l 1
+0x60
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;正しく返ってきているのが確認できました。&lt;/p&gt;
+&lt;h1&gt;レジスタに書き込む&lt;/h1&gt;
+&lt;p&gt;今回は使用しませんでしたが、レジスタに書き込むにはi2csetコマンドを使用します。&lt;/p&gt;
+&lt;h1&gt;まとめ&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;ESP32-DevKitCでI2C接続回路が正しく組めているか確認するにはi2c_toolsが便利です&lt;/li&gt;
+&lt;li&gt;i2c_toolsでは、I2Cバスに接続されているデバイスの検知、レジスタの読み書きが可能です&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;&lt;a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf"&gt;BME280–Data sheet&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="ESP32"></category></entry><entry><title>ESP32でAmazon FreeRTOSを使用してLEDをチカチカさせてみた</title><link href="https://waura.github.io/esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita.html" rel="alternate"></link><published>2019-03-19T22:00:00+09:00</published><updated>2019-03-19T22:00:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2019-03-19:/esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita.html</id><summary type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+&lt;p&gt;ESP32でAmazon FreeRTOSを使ってLEDチカチカさせる手順についてまとめます。&lt;/p&gt;
+&lt;p&gt;下記の公式ドキュメント等を参照してESP32にfirmwareの転送しMQTTのPublishができていることを前提としています。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://docs.aws.amazon.com/ja_jp/freertos/latest/userguide/getting_started_espressif.html"&gt;Espressif ESP32-DevKitC と ESP-WROVER-KIT の開始方法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;デモのesp32_devkitc_esp_wrover_kitに手を加える形でLチカを実現します。&lt;/p&gt;
+&lt;h1&gt;ESP32でのGPIOの操作について&lt;/h1&gt;
+&lt;p&gt;ESP32向けの公式ライブラリとして&lt;a href="https://docs.espressif.com/projects/esp-idf/en/latest/"&gt;ESP-IDF&lt;/a&gt;が用意されています。
+ESP-IDFはAmazon FreeRTOSに組み込まれているので、これを利用してGPIOを操作します。&lt;/p&gt;
+&lt;p&gt;ESP-IDFを使用したGPIOの操作に関しては、ESP-IDFのリファレンス(&lt;a href="https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/peripherals/gpio.html"&gt;API Reference - Peripherals API - GPIO &amp;amp; RTC GPIO&lt;/a&gt;)に説明があります。&lt;/p&gt;
+&lt;p&gt;また、サンプルコードもGitHub(&lt;a href="https://github.com/espressif/esp-idf/tree/cf5dbadf4f25b395887238a7d4d8251c279afa8c/examples/peripherals/gpio"&gt;ESP-IDF GPIO Sample&lt;/a&gt;)で公開されています。&lt;/p&gt;
+&lt;h1&gt;回路構成&lt;/h1&gt;
+&lt;p&gt;GPIO4を制御してLEDをチカチカさせることにします。
+GPIO4とGNDの間にLEDと抵抗を入れてつなぎます。抵抗の大きさは適当です。&lt;/p&gt;
+&lt;p&gt;&lt;a href="../images/esp32/ESP32-LED.png"&gt;&lt;img alt="" src="../images/esp32/ESP32-LED.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;コードの修正&lt;/h1&gt;
+&lt;p&gt;esp32_devkitc_esp_wrover_kitのコードの修正を行います。
+書き換え対象は、&lt;a href="https://github.com/aws/amazon-freertos/blob/master/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c"&gt;amazon-freertos/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c&lt;/a&gt; です。&lt;/p&gt;
+&lt;p&gt;元々のサンプルコードはDEMO_RUNNER_RunDemos …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+&lt;p&gt;ESP32でAmazon FreeRTOSを使ってLEDチカチカさせる手順についてまとめます。&lt;/p&gt;
+&lt;p&gt;下記の公式ドキュメント等を参照してESP32にfirmwareの転送しMQTTのPublishができていることを前提としています。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://docs.aws.amazon.com/ja_jp/freertos/latest/userguide/getting_started_espressif.html"&gt;Espressif ESP32-DevKitC と ESP-WROVER-KIT の開始方法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;デモのesp32_devkitc_esp_wrover_kitに手を加える形でLチカを実現します。&lt;/p&gt;
+&lt;h1&gt;ESP32でのGPIOの操作について&lt;/h1&gt;
+&lt;p&gt;ESP32向けの公式ライブラリとして&lt;a href="https://docs.espressif.com/projects/esp-idf/en/latest/"&gt;ESP-IDF&lt;/a&gt;が用意されています。
+ESP-IDFはAmazon FreeRTOSに組み込まれているので、これを利用してGPIOを操作します。&lt;/p&gt;
+&lt;p&gt;ESP-IDFを使用したGPIOの操作に関しては、ESP-IDFのリファレンス(&lt;a href="https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/peripherals/gpio.html"&gt;API Reference - Peripherals API - GPIO &amp;amp; RTC GPIO&lt;/a&gt;)に説明があります。&lt;/p&gt;
+&lt;p&gt;また、サンプルコードもGitHub(&lt;a href="https://github.com/espressif/esp-idf/tree/cf5dbadf4f25b395887238a7d4d8251c279afa8c/examples/peripherals/gpio"&gt;ESP-IDF GPIO Sample&lt;/a&gt;)で公開されています。&lt;/p&gt;
+&lt;h1&gt;回路構成&lt;/h1&gt;
+&lt;p&gt;GPIO4を制御してLEDをチカチカさせることにします。
+GPIO4とGNDの間にLEDと抵抗を入れてつなぎます。抵抗の大きさは適当です。&lt;/p&gt;
+&lt;p&gt;&lt;a href="../images/esp32/ESP32-LED.png"&gt;&lt;img alt="" src="../images/esp32/ESP32-LED.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;コードの修正&lt;/h1&gt;
+&lt;p&gt;esp32_devkitc_esp_wrover_kitのコードの修正を行います。
+書き換え対象は、&lt;a href="https://github.com/aws/amazon-freertos/blob/master/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c"&gt;amazon-freertos/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c&lt;/a&gt; です。&lt;/p&gt;
+&lt;p&gt;元々のサンプルコードはDEMO_RUNNER_RunDemos()でMQTTの通信を行っていましたが、そこをコメントアウトしてかわりにLチカのコードを追加します。&lt;/p&gt;
+&lt;h2&gt;変更前&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  /* Run all demos. */
+  DEMO_RUNNER_RunDemos();
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;変更後&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  /* Run all demos. */
+  //DEMO_RUNNER_RunDemos();
+
+  gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
+  int cnt = 0;
+  while (true) {
+      gpio_set_level(GPIO_NUM_4, cnt++ % 2);
+      vTaskDelay(1000 / portTICK_PERIOD_MS);
+  }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;実行結果&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://www.youtube.com/watch?v=aUuxzuNsgTo"&gt;&lt;img alt="Lチカ" src="https://img.youtube.com/vi/aUuxzuNsgTo/0.jpg"&gt;&lt;/a&gt;&lt;/p&gt;</content><category term="AWS"></category></entry><entry><title>Cisco Catalyst 2960L を使用したリンクアグリゲーションの設定</title><link href="https://waura.github.io/cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding.html" rel="alternate"></link><published>2019-01-14T21:36:00+09:00</published><updated>2019-01-14T21:36:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2019-01-14:/cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding.html</id><summary type="html">&lt;h1&gt;ファイルサーバーとL2スィッチ間のリンクアグリゲーションを設定する&lt;/h1&gt;
+&lt;p&gt;自宅用に&lt;a href="https://www.cisco.com/c/en/us/products/switches/catalyst-2960-l-series-switches/index.html"&gt;Cisco Catalyst 2960L&lt;/a&gt;を手に入れました。
+このL2スイッチではリンクアグリゲーションを設定することができるので、ファイルサーバーとスイッチ間でリンクアグリゲーションを設定します。&lt;/p&gt;
+&lt;p&gt;これにより、帯域を増やすことができ複数のクライアントが同時にアクセスしてもパフォーマンスの低下を防げることが期待できます。&lt;/p&gt;
+&lt;h2&gt;リンクアグリゲーションとは&lt;/h2&gt;
+&lt;p&gt;リンクアグリゲーション(IEEE 802.3ad)とは、複数の物理リンクをまとめて1本の論理リンクとして扱うことの技術です。
+物理リンクの本数分の帯域を増やすことができる他、複数本の物理リンクが切断されてしまっても残りのリンクで通信を継続できるため、耐障害性も向上します。&lt;/p&gt;
+&lt;p&gt;CiscoではEtherCahnnelと呼ばれています。&lt;/p&gt;
+&lt;h2&gt;構成&lt;/h2&gt;
+&lt;p&gt;&lt;a href="./images/link_aggregatoin.png"&gt;&lt;img alt="link_aggregation" src="../images/link_aggregation.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;上記のようにファイルサーバーとスイッチ間を2本のLANケーブルで接続します。
+ファイルサーバー側のLANポート2つと、スイッチ側のLANポート2つを、それぞれ接続します。&lt;/p&gt;
+&lt;h1&gt;設定&lt;/h1&gt;
+&lt;h2&gt;ファイルサーバー側&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://netplan.io/"&gt;Netplan&lt;/a&gt;を使用して設定を行います。
+enp0s31f6とenp8s0の2つのポートをまとめたbond0というdeviceを作成します。
+modeは、IEEE802.3ad準拠で通信できるよう"802.3ad"を設定しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vi /etc/netplan/01-netcfg.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# This file describes the …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;ファイルサーバーとL2スィッチ間のリンクアグリゲーションを設定する&lt;/h1&gt;
+&lt;p&gt;自宅用に&lt;a href="https://www.cisco.com/c/en/us/products/switches/catalyst-2960-l-series-switches/index.html"&gt;Cisco Catalyst 2960L&lt;/a&gt;を手に入れました。
+このL2スイッチではリンクアグリゲーションを設定することができるので、ファイルサーバーとスイッチ間でリンクアグリゲーションを設定します。&lt;/p&gt;
+&lt;p&gt;これにより、帯域を増やすことができ複数のクライアントが同時にアクセスしてもパフォーマンスの低下を防げることが期待できます。&lt;/p&gt;
+&lt;h2&gt;リンクアグリゲーションとは&lt;/h2&gt;
+&lt;p&gt;リンクアグリゲーション(IEEE 802.3ad)とは、複数の物理リンクをまとめて1本の論理リンクとして扱うことの技術です。
+物理リンクの本数分の帯域を増やすことができる他、複数本の物理リンクが切断されてしまっても残りのリンクで通信を継続できるため、耐障害性も向上します。&lt;/p&gt;
+&lt;p&gt;CiscoではEtherCahnnelと呼ばれています。&lt;/p&gt;
+&lt;h2&gt;構成&lt;/h2&gt;
+&lt;p&gt;&lt;a href="./images/link_aggregatoin.png"&gt;&lt;img alt="link_aggregation" src="../images/link_aggregation.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;上記のようにファイルサーバーとスイッチ間を2本のLANケーブルで接続します。
+ファイルサーバー側のLANポート2つと、スイッチ側のLANポート2つを、それぞれ接続します。&lt;/p&gt;
+&lt;h1&gt;設定&lt;/h1&gt;
+&lt;h2&gt;ファイルサーバー側&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://netplan.io/"&gt;Netplan&lt;/a&gt;を使用して設定を行います。
+enp0s31f6とenp8s0の2つのポートをまとめたbond0というdeviceを作成します。
+modeは、IEEE802.3ad準拠で通信できるよう"802.3ad"を設定しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo vi /etc/netplan/01-netcfg.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s31f6:
+      dhcp4: false
+      dhcp6: false
+    enp8s0:
+      dhcp4: false
+      dhcp6: false
+  bonds:
+    bond0:
+      dhcp4: false
+      dhcp6: false
+      interfaces:
+        - enp0s31f6
+        - enp8s0
+      addresses: [192.168.1.2/24]
+      gateway4: 192.168.1.1
+      parameters:
+        mode: 802.3ad
+        lacp-rate: fast
+        mii-monitor-interval: 100
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参考URL:
+ - &lt;a href="https://netplan.io/examples#bonding"&gt;Netplan configuration examples - Bonding&lt;/a&gt;
+ - &lt;a href="https://netplan.io/reference#properties-for-device-type-bonds"&gt;Netplan reference - Properties for device type bonds&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;設定ファイル編集後、変更を下記コマンドで適用します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo netplan apply
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;L2スイッチ側&lt;/h2&gt;
+&lt;p&gt;Catalyst 2960L 側の設定です。
+グローバルコンフィグレーションモードへ移行し、Gi0/1とGi0/2のポートを指定しインターフェースコンフィグレーションモードに移行します。&lt;/p&gt;
+&lt;p&gt;switchportコマンドでレイヤー2のポートに設定し、channel-groupコマンドでリンクアグリゲーション(EtherChannel)を形成するように設定します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Switch&amp;gt; enable
+Switch# configure terminal
+Switch(config)#interface range Gi0/1,Gi0/2
+Switch(config-if-range)#switchport
+Switch(config-if-range)#channel-group 1 mode active
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;パフォーマンス測定&lt;/h1&gt;
+&lt;h2&gt;リンクアグリゲーション設定前&lt;/h2&gt;
+&lt;h3&gt;クライアント1台で計測&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;% iperf3 -c 192.168.1.2 -p 18080&lt;/span&gt;
+&lt;span class="c"&gt;...&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;ID&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;Interval&lt;/span&gt;           &lt;span class="n"&gt;Transfer&lt;/span&gt;     &lt;span class="n"&gt;Bitrate&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;  &lt;span class="mf"&gt;1.09&lt;/span&gt; &lt;span class="n"&gt;GBytes&lt;/span&gt;   &lt;span class="mi"&gt;939&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;sender&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;  &lt;span class="mf"&gt;1.09&lt;/span&gt; &lt;span class="n"&gt;GBytes&lt;/span&gt;   &lt;span class="mi"&gt;938&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;receiver&lt;/span&gt;
+
+&lt;span class="n"&gt;iperf&lt;/span&gt; &lt;span class="n"&gt;Done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;まずは、リンクアグリゲーション設定前の帯域を計測してみます。
+1GbpsのLANを構築しているので、大体そのぐらいの結果が出ていることをわかります。&lt;/p&gt;
+&lt;h3&gt;クライアント2台で計測&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# iperf3 -c 192.168.1.2 -p 18081
+...
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec   629 MBytes   528 Mbits/sec  2036             sender
+[  4]   0.00-10.00  sec   629 MBytes   527 Mbits/sec                  receiver
+
+iperf Done.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;% iperf3 -c 192.168.1.2 -p 18080&lt;/span&gt;
+&lt;span class="c"&gt;...&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;ID&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;Interval&lt;/span&gt;           &lt;span class="n"&gt;Transfer&lt;/span&gt;     &lt;span class="n"&gt;Bitrate&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;   &lt;span class="mi"&gt;538&lt;/span&gt; &lt;span class="n"&gt;MBytes&lt;/span&gt;   &lt;span class="mi"&gt;451&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;sender&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;   &lt;span class="mi"&gt;538&lt;/span&gt; &lt;span class="n"&gt;MBytes&lt;/span&gt;   &lt;span class="mi"&gt;451&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;receiver&lt;/span&gt;
+
+&lt;span class="n"&gt;iperf&lt;/span&gt; &lt;span class="n"&gt;Done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;今度は、クライアント2台から同時にパケットを送信して帯域を計測してみます。
+1Gbpsある帯域をそれぞれのクライアントで分け合う結果となります。&lt;/p&gt;
+&lt;h2&gt;リンクアグリゲーション設定後&lt;/h2&gt;
+&lt;h3&gt;クライアント2台で計測&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# iperf3 -c 192.168.1.2 -p 18081
+...
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  1.10 GBytes   942 Mbits/sec    0             sender
+[  4]   0.00-10.00  sec  1.10 GBytes   941 Mbits/sec                  receiver
+
+iperf Done.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;% iperf3 -c 192.168.1.2 -p 18080&lt;/span&gt;
+&lt;span class="c"&gt;...&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;ID&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;Interval&lt;/span&gt;           &lt;span class="n"&gt;Transfer&lt;/span&gt;     &lt;span class="n"&gt;Bitrate&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;  &lt;span class="mf"&gt;1.10&lt;/span&gt; &lt;span class="n"&gt;GBytes&lt;/span&gt;   &lt;span class="mi"&gt;942&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;sender&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;   &lt;span class="mf"&gt;0.00&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.00&lt;/span&gt;  &lt;span class="nb"&gt;sec&lt;/span&gt;  &lt;span class="mf"&gt;1.10&lt;/span&gt; &lt;span class="n"&gt;GBytes&lt;/span&gt;   &lt;span class="mi"&gt;941&lt;/span&gt; &lt;span class="n"&gt;Mbits&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;sec&lt;/span&gt;                  &lt;span class="n"&gt;receiver&lt;/span&gt;
+
+&lt;span class="n"&gt;iperf&lt;/span&gt; &lt;span class="n"&gt;Done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;リンクアグリゲーション設定後の計測結果です。
+リンクアグリゲーションにより、帯域が2Gbpsに増加しているのが確認できました。&lt;/p&gt;
+&lt;p&gt;リンクアグリゲーションのロードバランシングは、デフォルトではMACアドレスによる制御となっていることが多いです。
+Catalyst 2960L では、送信先、送信元のMACアドレスでバランシングされるよう設定されています。&lt;/p&gt;
+&lt;p&gt;このような設定の場合、クライアントとサーバーが1対1で通信していると、たとえ複数のTCPポートを使用していてもバランシングされず、思ったより帯域が出ないということもあるので気を付ける必要があります。
+IPアドレスやポート番号に基づいたロードバランシングを設定することもできるので、ユースケースによって設定を考慮する必要があります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Switch&amp;gt;show etherchannel load-balance
+EtherChannel Load-Balancing Configuration:
+        src-dst-mac
+
+EtherChannel Load-Balancing Addresses Used Per-Protocol:
+Non-IP: Source XOR Destination MAC address
+  IPv4: Source XOR Destination MAC address
+  IPv6: Source XOR Destination MAC address
+&lt;/pre&gt;&lt;/div&gt;</content><category term="サーバー管理"></category></entry><entry><title>自宅SAN(Storage Area Network)の構築</title><link href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html" rel="alternate"></link><published>2018-12-29T21:36:00+09:00</published><updated>2018-12-29T21:36:00+09:00</updated><author><name>waura</name></author><id>tag:waura.github.io,2018-12-29:/zi-zhai-sanstorage-area-networknogou-zhu.html</id><summary type="html">&lt;h1&gt;自宅SANの構築&lt;/h1&gt;
 &lt;p&gt;仮想サーバーを立ててライブマイグレーションをさせたい場合や、ディスクを一台のサーバーに集約させたい場合などに、SANを構築すると便利です。
 ファイルベースのアクセスとなるNASとは違い、SANはブロックデバイスの形でネットワーク内に共有されます。
 そのため、オーバーヘッドが小さいのに加えて、更にファイバーチャネルを使用して高速なネットワークを作成することもできます。&lt;/p&gt;

@@ -100,6 +100,81 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/200805221211471166.html#200805221211471166">OpenCVで処理した画像をDirectXで表示する。</a></h2>
+    <p>
+          Posted on Thu 22 May 2008 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>ではIplImage型に画像データが格納され、<br>
+IplImageのimageDataから画像データにアクセスできる。<br>
+データの格納順はBGRAとなっている。<br>
+これを<a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>のテクスチャに変換できないかと思って実行した。</p>
+<p>手順はこんな感じ<br>
+・IDirect3DTexture9::CreateTextureでテクスチャを作成<br>
+・IDirect3DTexture9::LockRectを行ってデータを転送</p>
+<p>カメラに写っている内容を<a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>で表示<br>
+<a href="http://f.hatena.ne.jp/hiroki0/20080523003112"><img alt="f:id:hiroki0:20080523003112p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080523/20080523003112.png" title="f:id:hiroki0:20080523003112p:image"></a></p>
+<p>コードはこんな感じでいけると思う。（<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>側のデータが符号なし8ビット整数のときだけだが･･･）</p>
+<div class="highlight"><pre><span></span><span class="n">HRESULT</span> <span class="nf">CreateTextureIPLImage</span><span class="p">(</span><span class="n">LPDIRECT3DDEVICE9</span> <span class="n">pDevice</span><span class="p">,</span> <span class="n">IplImage</span><span class="o">*</span> <span class="n">iplImage</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">Width</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">Height</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">Levels</span><span class="p">,</span> <span class="n">LPDIRECT3DTEXTURE9</span><span class="o">*</span> <span class="n">ppTexture</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">HRESULT</span> <span class="n">hr</span><span class="p">;</span>
+  <span class="c1">//テクスチャ作成</span>
+  <span class="n">hr</span> <span class="o">=</span> <span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateTexture</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">Levels</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">D3DFMT_A8R8G8B8</span><span class="p">,</span> <span class="n">D3DPOOL_MANAGED</span><span class="p">,</span> <span class="n">ppTexture</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">)){</span>
+    <span class="k">return …</span></pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200805221211471166.html#200805221211471166">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200805211211319214.html#200805211211319214">OpenCVはじめました。</a></h2>
+    <p>
+          Posted on Wed 21 May 2008 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>安いUSBカメラかったので<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>に手を出してみました。</p>
+<p>背景差分法のプログラムです。<br>
+<a href="http://f.hatena.ne.jp/hiroki0/20080521063155"><img alt="f:id:hiroki0:20080521063155p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080521/20080521063155.png" title="f:id:hiroki0:20080521063155p:image"></a></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200805211211387379.html#200805211211387379">■</a></h2>
+    <p>
+          Posted on Wed 21 May 2008 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/opencv.html">OpenCV</a>
+    </p>
+  </header>
+  <div>
+      <p>肌色部分抽出<br>
+・<a href="http://d.hatena.ne.jp/keyword/RGB">RGB</a>から<a href="http://d.hatena.ne.jp/keyword/HSV">HSV</a>へ変換<br>
+・H（色相）だけを取り出して、肌色っぽい部分を取り出す<br>
+・取り出したものと背景差分のANDをとって表示<br>
+<a href="http://f.hatena.ne.jp/hiroki0/20080522011926"><img alt="f:id:hiroki0:20080522011926p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011926.png" title="f:id:hiroki0:20080522011926p:image"></a></p>
+<p>顔追跡<br>
+・肌色領域の重心をもとめてそこを中心に円を描く<br>
+<a href="http://f.hatena.ne.jp/hiroki0/20080522011925"><img alt="f:id:hiroki0:20080522011925p:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20080522/20080522011925.png" title="f:id:hiroki0:20080522011925p:image"></a></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/20080421.html#20080421">マルチバイト文字列処理 isleadbyte()</a></h2>
     <p>
           Posted on Mon 21 April 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
@@ -259,83 +334,6 @@ dShow …</p>
     <a href="http://d.hatena.ne.jp/keyword/Radeon">Radeon</a> x700</li>
 <li>OS: XP 32bit</li>
 </ul>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200712031196697167.html#200712031196697167">文字コードのメモ</a></h2>
-    <p>
-          Posted on Mon 03 December 2007 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>ASCII文字以外の知識があいまいなのでメモ</p>
-<p>ASCII
-0x00-0x7fの値で表される<a href="http://d.hatena.ne.jp/keyword/%CA%B8%BB%FA%A5%B3%A1%BC%A5%C9">文字コード</a></p>
-<p>マルチバイト文字　1ビットと2ビットが混じっている形式<br>
-Shift-JIS<br>
-<a href="http://d.hatena.ne.jp/keyword/EUC">EUC</a>-JP<br>
-<a href="http://d.hatena.ne.jp/keyword/ISO-2022-JP">ISO-2022-JP</a><br>
-<a href="http://d.hatena.ne.jp/keyword/UTF-8">UTF-8</a><br>
-一バイト目が0x80-0xffで始まる。<br>
-int isleadbyte(int c) マルチバイトの一文字目を判定する。<br>
-これが0以外の値を返すとき後ろの値も一緒に扱うとうまくいくようだ。</p>
-<p>ワイド文字　すべて2ビット(<a href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>では)の形式　wchar_tであらわす。<br>
-<a href="http://d.hatena.ne.jp/keyword/UTF-16">UTF-16</a></p>
-<p>TCHAR 状況にあわせてマルチバイト・ワイドに切り替わってくれる型</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200711181195406346.html#200711181195406346">tftpboot成功</a></h2>
-    <p>
-          Posted on Sun 18 November 2007 in <a href="https://waura.github.io/category/sabaguan-li.html">サーバー管理</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>余り物のCPUとマザーボードをtftpbootで起動するようにしてみた。 
-<a href="http://d.hatena.ne.jp/keyword/DHCP">DHCP</a>の設定でpxebootで対称のマシンが起動するようにしておく。<br>
-<a href="http://d.hatena.ne.jp/keyword/IPv6">IPv6</a>が動作していると上手くいかないようなので切っておく。<br>
-ここの<a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>のオプションでルート<a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0">ファイルシステム</a>を<a href="http://d.hatena.ne.jp/keyword/nfs">nfs</a>でマウントするようにしておく。<br>
-<a href="http://d.hatena.ne.jp/keyword/%A5%AB%A1%BC%A5%CD%A5%EB">カーネル</a>は2.6.22.10でnfsrootをサポート、<a href="http://d.hatena.ne.jp/keyword/NIC">NIC</a>ドライバを組み込むようにした。<br>
-ルート<a href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%A1%A5%A4%A5%EB%A5%B7%A5%B9%A5%C6%A5%E0">ファイルシステム</a>はdebootstrapでつくり、<a href="http://d.hatena.ne.jp/keyword/chroot">chroot</a>でいろいろ設定。</p>
-<p>動いてるのはCPUのファンだけなので結構静か。</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200711091194621506.html#200711091194621506">DirectShowムービー表示</a></h2>
-    <p>
-          Posted on Fri 09 November 2007 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>ただムービを再生するだけだと別ウィンドウで表示されてしまうのでこれをIvideoWindowで操作して子ウィンドウとすれば任意のウィンドウ内でムービーを再生させることができる。</p>
-<p>IGraphBuilder::QueryInterface()でIVideoWindowを作れるのだが上手くいかない。。。</p>
-<p>IGraphBuilder::RenderFile()の後に<br>
-IGraphBuilder::QueryInterface()でIVideoWindowを作らないとダメなようだ。</p>
-<p>次に<br>
-音は出るが画像は出ない状態に。。。<br>
-しかし、タイトルバーをクリックし続けると、表示される。</p>
-<p>ムービーは子ウィンドウとして表示されるので、<br>
-親ウィンドウとなるウィンドウスタイルに<br>
-WS_CLIPCHILDREN<br>
-を指定しなければならなかった。
-考えてみたら当然だったが･･･</p>
-<p>参考リンク<br>
-<a href="http://www.geekpage.jp/programming/directshow/renderfile.php">http://www.geekpage.jp/programming/directshow/renderfile.php</a></p>
   </div>
 </article>
 

@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://waura.github.io/theme/font-awesome/css/solid.css">
+
+
+    <link href="https://waura.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="waura's blog Atom">
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-122706525-2', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#333333">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#333333">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Microsoft EDGE -->
+    <meta name="msapplication-TileColor" content="#333333">
+
+<meta name="author" content="waura" />
+<meta name="description" content="はじめに I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。 ESP-IDFに便利なツール(i2c_tools)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。 今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。 回路図 i2c_toolsのREADME.mdによるとデフォルトのピンアサインは下記のようになっています。 ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。 | | SDA | SCL | GND | Other | VCC | | ---------------- | ------ | ------ | ---- | ----- | ---- | | ESP32 I2C Master | GPIO18 | GPIO19 | GND | GND | 3.3V | | Sensor | SDA | SCL | GND | WAK | VCC | このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。 下記のように接続しました …" />
+<meta name="keywords" content="ESP32">
+
+<meta property="og:site_name" content="waura's blog"/>
+<meta property="og:title" content="ESP32-DevKitCでI2C接続が正しくできていることを確認する"/>
+<meta property="og:description" content="はじめに I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。 ESP-IDFに便利なツール(i2c_tools)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。 今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。 回路図 i2c_toolsのREADME.mdによるとデフォルトのピンアサインは下記のようになっています。 ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。 | | SDA | SCL | GND | Other | VCC | | ---------------- | ------ | ------ | ---- | ----- | ---- | | ESP32 I2C Master | GPIO18 | GPIO19 | GND | GND | 3.3V | | Sensor | SDA | SCL | GND | WAK | VCC | このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。 下記のように接続しました …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://waura.github.io/esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-03-31 22:00:00+09:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://waura.github.io/author/waura.html">
+<meta property="article:section" content="JP"/>
+<meta property="article:tag" content="ESP32"/>
+<meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
+
+  <title>waura's blog &ndash; ESP32-DevKitCでI2C接続が正しくできていることを確認する</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://waura.github.io">
+        <img src="//avatars3.githubusercontent.com/u/99647" alt="" title="">
+      </a>
+      <h1><a href="https://waura.github.io"></a></h1>
+
+<p>Software Engineer</p>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/hiroki-fujiwara-0/" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/waura" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/waura8" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-rss" href="//blog.alexandrevicenzi.com/feeds/all.atom.xml" target="_blank">
+            <i class="fas fa-rss">
+            </i>
+          </a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru">ESP32-DevKitCでI2C接続が正しくできていることを確認する</h1>
+    <p>
+          Posted on Sun 31 March 2019 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <h1>はじめに</h1>
+<p>I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。</p>
+<p>ESP-IDFに便利なツール(<a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools">i2c_tools</a>)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。</p>
+<p>今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。</p>
+<h1>回路図</h1>
+<p>i2c_toolsの<a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools">README.md</a>によるとデフォルトのピンアサインは下記のようになっています。
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
+|                  | SDA    | SCL    | GND  | Other | VCC  |
+| ---------------- | ------ | ------ | ---- | ----- | ---- |
+| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
+| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |</p>
+<p>このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。</p>
+<p>下記のように接続しました。</p>
+<p><a href="../images/esp32/ESP32-BME280.png"><img alt="" src="../images/esp32/ESP32-BME280.png"></a></p>
+<h1>ESP-IDFのセットアップとi2c_toolsのビルド・書き込み</h1>
+<h2>ESP-IDFの取得</h2>
+<div class="highlight"><pre><span></span>$ git clone https://github.com/espressif/esp-idf.git
+</pre></div>
+
+
+<h2>i2c_toolsのビルド設定</h2>
+<div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">IDF_PATH</span><span class="o">=(</span>git cloneしたesp-idfのディレクトリパスを指定<span class="o">)</span>
+$ <span class="nb">cd</span> esp-idf/examples/peripherals/i2c/i2c_tools
+$ make menuconfig
+</pre></div>
+
+
+<p>/dev/ttyUSB0 を
+/dev/cu.SLAB_USBtoUART</p>
+<h2>i2c_toolsのビルド・転送</h2>
+<div class="highlight"><pre><span></span>$ make -j4 flash monitor
+</pre></div>
+
+
+<h1>I2Cバスに接続されているデバイスのアドレスをチェックする</h1>
+<p>i2cdetectコマンドでI2Cバスに接続されているデバイスのアドレスを取得できます。</p>
+<div class="highlight"><pre><span></span>The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is changeable by SDO value and can be changed during operation. Connecting SDO to GND results n slave address 1110110 (0x76); connection it to VDDIO results in slave address 1110111 (0x77), which is the same as BMP280’s I²C address. The SDO pin cannot be left loating;
+</pre></div>
+
+
+<p>データシート <sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> には、SDOにGNDを接続した場合は0x76、VDDIOを接続した場合は0x77のアドレスになると記載があります。
+BME280のSDOにGNDを接続しているので、アドレスは0x76で取得できるはずです。</p>
+<div class="highlight"><pre><span></span>esp32&gt; i2cdetect
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+70: -- -- -- -- -- -- 76 -- -- -- -- -- -- -- -- --
+</pre></div>
+
+
+<p>正常に0x76が取得できています。</p>
+<h1>レジスタを読む</h1>
+<p>レジスタを読むには、i2cgetコマンドを使用します。</p>
+<p>チップのIDを取得してみます。BME280の場合は0x60が返ってくるはずです。</p>
+<div class="highlight"><pre><span></span>esp32&gt; i2cget -c 0x76 -r 0xd0 -l 1
+0x60
+</pre></div>
+
+
+<p>正しく返ってきているのが確認できました。</p>
+<h1>レジスタに書き込む</h1>
+<p>今回は使用しませんでしたが、レジスタに書き込むにはi2csetコマンドを使用します。</p>
+<h1>まとめ</h1>
+<ul>
+<li>ESP32-DevKitCでI2C接続回路が正しく組めているか確認するにはi2c_toolsが便利です</li>
+<li>i2c_toolsでは、I2Cバスに接続されているデバイスの検知、レジスタの読み書きが可能です</li>
+</ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p><a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf">BME280–Data sheet</a>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://waura.github.io/tag/esp32.html">ESP32</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  2007</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " waura's blog ",
+  "url" : "https://waura.github.io",
+  "image": "//avatars3.githubusercontent.com/u/99647",
+  "description": "waura's Thoughts and Writings"
+}
+</script>
+
+</body>
+</html>

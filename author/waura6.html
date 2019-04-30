@@ -100,6 +100,110 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/200902111234333888.html#200902111234333888">LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</a></h2>
+    <p>
+          Posted on Wed 11 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の公式<a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>で、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>形式でモデルを出力してくれる<a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>
+Exporterというのがあるのだが、、、<br>
+ダメダメすぎて、ストレスがたまる。</p>
+<ul>
+<li>出力したファイルにメッシュ情報がのってない。空のフレームだけ</li>
+<li>(おそらくだけど)IKをつかってないモーションモデルをBake
+    IKで出力させると<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>まで巻き込んで落ちる</li>
+<li>ようやく、メッシュ情報がのったファイルが出力されたと思ったらファイルが壊れててViewerで再生できない････</li>
+</ul>
+<p>直に<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>のファイルをさわったほうがはやい、というかさわらざるをえない<br>
+・<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1">デベロッパ</a>ー情報<br>
+<a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm">http://www.dstorm.co.jp/products/lw8/developer/game/index.htm</a></p>
+<p>DirectX10で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので<br>
+<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>にこだわることも無いのかもしれない。</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200902071233968785.html#200902071233968785">Xファイルのフォーマット(5)</a></h2>
+    <p>
+          Posted on Sat 07 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>今回はスキンメッシュに使うテンプレートの説明。</p>
+<div class="highlight"><pre><span></span>    <span class="n">SkinMeshHeader</span> <span class="p">{</span>
+        <span class="err">一つの頂点に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">一つの面に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
+        <span class="err">ボーンの数</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">SkinWeight</span> <span class="p">{</span>
+        <span class="err">ボーン</span><span class="p">(</span><span class="err">フレーム</span><span class="p">)</span><span class="err">の名前</span><span class="p">;</span>
+        <span class="err">重みの数</span><span class="p">;</span>
+        <span class="err">重みを与える頂点</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="mi">0</span><span class="o">~</span><span class="mi">1</span><span class="err">の値の頂点に対する重み</span><span class="p">;</span> <span class="c1">//繰り返し</span>
+        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4</span><span class="err">行列</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。<br>
+AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって<br>
+スキンメッシュを実装します。</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200902051233792037.html#200902051233792037">Xファイルのフォーマット(4)</a></h2>
+    <p>
+          Posted on Thu 05 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
+<a href="200703251174775823.html">Xファイルのフォーマット(2)</a>
+<a href="200902041233704553.html">Xファイルのフォーマット(3)</a></p>
+<p>今回は、アニメーションのまとめ。<br>
+アニメーションは以下のように表されます。</p>
+<div class="highlight"><pre><span></span>AnimationSet AnimationSet_name {
+    Animation Animation0 {
+        { frame1 } //フレーム名frame1のアニメーション
+        AnimationKey {
+            キータイプ;
+            キー数;
+            キー値;データ個数;データ;, //繰り返し
+        }
+    }
+}
+</pre></div>
+
+
+<p>AnimationSetは、一つのアニメーションを表し、1\~N個のAnimationを持ちます。<br>
+Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。<br>
+AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。</p>
+<ul>
+<li>回転の場合は、w,x,y,zの順で<a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3">クォータニオン</a>データが格納されています</li>
+<li>スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています</li>
+<li>平行移動の場合は、x,y,zの順で平行移動値データが格納されています</li>
+<li>変換行列の場合は、4x4の回転 …</li></ul>
+        <br>
+        <a class="btn" href="https://waura.github.io/200902051233792037.html#200902051233792037">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/200902041233704553.html#200902041233704553">Xファイルのフォーマット(3)</a></h2>
     <p>
           Posted on Wed 04 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
@@ -250,78 +354,6 @@ CWnd::m_bAutoMenuEnable = FALSE;<br>
 <p>参考リンク<br>
 <a href="http://support.microsoft.com/kb/172396/ja">http://support.microsoft.com/kb/172396/ja</a><br>
 <a href="http://lamoo.s53.xrea.com/develop/tips/dlltips.html">http://lamoo.s53.xrea.com/develop/tips/dlltips.html</a></p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200811221227385060.html#200811221227385060">インポートライブラリが出力されない</a></h2>
-    <p>
-          Posted on Sat 22 November 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>__declspec(dllexport)
-をひとつもつけないでdllを<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%F3%A5%D1%A5%A4%A5%EB">コンパイル</a>すると<br>
-インポートライブラリ(*.lib)を吐かない。</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200811071226064350.html#200811071226064350">ファイル読み込みモジュール作成</a></h2>
-    <p>
-          Posted on Fri 07 November 2008 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のcvLoadImage()だとアルファ値を読んでくれないので、<br>
-libpngとzlibをつかって<a href="http://d.hatena.ne.jp/keyword/png">png</a>読み込みモジュールを作った</p>
-<p><a href="http://f.hatena.ne.jp/hiroki0/20081107221654"><img alt="f:id:hiroki0:20081107221654p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221654.png" title="f:id:hiroki0:20081107221654p:image"></a>
-↑cvLoadImage()で読み込み、わかりづらいが、アルファ値が読まれていない。<br>
-<a href="http://f.hatena.ne.jp/hiroki0/20081107221655"><img alt="f:id:hiroki0:20081107221655p:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20081107/20081107221655.png" title="f:id:hiroki0:20081107221655p:image"></a>
-↑libpngで読み込みアルファ値が読まれている。</p>
-<p>ついでにThe Independent
-<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a> Group\'s
-<a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-softwareの<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ライブラリを使って、<br>
-ファイル読み込みモジュールを作成。</p>
-<p>cvLoadImage()だと読めない、<a href="http://d.hatena.ne.jp/keyword/jpeg">jpeg</a>ファイルがあるのだが、このモジュールを使えば読み込めるようになった。</p>
-<p>[The Independent <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-Group\'s <a href="http://d.hatena.ne.jp/keyword/JPEG">JPEG</a>
-software]{style="font-weight:bold;"}<br>
-<a href="http://www.ijg.org/">http://www.ijg.org/</a><br>
-[libpng]{style="font-weight:bold;"}<br>
-<a href="http://www.libpng.org/pub/png/libpng.html">http://www.libpng.org/pub/png …</a></p>
-        <br>
-        <a class="btn" href="https://waura.github.io/200811071226064350.html#200811071226064350">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200809101221052880.html#200809101221052880">C++クラスのDLL化</a></h2>
-    <p>
-          Posted on Wed 10 September 2008 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="http://d.hatena.ne.jp/keyword/C%2B%2B">C++</a>のクラスのDLL化の参考リンク<br>
-<a href="http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx">http://msdn.microsoft.com/ja-jp/library/a90k134d(VS.80).aspx</a><br>
-<a href="http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;SiteID=7">http://forums.microsoft.com/MSDN-JA/ShowPost.aspx?PostID=1582533&amp;SiteID=7</a></p>
-<p><a href="http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm">http://www2s.biglobe.ne.jp/~ragnarok/program/win32/class_of_cpp_in_dll.htm</a><br>
-↑は、DLLとEXE側で、クラスのサイズが違ってたりすることがあるので、<br>
-DLL側でメモリの確保、開放をしたほうがいいよということらしい。</p>
   </div>
 </article>
 

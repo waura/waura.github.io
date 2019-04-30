@@ -100,6 +100,47 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding.html#cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding">Cisco Catalyst 2960L を使用したリンクアグリゲーションの設定</a></h2>
+    <p>
+          Posted on Mon 14 January 2019 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/sabaguan-li.html">サーバー管理</a>
+    </p>
+  </header>
+  <div>
+      <h1>ファイルサーバーとL2スィッチ間のリンクアグリゲーションを設定する</h1>
+<p>自宅用に<a href="https://www.cisco.com/c/en/us/products/switches/catalyst-2960-l-series-switches/index.html">Cisco Catalyst 2960L</a>を手に入れました。
+このL2スイッチではリンクアグリゲーションを設定することができるので、ファイルサーバーとスイッチ間でリンクアグリゲーションを設定します。</p>
+<p>これにより、帯域を増やすことができ複数のクライアントが同時にアクセスしてもパフォーマンスの低下を防げることが期待できます。</p>
+<h2>リンクアグリゲーションとは</h2>
+<p>リンクアグリゲーション(IEEE 802.3ad)とは、複数の物理リンクをまとめて1本の論理リンクとして扱うことの技術です。
+物理リンクの本数分の帯域を増やすことができる他、複数本の物理リンクが切断されてしまっても残りのリンクで通信を継続できるため、耐障害性も向上します。</p>
+<p>CiscoではEtherCahnnelと呼ばれています。</p>
+<h2>構成</h2>
+<p><a href="./images/link_aggregatoin.png"><img alt="link_aggregation" src="../images/link_aggregation.png"></a></p>
+<p>上記のようにファイルサーバーとスイッチ間を2本のLANケーブルで接続します。
+ファイルサーバー側のLANポート2つと、スイッチ側のLANポート2つを、それぞれ接続します。</p>
+<h1>設定</h1>
+<h2>ファイルサーバー側</h2>
+<p><a href="https://netplan.io/">Netplan</a>を使用して設定を行います。
+enp0s31f6とenp8s0の2つのポートをまとめたbond0というdeviceを作成します。
+modeは、IEEE802.3ad準拠で通信できるよう"802.3ad"を設定しています。</p>
+<div class="highlight"><pre><span></span>$ sudo vi /etc/netplan/01-netcfg.yaml
+</pre></div>
+
+
+<div class="highlight"><pre><span></span># This file describes the …</pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding.html#cisco-catalyst-2960l-woshi-yong-shitarinkuagurigeshiyonnoshe-ding">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/zi-zhai-sanstorage-area-networknogou-zhu.html#zi-zhai-sanstorage-area-networknogou-zhu">自宅SAN(Storage Area Network)の構築</a></h2>
     <p>
           Posted on Sat 29 December 2018 in <a href="https://waura.github.io/category/jp.html">JP</a>

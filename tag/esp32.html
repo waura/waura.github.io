@@ -53,7 +53,7 @@
 <meta property="og:url" content="https://waura.github.io"/>
 <meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
 
-  <title>waura's blog &ndash;     Authors
+  <title>waura's blog &ndash;     Tag ESP32
 </title>
 
 </head>
@@ -96,17 +96,45 @@
   <main>
 
 
-<article class="single">
+
+
+<article>
   <header>
-    <h1>    Authors
-</h1>
+    <h2><a href="https://waura.github.io/esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru.html#esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru">ESP32-DevKitCでI2C接続が正しくできていることを確認する</a></h2>
+    <p>
+          Posted on Sun 31 March 2019 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/esp32.html">ESP32</a>
+    </p>
   </header>
   <div>
-    <ul class="list">
-      <li><a href="https://waura.github.io/author/waura.html">waura</a> (95)</li>
-    </ul>
+      <h1>はじめに</h1>
+<p>I2C接続が必要なデバイスの場合、テスター等で確認することはできないので正しく接続できているか確認するのが面倒です。</p>
+<p>ESP-IDFに便利なツール(<a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools">i2c_tools</a>)があったので試してみます。このツールでは、サンプルプログラムをESP32-DevKitCに転送し、シリアルコンソール上でコマンドを実行することで、I2Cバスに接続されているデバイスの検知や、レジスタの読み書きが簡単にできます。</p>
+<p>今回は、温度・湿度・気圧を測定できるセンサーのBME280をESP32-DevKitCにI2Cで接続し、i2c_toolsで動作を確認してみます。</p>
+<h1>回路図</h1>
+<p>i2c_toolsの<a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/i2c/i2c_tools">README.md</a>によるとデフォルトのピンアサインは下記のようになっています。
+ESP32 I2C MasterがESP32-DevKitC側で、Sensorが接続するデバイス側のピンです。
+|                  | SDA    | SCL    | GND  | Other | VCC  |
+| ---------------- | ------ | ------ | ---- | ----- | ---- |
+| ESP32 I2C Master | GPIO18 | GPIO19 | GND  | GND   | 3.3V |
+| Sensor           | SDA    | SCL    | GND  | WAK   | VCC  |</p>
+<p>このピンアサインは、ツールをESP32-DevKitCに書き込み後、i2cconfigコマンドで変更することもできますが、今回はデフォルトのピンアサインで接続します。</p>
+<p>下記のように接続しました …</p>
+        <br>
+        <a class="btn" href="https://waura.github.io/esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru.html#esp32-devkitcdei2cjie-sok-gazheng-shikudekiteirukotowoque-ren-suru">    Continue reading
+</a>
   </div>
 </article>
+
+  <div class="pagination">
+  </div>
+
+
+
 
     <footer>
 <p>&copy;  2007</p>

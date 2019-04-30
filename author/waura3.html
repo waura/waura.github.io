@@ -100,6 +100,145 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/201003201269074009.html#201003201269074009">SSE用いたアルファブレンドの高速化2</a></h2>
+    <p>
+          Posted on Sat 20 March 2010 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <h2>ロード・ストアに使用するSSE命令</h2>
+<h3>ロード</h3>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_loadu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_load_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+</tbody>
+</table>
+<h3>ストア</h3>
+<table>
+<thead>
+<tr>
+<th>イントリンシック命令</th>
+<th>対応するSSE命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_mm_storeu_ps</td>
+<td>MOVUPS</td>
+<td>アライメントを合わせる必要がない</td>
+</tr>
+<tr>
+<td>_mm_store_ps</td>
+<td>MOVAPS</td>
+<td>アライメントを合わせなければならない</td>
+</tr>
+<tr>
+<td>_mm_stream_si128</td>
+<td>MOVNTPD</td>
+<td>アライメントを合わせなければならない、キャッシュを介さずにストアする</td>
+</tr>
+</tbody>
+</table>
+<h2>計測するアルファブレンド処理</h2>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ul>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_psでメモリ読み込み、_mm_storeu_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_store_psでメモリ書き込み</li>
+<li>_mm_load_psでメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ul>
+<p>の4通りでテストする。</p>
+<p>64bit向けの設定だと__asmのとこでエラーがでるので<a href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%E9%A5%A4%A5%F3%A5%A2%A5%BB%A5%F3%A5%D6%A5%E9">インラインアセンブラ</a>ではなく組み込み関数を使って書きました。<br>
+アライメントをあわせて処理するために、128bit(4pixel)ずつ読み込んで処理を行っています。</p>
+<h2>計測方法</h2>
+<ul>
+<li>5760x3600BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
+    2 …</li></ul>
+        <br>
+        <a class="btn" href="https://waura.github.io/201003201269074009.html#201003201269074009">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201003171268808033.html#201003171268808033">ブレークポイントがヒットしない時の対処</a></h2>
+    <p>
+          Posted on Wed 17 March 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/windows.html">Windows</a>
+    </p>
+  </header>
+  <div>
+      <p>デバック時、リビルドしたソースに<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>を設定しても、<br>
+「<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>は、現在の設定ではヒットしません。<a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>
+が元のバージョンと異なります。」<br>
+と表示されるときの対処</p>
+<p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] </p>
+<p><a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201003151268621668.html#201003151268621668">64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</a></h2>
+    <p>
+          Posted on Mon 15 March 2010 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <h4>CMakeを用いて<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual Studio</a>のプロジェクトを作る</h4>
+<p>ここを参考に<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のソースから<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
+Studio</a>のプロジェクトを作成する。<br>
+<a href="http://d.hatena.ne.jp/Guernsey/20091002/1254459730">http://d.hatena.ne.jp/Guernsey/20091002/1254459730</a></p>
+<p>「アプリケーションを正しく初期化できませんでした
+(0xc0150002)」というエラーダイアログがでないようにするためにCMakeのConfigure時にでENABLE_OPENMPを外す。<br>
+<a href="http://d.hatena.ne.jp/Guernsey/20091120/1258734848">http://d.hatena.ne.jp/Guernsey/20091120/1258734848</a></p>
+<h4>スタティックリンクライブラリをビルドするために</h4>
+<ul>
+<li>「構成プロパティ」→「全般」で「構成の種類」をダイナミックライブラリからスタティックライブラリに変更する</li>
+<li>DllMain()を<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a></li>
+<li><a href="http://d.hatena.ne.jp/keyword/opencv">opencv</a>-1.1preからvideoInput.libをリンクさせる</li>
+<li>atlthunk.libが見つからないとリンクエラーが出たらatlthunk.libを無視</li>
+</ul>
+<h4>64bit対応にするために</h4>
+<ul>
+<li>すべてのプロジェクトのプロパティの「構成プロパティ」→「<a href="http://d.hatena.ne.jp/keyword/C/C%2B%2B">C/C …</a></li></ul>
+        <br>
+        <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/201003141268524584.html#201003141268524584">64bit版のWintab DLLのロード</a></h2>
     <p>
           Posted on Sun 14 March 2010 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
@@ -331,72 +470,6 @@ Studio</a>
   <span class="nb">NULL</span><span class="p">,</span>
   <span class="o">::</span><span class="n">GetCurrentThreadId</span><span class="p">());</span>
 </pre></div>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200911151258237873.html#200911151258237873">安全なSTL listの要素削除ループ</a></h2>
-    <p>
-          Posted on Sun 15 November 2009 in <a href="https://waura.github.io/category/c.html">C++</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>erase(itr)を呼び出すとitrは使えなくなるので、<br>
-erase()の返り値で次の要素の<a href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%C6%A5%EC%A1%BC%A5%BF">イテレータ</a>を受け取りループを続行する。</p>
-<div class="highlight"><pre><span></span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">itr</span> <span class="o">=</span> <span class="n">SampleList</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
-<span class="k">for</span> <span class="p">(;</span> <span class="n">itr</span> <span class="o">!=</span> <span class="n">SampleList</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span><span class="p">(</span> <span class="err">条件</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">itr</span> <span class="o">=</span> <span class="n">SampleList</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">itr</span> <span class="p">);</span>
-    <span class="k">continue</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="n">it</span><span class="o">++</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200911141258218733.html#200911141258218733">プロセッサ数を求めるコード</a></h2>
-    <p>
-          Posted on Sat 14 November 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>GetSystemInfoでシステムの情報をSYSTEM_INFO構造体に取得すると、dwNumberOfProcessorsにプロセッサ数が入る。</p>
-<div class="highlight"><pre><span></span>SYSTEM_INFO si;
-GetSystemInfo(&amp;si);
-si.dwNumberOfProcessors; //プロセッサ数
-</pre></div>
-
-
-<h2>参考URL</h2>
-<p><a href="http://msdn.microsoft.com/ja-jp/library/cc429808.aspx">http://msdn.microsoft.com/ja-jp/library/cc429808.aspx</a></p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200909271254003613.html#200909271254003613">トーンカーブ</a></h2>
-    <p>
-          Posted on Sun 27 September 2009 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
-
-
-          &#8226;     Tagged with
-
-              <a href="https://waura.github.io/tag/peintotsuru.html">ペイントツール</a>
-    </p>
-  </header>
-  <div>
-      <p>3次スプラインを利用して<a href="http://d.hatena.ne.jp/keyword/%A5%C8%A1%BC%A5%F3%A5%AB%A1%BC%A5%D6">トーンカーブ</a>を実装してみた。<br>
-<a href="http://f.hatena.ne.jp/hiroki0/20090927071914"><img alt="f:id:hiroki0:20090927071914j:image" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090927/20090927071914.jpg" title="f:id:hiroki0:20090927071914j:image"></a></p>
   </div>
 </article>
 

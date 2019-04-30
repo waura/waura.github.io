@@ -99,6 +99,89 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/200705311180621839.html#200705311180621839">WinAPIによる非矩形ウィンドウの実現</a></h2>
+    <p>
+          Posted on Thu 31 May 2007 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>基本的な流れは、以下の通り。</p>
+<ol>
+<li>リージョンを作る。  </li>
+<li>SetWindowRgnでリージョンの形に添ったウィンドウの生成。  </li>
+</ol>
+<p>SetWindowRgnの第一引数は、ウィンドウハンドル、<br>
+第二引数は、リージョン、<br>
+第三引数は、再描画するかどうか
+これだけでoｋ</p>
+<p>・ビットマップからリージョンを作る<br>
+<a href="http://techtips.belution.com/ja/vc/0010/">http://techtips.belution.com/ja/vc/0010/</a><br>
+↑で、画像からリージョンを作る方法を説明している。</p>
+<p><a href="http://d.hatena.ne.jp/keyword/DDB">DDB</a>は、デバイスに依存するビットマップ<br>
+・直接加工できない<br>
+・ハードウェア処理に適している<br>
+・そのため、ハードウェアごとに形式が異なることがある</p>
+<p>DIBは、デバイスに依存しないビットマップ<br>
+・1ドットにアクセスできる<br>
+・<a href="http://d.hatena.ne.jp/keyword/BMP">BMP</a>ファイルからの変換またはその逆も簡単</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200705081178633500.html#200705081178633500">共有ドライブ完成</a></h2>
+    <p>
+          Posted on Tue 08 May 2007 in <a href="https://waura.github.io/category/sabaguan-li.html">サーバー管理</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>SWATで<a href="http://d.hatena.ne.jp/keyword/Samba">Samba</a>の設定をして、<br>
+ネットの情報を見ながら、<br>
+問題なく共有ドライブが完成。</p>
+<p>次は、NTPを入れて、時刻あわせをした。<br>
+ここも、同じく問題なし。</p>
+<p>しかし、<br>
+<a href="http://d.hatena.ne.jp/keyword/%B8%BC%C8%A2">玄箱</a>が、Sleep状態に入ってしまい、<br>
+そのまま元に戻らなくなるという症状が発覚。<br>
+おそらく、<a href="http://d.hatena.ne.jp/keyword/Debian">Debian</a>化する前Sleepするように設定していたので<br>
+それが原因かな･･･</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200705061178454893.html#200705061178454893">Samba起動</a></h2>
+    <p>
+          Posted on Sun 06 May 2007 in <a href="https://waura.github.io/category/sabaguan-li.html">サーバー管理</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>玄箱のセットアップCDについていた、開発ツール類を入れようとしたが、なぜか展開できなかったので断念。</p>
+<p>しょうがないので、apt-getを、使えるようにするしかない･･･<br>
+sources.list の「woody」を「sarge」に書き換え、</p>
+<div class="highlight"><pre><span></span># Samba
+# ded　ｈttp://everybody.good-day.net/\~nsaito samba3  
+</pre></div>
+
+
+<p>をリストに追加して、<br>
+apt-getでインストールが完了。
+次に、SWATをインストールした。<br>
+今日は、ここまでで終了。</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/200703251174775823.html#200703251174775823">Xファイルのフォーマット(2)</a></h2>
     <p>
           Posted on Sun 25 March 2007 in <a href="https://waura.github.io/category/directx.html">DirectX</a>

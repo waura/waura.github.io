@@ -100,6 +100,114 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/200908301251628999.html#200908301251628999">CBitmapButtonを継承してマウスオーバー時に画像を変化させるようにする。</a></h2>
+    <p>
+          Posted on Sun 30 August 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>デフォルトのCBitmapButtonだとマウスオーバー時の画像を読み込んで<br>
+表示させてくれないので、CBitmapButtonを継承して機能を付け足しました。</p>
+<p>Create()で作成して、LoadBitmapsで画像を読み込みます。<br>
+その他のAutoLoadなどには対応していません。</p>
+<h2>ヘッダー</h2>
+<div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+<span class="k">class</span> <span class="nc">CHoverBitmapButton</span> <span class="o">:</span>
+<span class="k">public</span> <span class="n">CBitmapButton</span>
+<span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="n">CHoverBitmapButton</span><span class="p">()</span> <span class="o">:</span> <span class="n">m_isHover</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> <span class="p">{};</span>
+    <span class="o">~</span><span class="n">CHoverBitmapButton</span><span class="p">(){};</span>
+    <span class="n">BOOL</span> <span class="nf">LoadBitmaps</span><span class="p">(</span>
+      <span class="n">UINT</span> <span class="n">nIDBitmapResource</span><span class="p">,</span>
+      <span class="n">UINT</span> <span class="n">nIDBitmapResourceHov</span><span class="p">,</span>
+      <span class="n">UINT</span> <span class="n">nIDBitmapResourceSel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">UINT</span> <span class="n">nIDBitmapResourceFocus</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+      <span class="n">UINT</span> <span class="n">nIDBitmapResourceDisabled</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">DrawItem</span><span class="p">(</span><span class="n">LPDRAWITEMSTRUCT</span> <span class="n">lpDis</span><span class="p">);</span>
+  <span class="k">protected</span><span class="o">:</span>
+    <span class="n">afx_msg</span> <span class="kt">void</span> <span class="n">OnMouseMove</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="n">CPoint</span> <span class="n">point</span><span class="p">);</span>
+    <span class="n">LRESULT</span> <span class="nf">OnMouseHover</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wp …</span></pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200908301251628999.html#200908301251628999">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200908281251430033.html#200908281251430033">TreeViewコントロール 選択されたアイテムの文字列を取得するには</a></h2>
+    <p>
+          Posted on Fri 28 August 2009 in <a href="https://waura.github.io/category/windows.html">Windows</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/windows.html">Windows</a>
+    </p>
+  </header>
+  <div>
+      <p>まず、親ウィンドウでWM_NOTIFYを捕まえる。<br>
+WM_NOTIFYでTreeViewのイベントが送られてくるのでこれを処理する。<br>
+このときLPARAMにはNMTREEVIEW構造体のアドレスが入っている。</p>
+<div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">idFrom</span> <span class="o">!=</span> <span class="n">IDC_CONFIG_TREE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">lpnmtview</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">code</span><span class="p">){</span>
+  <span class="k">case</span> <span class="nl">NM_CLICK</span><span class="p">:</span> <span class="c1">//ツリーアイテムクリック時</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">TVN_SELCHANGED</span><span class="p">:</span> <span class="c1">//ツリーアイテム選択変更時</span>
+    <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>このように<br>
+lpnmtview-&gt;hdr.idFromにツリービューのIDが、<br>
+lpnmtview-&gt;hdr.codeのイベントのIDが入っている。</p>
+<p>クリックイベント時にはまだ、アイテムは選択されていないので、<br>
+NM_CLICKを捕まえて、選択アイテムを取得するというやり方では上手くいかない。</p>
+<p>なので、TVN_SELCHANGED時に、選択アイテムを取得するという方法で行います。<br>
+このとき、送られてくる、NMTREEVIEW構造体に選択されているTVITEMが入ってるが、<br>
+このTVITEMのラベル名は正しく格納されていないので自分で取得する必要がある。</p>
+<p>コード例は以下のようになる。</p>
+<div class="highlight"><pre><span></span> <span class="n">LPNMTREEVIEW</span> <span class="n">lpnmtview</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPNMTREEVIEW</span><span class="p">)</span><span class="n">lp</span><span class="p">;</span>
+<span class="k">if …</span></pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/200908281251430033.html#200908281251430033">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/200908271251337964.html#200908271251337964">Ubuntu9.04 netbook remixのインストール</a></h2>
+    <p>
+          Posted on Thu 27 August 2009 in <a href="https://waura.github.io/category/pc.html">PC</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>Ubuntu9.04 <a href="http://d.hatena.ne.jp/keyword/netbook">netbook</a>
+remixを<a href="http://d.hatena.ne.jp/keyword/EeePC">EeePC</a>
+1002HAEにインストールした。<br>
+インストール直後の<a href="http://d.hatena.ne.jp/keyword/Windows">Windows</a>ではCドライブ80GBとDドライブ60GBに<a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3">パーティション</a>が分かれており、(他に4GBほどのリカバリー用の<a href="http://d.hatena.ne.jp/keyword/%A5%D1%A1%BC%A5%C6%A5%A3%A5%B7%A5%E7%A5%F3">パーティション</a>がついている。)<br>
+このDドライブにインストールすることにした。</p>
+<p>1GBのSDカードにインストールイメージを書き込み、<br>
+誘導にしたがってインストールを行った。</p>
+<p><a href="http://f.hatena.ne.jp/hiroki0/20090826210238"><img alt="f:id:hiroki0:20090826210238j:image" class="hatena-fotolife" src="http://cdn-ak.f.st-hatena.com/images/fotolife/h/hiroki0/20090826/20090826210238.jpg" title="f:id:hiroki0:20090826210238j:image"></a></p>
+<p>起動も結構早くていい感じ。</p>
+<h4>参考URL</h4>
+<p><a href="http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html">http://blog.browncat.org/2009/05/ubuntu_904_netbook_remix.html</a></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/200908061249511852.html#200908061249511852">ホスト内のWebページをたどりリンクされているファイルを抜き出すスクリプト</a></h2>
     <p>
           Posted on Thu 06 August 2009 in <a href="https://waura.github.io/category/ruby.html">Ruby</a>
@@ -321,110 +429,6 @@ exec git-daemon --verbose --base-path=/var/repos --export-all --enable=receive-p
 <div class="highlight"><pre><span></span>$ mkdir -p …</pre></div>
         <br>
         <a class="btn" href="https://waura.github.io/200904141239716590.html#200904141239716590">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200902111234333888.html#200902111234333888">LightwaveファイルからXファイルへコンバートするプラグインはいろいろ問題が</a></h2>
-    <p>
-          Posted on Wed 11 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の公式<a href="http://d.hatena.ne.jp/keyword/%A5%D7%A5%E9%A5%B0%A5%A4%A5%F3">プラグイン</a>で、<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>形式でモデルを出力してくれる<a href="http://d.hatena.ne.jp/keyword/DirectX">DirectX</a>
-Exporterというのがあるのだが、、、<br>
-ダメダメすぎて、ストレスがたまる。</p>
-<ul>
-<li>出力したファイルにメッシュ情報がのってない。空のフレームだけ</li>
-<li>(おそらくだけど)IKをつかってないモーションモデルをBake
-    IKで出力させると<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>まで巻き込んで落ちる</li>
-<li>ようやく、メッシュ情報がのったファイルが出力されたと思ったらファイルが壊れててViewerで再生できない････</li>
-</ul>
-<p>直に<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>のファイルをさわったほうがはやい、というかさわらざるをえない<br>
-・<a href="http://d.hatena.ne.jp/keyword/Lightwave">Lightwave</a>の<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D9%A5%ED%A5%C3%A5%D1">デベロッパ</a>ー情報<br>
-<a href="http://www.dstorm.co.jp/products/lw8/developer/game/index.htm">http://www.dstorm.co.jp/products/lw8/developer/game/index.htm</a></p>
-<p>DirectX10で<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>のヘルプ関数が無くなり、これから無くなっていくであろうファイルフォーマットなので<br>
-<a href="http://d.hatena.ne.jp/keyword/X%A5%D5%A5%A1%A5%A4%A5%EB">Xファイル</a>にこだわることも無いのかもしれない。</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200902071233968785.html#200902071233968785">Xファイルのフォーマット(5)</a></h2>
-    <p>
-          Posted on Sat 07 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>今回はスキンメッシュに使うテンプレートの説明。</p>
-<div class="highlight"><pre><span></span>    <span class="n">SkinMeshHeader</span> <span class="p">{</span>
-        <span class="err">一つの頂点に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
-        <span class="err">一つの面に対して、影響を与えるボーンの最大数</span><span class="p">;</span>
-        <span class="err">ボーンの数</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="n">SkinWeight</span> <span class="p">{</span>
-        <span class="err">ボーン</span><span class="p">(</span><span class="err">フレーム</span><span class="p">)</span><span class="err">の名前</span><span class="p">;</span>
-        <span class="err">重みの数</span><span class="p">;</span>
-        <span class="err">重みを与える頂点</span><span class="p">;</span> <span class="c1">//繰り返し</span>
-        <span class="mi">0</span><span class="o">~</span><span class="mi">1</span><span class="err">の値の頂点に対する重み</span><span class="p">;</span> <span class="c1">//繰り返し</span>
-        <span class="err">メッシュの頂点をボーンの空間にトランスフォームする</span><span class="mi">4</span><span class="n">x4</span><span class="err">行列</span><span class="p">;</span>
-    <span class="p">}</span>
-</pre></div>
-
-
-<p>SkinMeshHeaderの中にあるボーンの数だけSkinWeightは定義されているはずです。<br>
-AnimationKeyでボーンが変形されたとき、重みにあわせて変形量を変える事によって<br>
-スキンメッシュを実装します。</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/200902051233792037.html#200902051233792037">Xファイルのフォーマット(4)</a></h2>
-    <p>
-          Posted on Thu 05 February 2009 in <a href="https://waura.github.io/category/directx.html">DirectX</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p><a href="200703241174740494.html">Xファイルのフォーマット(1)</a>
-<a href="200703251174775823.html">Xファイルのフォーマット(2)</a>
-<a href="200902041233704553.html">Xファイルのフォーマット(3)</a></p>
-<p>今回は、アニメーションのまとめ。<br>
-アニメーションは以下のように表されます。</p>
-<div class="highlight"><pre><span></span>AnimationSet AnimationSet_name {
-    Animation Animation0 {
-        { frame1 } //フレーム名frame1のアニメーション
-        AnimationKey {
-            キータイプ;
-            キー数;
-            キー値;データ個数;データ;, //繰り返し
-        }
-    }
-}
-</pre></div>
-
-
-<p>AnimationSetは、一つのアニメーションを表し、1\~N個のAnimationを持ちます。<br>
-Animationは、一つのフレームについての、キーアニメーションデータを格納するAnimationKeyを持ちます。<br>
-AnimationKey内のキータイプが0の場合は回転、1の場合はスケーリング、2の場合は平行移動、4の場合は変換行列を表します。</p>
-<ul>
-<li>回転の場合は、w,x,y,zの順で<a href="http://d.hatena.ne.jp/keyword/%A5%AF%A5%A9%A1%BC%A5%BF%A5%CB%A5%AA%A5%F3">クォータニオン</a>データが格納されています</li>
-<li>スケーリングの場合は、x,y,zの順で拡大縮小データが格納されています</li>
-<li>平行移動の場合は、x,y,zの順で平行移動値データが格納されています</li>
-<li>変換行列の場合は、4x4の回転 …</li></ul>
-        <br>
-        <a class="btn" href="https://waura.github.io/200902051233792037.html#200902051233792037">    Continue reading
 </a>
   </div>
 </article>

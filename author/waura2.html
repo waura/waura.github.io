@@ -100,6 +100,125 @@
 
 <article>
   <header>
+    <h2><a href="https://waura.github.io/201210011349098138.html#201210011349098138">Androidアプリを複数のプロジェクトに分割して開発する時の設定</a></h2>
+    <p>
+          Posted on Mon 01 October 2012 in <a href="https://waura.github.io/category/android.html">Android</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>eclipseのプロジェクトのプロパティから「Java Build Path」や「Project References」を設定してみたら、ビルドは通るが実行時にClassNotFoundExceptionが出て上手くいかなかった。</p>
+<p>正しくは、プロジェクトのプロパティの「Android」を選んでLibraryの設定をするようだ。</p>
+<ul>
+<li>呼び出される側のプロジェクトはIs Libraryにチェックを入れる。</li>
+<li>呼び出す側のプロジェクトはAddから呼び出すプロジェクトを選択する。</li>
+</ul>
+<p>また、AndroidManifest.xmlに呼び出す側のActivityなりServiceなりを下記のように書いておく必要がある。</p>
+<div class="highlight"><pre><span></span>・・・
+&lt;service android:name=&quot;key0note.GoogleReaderWidget.GoogleReaderWidgetDataService&quot; /&gt;
+・・・
+</pre></div>
+
+
+<h4>参考リンク</h4>
+<p><a href="http://tmpla.info/archives/1211">http://tmpla.info/archives/1211</a></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201112031322919731.html#201112031322919731">SSE用いたアルファブレンドの高速化4 アライメントがずれている画像同士のアルファブレンド</a></h2>
+    <p>
+          Posted on Sat 03 December 2011 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>↓の続き  </p>
+<ul>
+<li><a href="./200909141252931917.html">SSE用いたアルファブレンドの高速化</a></li>
+<li><a href="./201003201269074009.html">SSE用いたアルファブレンドの高速化2</a></li>
+<li><a href="./201111281322504210.html">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></li>
+</ul>
+<p>今回はアライメントをずらした場合での計測をします。</p>
+<p>_mm_loadu_si128などアライメントをあわせる必要がないロード・ストア命令を使用する場合は、<br>
+前回と同じ様に何も考えずに読み込んでアルファブレンドを行い、書きこむという順で処理を行うことができます。</p>
+<p>しかし、アライメントを合わせる必要があるロード・ストア命令を使用する場合は、<br>
+処理方法をアライメントのズレによって変える必要があります。</p>
+<p>今回のアルファブレンド処理では、</p>
+<ol>
+<li>入出力メモリともアライメントが揃っている場合</li>
+<li>入出力メモリともアライメントから同じだけずれている場合</li>
+<li>入力、出力メモリのアライメントのずれ量が違う場合</li>
+</ol>
+<p>の3通りに分けてコードを実装しました。</p>
+<p>1の場合は、前回と同様のコードで処理します。<br>
+2の場合は、ずれてる分を処理して入出力ともアライメントを合わせた状態にして、1と同じように処理します。<br>
+3の場合は、ずれてる分をシフト演算を使用してずれを合わせる処理をいれて、<br>
+ロード・ストア命令がアライメントが合った状態で実行されるようにします。</p>
+<h4>計測方法</h4>
+<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
+<ol>
+<li>SSEを使わない処理</li>
+<li>_mm_loadu_si128でメモリ読み込み、_mm_storeu_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_store_si128でメモリ書き込み</li>
+<li>_mm_load_si128でメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
+</ol>
+<p>の4通りの処理の処理速度を計測する。<br>
+前回までは間違えて<a href="http://d.hatena.ne.jp/keyword/%C9%E2%C6%B0%BE%AE%BF%F4">浮動小数</a>点用の_mm_loadu_ps等を使っていたので、今回は_mm_loadu_si128等を使います。</p>
+<ul>
+<li>チャンネルサイズ8bit
+    5700x5700BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
+<li>画像の保存、読み込みは …</li></ul>
+        <br>
+        <a class="btn" href="https://waura.github.io/201112031322919731.html#201112031322919731">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
+    <h2><a href="https://waura.github.io/201111281322504210.html#201111281322504210">SSE用いたアルファブレンドの高速化3 アルファチャンネルをもつ画像同士のアルファブレンド</a></h2>
+    <p>
+          Posted on Mon 28 November 2011 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>↓の続き<br>
+<a href="http://d.hatena.ne.jp/hiroki0/20090914/1252931917">http://d.hatena.ne.jp/hiroki0/20090914/1252931917</a><br>
+<a href="http://d.hatena.ne.jp/hiroki0/20100320/1269074009">http://d.hatena.ne.jp/hiroki0/20100320/1269074009</a></p>
+<h2>使用するアルファブレンド計算式</h2>
+<p>チャンネルサイズ8bitとして<br>
+<img alt="a_{dst} = 255 - (255 - a_{over})(255 - a_{under}) /
+255" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=a_%7Bdst%7D%20%3D%20255%20-%20%28255%20-%20a_%7Bover%7D%29%28255%20-%20a_%7Bunder%7D%29%20%2F%20255"><br>
+<img alt="d_{dst} = (d_{over} a_{over} + (d_{under} a_{under} (255 -
+a_{over}) / 255) /
+a_{dst}" src="http://chart.apis.google.com/chart?cht=tx&amp;chl=d_%7Bdst%7D%20%3D%20%28d_%7Bover%7D%20a_%7Bover%7D%20%2B%20%28d_%7Bunder%7D%20a_%7Bunder%7D%20%28255%20-%20a_%7Bover%7D%29%20%2F%20255%29%20%2F%20a_%7Bdst%7D"></p>
+<p>ここで、aはアルファ値、dは画素値である。</p>
+<p>この計算式をコードにすると以下のようになる。<br>
+255による除算は、高速化のために256の除算に変更しシフト演算で処理している。<br>
+また、計算量を減らすためにアルファ値により分岐を行なっている。<br>
+今回は、この処理をSSEにより実装して計測を行う。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">((</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">over_pix</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dst_pix</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">under_pix</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else …</span></pre></div>
+        <br>
+        <a class="btn" href="https://waura.github.io/201111281322504210.html#201111281322504210">    Continue reading
+</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="https://waura.github.io/201106061307361103.html#201106061307361103">TI-Android-Froyo-DevKit-V2.2のビルドでinternal_install_SDK.expが見つからないとエラーが出るときの対処</a></h2>
     <p>
           Posted on Mon 06 June 2011 in <a href="https://waura.github.io/category/android.html">Android</a>
@@ -316,145 +435,6 @@ Ubuntu serverをインストールしてあるマシンにmrtgをインストー
 <div class="highlight"><pre><span></span> $ sudo /etc/init …</pre></div>
         <br>
         <a class="btn" href="https://waura.github.io/201004031270264748.html#201004031270264748">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/201003201269074009.html#201003201269074009">SSE用いたアルファブレンドの高速化2</a></h2>
-    <p>
-          Posted on Sat 20 March 2010 in <a href="https://waura.github.io/category/peintotsuru.html">ペイントツール</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <h2>ロード・ストアに使用するSSE命令</h2>
-<h3>ロード</h3>
-<table>
-<thead>
-<tr>
-<th>イントリンシック命令</th>
-<th>対応するSSE命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>_mm_loadu_ps</td>
-<td>MOVUPS</td>
-<td>アライメントを合わせる必要がない</td>
-</tr>
-<tr>
-<td>_mm_load_ps</td>
-<td>MOVAPS</td>
-<td>アライメントを合わせなければならない</td>
-</tr>
-</tbody>
-</table>
-<h3>ストア</h3>
-<table>
-<thead>
-<tr>
-<th>イントリンシック命令</th>
-<th>対応するSSE命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>_mm_storeu_ps</td>
-<td>MOVUPS</td>
-<td>アライメントを合わせる必要がない</td>
-</tr>
-<tr>
-<td>_mm_store_ps</td>
-<td>MOVAPS</td>
-<td>アライメントを合わせなければならない</td>
-</tr>
-<tr>
-<td>_mm_stream_si128</td>
-<td>MOVNTPD</td>
-<td>アライメントを合わせなければならない、キャッシュを介さずにストアする</td>
-</tr>
-</tbody>
-</table>
-<h2>計測するアルファブレンド処理</h2>
-<p>32bit,64bit向けに2通りに実行ファイルを作成、それぞれについて</p>
-<ul>
-<li>SSEを使わない処理</li>
-<li>_mm_loadu_psでメモリ読み込み、_mm_storeu_psでメモリ書き込み</li>
-<li>_mm_load_psでメモリ読み込み、_mm_store_psでメモリ書き込み</li>
-<li>_mm_load_psでメモリ読み込み、_mm_stream_si128でメモリ書き込み</li>
-</ul>
-<p>の4通りでテストする。</p>
-<p>64bit向けの設定だと__asmのとこでエラーがでるので<a href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%E9%A5%A4%A5%F3%A5%A2%A5%BB%A5%F3%A5%D6%A5%E9">インラインアセンブラ</a>ではなく組み込み関数を使って書きました。<br>
-アライメントをあわせて処理するために、128bit(4pixel)ずつ読み込んで処理を行っています。</p>
-<h2>計測方法</h2>
-<ul>
-<li>5760x3600BGR画像を2枚読み込み、アルファ値を指定してアルファブレンドを行う。</li>
-<li>画像の保存、読み込みは<a href="http://d.hatena.ne.jp/keyword/openCV">openCV</a>
-    2 …</li></ul>
-        <br>
-        <a class="btn" href="https://waura.github.io/201003201269074009.html#201003201269074009">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/201003171268808033.html#201003171268808033">ブレークポイントがヒットしない時の対処</a></h2>
-    <p>
-          Posted on Wed 17 March 2010 in <a href="https://waura.github.io/category/windows.html">Windows</a>
-
-
-          &#8226;     Tagged with
-
-              <a href="https://waura.github.io/tag/windows.html">Windows</a>
-    </p>
-  </header>
-  <div>
-      <p>デバック時、リビルドしたソースに<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>を設定しても、<br>
-「<a href="http://d.hatena.ne.jp/keyword/%A5%D6%A5%EC%A1%BC%A5%AF%A5%DD%A5%A4%A5%F3%A5%C8">ブレークポイント</a>は、現在の設定ではヒットしません。<a href="http://d.hatena.ne.jp/keyword/%A5%BD%A1%BC%A5%B9%A5%B3%A1%BC%A5%C9">ソースコード</a>
-が元のバージョンと異なります。」<br>
-と表示されるときの対処</p>
-<p>[「<a href="http://d.hatena.ne.jp/keyword/%A5%C4%A1%BC%A5%EB">ツール</a>」→「オプション」→「<a href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%D0%A5%C3%A5%B0">デバッグ</a>」→「全般」を開き、「元のバージョンと完全に一致するソースファイルを必要とする」のチェックをはずす。] </p>
-<p><a href="http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14">http://www.langedge.jp/blog/?&amp;blogid=1&amp;archive=2006-6-14</a></p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://waura.github.io/201003151268621668.html#201003151268621668">64bit対応のOpenCV 2.0のスタティックリンクライブラリのビルド</a></h2>
-    <p>
-          Posted on Mon 15 March 2010 in <a href="https://waura.github.io/category/opencv.html">OpenCV</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <h4>CMakeを用いて<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual Studio</a>のプロジェクトを作る</h4>
-<p>ここを参考に<a href="http://d.hatena.ne.jp/keyword/OpenCV">OpenCV</a>のソースから<a href="http://d.hatena.ne.jp/keyword/Visual%20Studio">Visual
-Studio</a>のプロジェクトを作成する。<br>
-<a href="http://d.hatena.ne.jp/Guernsey/20091002/1254459730">http://d.hatena.ne.jp/Guernsey/20091002/1254459730</a></p>
-<p>「アプリケーションを正しく初期化できませんでした
-(0xc0150002)」というエラーダイアログがでないようにするためにCMakeのConfigure時にでENABLE_OPENMPを外す。<br>
-<a href="http://d.hatena.ne.jp/Guernsey/20091120/1258734848">http://d.hatena.ne.jp/Guernsey/20091120/1258734848</a></p>
-<h4>スタティックリンクライブラリをビルドするために</h4>
-<ul>
-<li>「構成プロパティ」→「全般」で「構成の種類」をダイナミックライブラリからスタティックライブラリに変更する</li>
-<li>DllMain()を<a href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%E1%A5%F3%A5%C8%A5%A2%A5%A6%A5%C8">コメントアウト</a></li>
-<li><a href="http://d.hatena.ne.jp/keyword/opencv">opencv</a>-1.1preからvideoInput.libをリンクさせる</li>
-<li>atlthunk.libが見つからないとリンクエラーが出たらatlthunk.libを無視</li>
-</ul>
-<h4>64bit対応にするために</h4>
-<ul>
-<li>すべてのプロジェクトのプロパティの「構成プロパティ」→「<a href="http://d.hatena.ne.jp/keyword/C/C%2B%2B">C/C …</a></li></ul>
-        <br>
-        <a class="btn" href="https://waura.github.io/201003151268621668.html#201003151268621668">    Continue reading
 </a>
   </div>
 </article>

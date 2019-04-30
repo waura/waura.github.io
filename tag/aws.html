@@ -53,7 +53,7 @@
 <meta property="og:url" content="https://waura.github.io"/>
 <meta property="og:image" content="//avatars3.githubusercontent.com/u/99647">
 
-  <title>waura's blog &ndash;     Authors
+  <title>waura's blog &ndash;     Tag AWS
 </title>
 
 </head>
@@ -96,17 +96,50 @@
   <main>
 
 
-<article class="single">
+
+
+<article>
   <header>
-    <h1>    Authors
-</h1>
+    <h2><a href="https://waura.github.io/esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita.html#esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita">ESP32でAmazon FreeRTOSを使用してLEDをチカチカさせてみた</a></h2>
+    <p>
+          Posted on Tue 19 March 2019 in <a href="https://waura.github.io/category/jp.html">JP</a>
+
+
+          &#8226;     Tagged with
+
+              <a href="https://waura.github.io/tag/aws.html">AWS</a>
+    </p>
   </header>
   <div>
-    <ul class="list">
-      <li><a href="https://waura.github.io/author/waura.html">waura</a> (95)</li>
-    </ul>
+      <h1>はじめに</h1>
+<p>ESP32でAmazon FreeRTOSを使ってLEDチカチカさせる手順についてまとめます。</p>
+<p>下記の公式ドキュメント等を参照してESP32にfirmwareの転送しMQTTのPublishができていることを前提としています。</p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/freertos/latest/userguide/getting_started_espressif.html">Espressif ESP32-DevKitC と ESP-WROVER-KIT の開始方法</a></p>
+<p>デモのesp32_devkitc_esp_wrover_kitに手を加える形でLチカを実現します。</p>
+<h1>ESP32でのGPIOの操作について</h1>
+<p>ESP32向けの公式ライブラリとして<a href="https://docs.espressif.com/projects/esp-idf/en/latest/">ESP-IDF</a>が用意されています。
+ESP-IDFはAmazon FreeRTOSに組み込まれているので、これを利用してGPIOを操作します。</p>
+<p>ESP-IDFを使用したGPIOの操作に関しては、ESP-IDFのリファレンス(<a href="https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/peripherals/gpio.html">API Reference - Peripherals API - GPIO &amp; RTC GPIO</a>)に説明があります。</p>
+<p>また、サンプルコードもGitHub(<a href="https://github.com/espressif/esp-idf/tree/cf5dbadf4f25b395887238a7d4d8251c279afa8c/examples/peripherals/gpio">ESP-IDF GPIO Sample</a>)で公開されています。</p>
+<h1>回路構成</h1>
+<p>GPIO4を制御してLEDをチカチカさせることにします。
+GPIO4とGNDの間にLEDと抵抗を入れてつなぎます。抵抗の大きさは適当です。</p>
+<p><a href="../images/esp32/ESP32-LED.png"><img alt="" src="../images/esp32/ESP32-LED.png"></a></p>
+<h1>コードの修正</h1>
+<p>esp32_devkitc_esp_wrover_kitのコードの修正を行います。
+書き換え対象は、<a href="https://github.com/aws/amazon-freertos/blob/master/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c">amazon-freertos/demos/espressif/esp32_devkitc_esp_wrover_kit/common/application_code/main.c</a> です。</p>
+<p>元々のサンプルコードはDEMO_RUNNER_RunDemos …</p>
+        <br>
+        <a class="btn" href="https://waura.github.io/esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita.html#esp32deamazon-freertoswoshi-yong-shiteledwochikachikasasetemita">    Continue reading
+</a>
   </div>
 </article>
+
+  <div class="pagination">
+  </div>
+
+
+
 
     <footer>
 <p>&copy;  2007</p>
